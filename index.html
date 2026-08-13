@@ -479,13 +479,11 @@
 
     .filter-btn:hover {
       background: transparent;
-      opacity: 0.75;
+      opacity: 0.7;
     }
 
-    .filter-btn .material-symbols-outlined {
-      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
-      font-size: 22px;
-      color: currentColor;
+    .filter-btn svg {
+      display: block;
     }
 
     /* ================= FUEL CONFIGURATION & MODAL STYLES ================= */
@@ -625,30 +623,56 @@
       display: none;
     }
 
-    /* Fuel Modal Styling matching exact popup reference image */
+    /* Fuel Modal & EUA Modal Styling matching exact popup reference image */
     .fuel-modal-card {
-      width: 440px;
+      width: 400px;
       max-width: 92vw;
-      background-color: #f8f5eb;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      background-color: var(--bg-modal-outer);
+      border-radius: 12px;
+      padding: 20px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
       animation: fadeIn 0.15s ease-out;
     }
 
     .fuel-modal-header {
-      background-color: #d5a443;
-      color: #111111;
-      font-size: 16.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 18px;
       font-weight: 600;
-      padding: 14px 20px;
+      color: #2c2c2c;
+      margin-bottom: 16px;
+    }
+
+    .fuel-modal-header .fuel-close-btn {
+      cursor: pointer;
+      font-size: 20px;
+      color: #555555;
+      transition: color 0.15s ease;
+    }
+
+    .fuel-modal-header .fuel-close-btn:hover {
+      color: #000000;
     }
 
     .fuel-modal-body {
-      padding: 22px 20px 20px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+    }
+
+    .inner-fuel-form-box {
+      border: 1.5px solid var(--border-inner-box);
+      border-radius: 8px;
+      padding: 18px 16px 16px;
+      background-color: var(--bg-modal-inner);
+    }
+
+    .fuel-fields-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .fuel-modal-footer {
@@ -656,38 +680,38 @@
       align-items: center;
       justify-content: flex-end;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 16px;
     }
 
     .btn-fuel-cancel {
-      height: 34px;
+      height: 36px;
       padding: 0 18px;
-      background-color: #eae3cd;
-      color: #222222;
-      font-size: 11.5px;
-      font-weight: 500;
-      border: 1px solid #c8beaa;
+      background-color: var(--bg-modal-outer);
+      color: #333333;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #b8b099;
       border-radius: 4px;
       cursor: pointer;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       transition: background 0.15s ease;
     }
 
     .btn-fuel-cancel:hover {
-      background-color: #e0d7be;
+      background-color: #eae3cd;
     }
 
     .btn-fuel-save {
-      height: 34px;
-      padding: 0 20px;
+      height: 36px;
+      padding: 0 22px;
       background-color: var(--green-btn);
       color: #ffffff;
-      font-size: 11.5px;
-      font-weight: 500;
+      font-size: 12px;
+      font-weight: 600;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       transition: background 0.15s ease;
     }
 
@@ -1241,7 +1265,9 @@
           <button class="btn-create" id="openCreateModalBtn">Create</button>
 
           <button class="filter-btn" id="filterIconBtn" title="Filter">
-            <span class="material-symbols-outlined">filter_alt_off</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.78 22.61L1.39 4.22l1.41-1.41L21.19 21.2l-1.41 1.41zM6.83 6L10 9.87V19l4-2v-5.13l5.06-6.32H6.83z"/>
+            </svg>
           </button>
         </div>
       </div>
@@ -1308,7 +1334,9 @@
           </div>
           <div class="toolbar-right">
             <button class="filter-btn" id="fuelFilterIconBtn" title="Filter">
-              <span class="material-symbols-outlined">filter_alt_off</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.78 22.61L1.39 4.22l1.41-1.41L21.19 21.2l-1.41 1.41zM6.83 6L10 9.87V19l4-2v-5.13l5.06-6.32H6.83z"/>
+              </svg>
             </button>
           </div>
         </div>
@@ -1345,7 +1373,9 @@
           </div>
           <div class="toolbar-right">
             <button class="filter-btn" id="euaFilterIconBtn" title="Filter">
-              <span class="material-symbols-outlined">filter_alt_off</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.78 22.61L1.39 4.22l1.41-1.41L21.19 21.2l-1.41 1.41zM6.83 6L10 9.87V19l4-2v-5.13l5.06-6.32H6.83z"/>
+              </svg>
             </button>
           </div>
         </div>
@@ -1601,31 +1631,70 @@
   <!-- ================= ADD / EDIT FUEL DETAILS MODAL (EXACT POPUP MATCH) ================= -->
   <div class="modal-overlay" id="fuelModalOverlay">
     <div class="fuel-modal-card">
-      <div class="fuel-modal-header" id="fuelModalTitle">Add Fuel Details</div>
+      <div class="fuel-modal-header">
+        <span id="fuelModalTitle">Add Fuel Details</span>
+        <span class="material-symbols-outlined fuel-close-btn" id="btnCloseFuelModal">close</span>
+      </div>
 
       <div class="fuel-modal-body">
-        <form id="fuelForm" onsubmit="return false;">
-          <!-- Fuel Type Field -->
-          <div class="mui-field-box empty-unfocused" id="boxFuelType">
-            <label>Fuel Type<span class="req-star">*</span></label>
-            <input type="text" id="inputFuelType" placeholder="">
-            <span class="error-text">This field is required</span>
-          </div>
+        <div class="inner-fuel-form-box">
+          <form id="fuelForm" onsubmit="return false;" class="fuel-fields-stack">
+            <!-- 1. Fuel Type Dropdown -->
+            <div class="mui-field-box empty-unfocused" id="boxFuelType" data-field="fuelType">
+              <label>Fuel Type<span class="req-star">*</span></label>
+              <select id="selectFuelType">
+                <option value=""></option>
+                <option value="ADVN">ADVN</option>
+                <option value="DAS">DAS</option>
+                <option value="DFHU">DFHU</option>
+                <option value="FUEL EU">FUEL EU</option>
+                <option value="GAS">GAS</option>
+                <option value="GFRT">GFRT</option>
+                <option value="HFO">HFO</option>
+                <option value="LFO">LFO</option>
+                <option value="MGO">MGO</option>
+                <option value="LNG">LNG</option>
+              </select>
+              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+              <span class="error-text">This field is required</span>
+            </div>
 
-          <!-- Price Field -->
-          <div class="mui-field-box empty-unfocused" id="boxPrice">
-            <label>Price<span class="req-star">*</span></label>
-            <input type="text" id="inputPrice" placeholder="">
-            <span class="error-text">Please enter a valid numeric price</span>
-          </div>
+            <!-- 2. Price Field -->
+            <div class="mui-field-box empty-unfocused" id="boxPrice" data-field="price">
+              <label>Price<span class="req-star">*</span></label>
+              <input type="text" id="inputPrice" placeholder="">
+              <span class="error-text">Please enter a valid numeric price</span>
+            </div>
 
-          <!-- Carbon Field -->
-          <div class="mui-field-box empty-unfocused" id="boxCarbon">
-            <label>Carbon<span class="req-star">*</span></label>
-            <input type="text" id="inputCarbon" placeholder="">
-            <span class="error-text">Please enter a valid numeric carbon value</span>
-          </div>
-        </form>
+            <!-- 3. CF TTW Field -->
+            <div class="mui-field-box empty-unfocused" id="boxCfTtw" data-field="cfTtw">
+              <label>CF TTW<span class="req-star">*</span></label>
+              <input type="text" id="inputCfTtw" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
+
+            <!-- 4. CF WTW Field -->
+            <div class="mui-field-box empty-unfocused" id="boxCfWtw" data-field="cfWtw">
+              <label>CF WTW<span class="req-star">*</span></label>
+              <input type="text" id="inputCfWtw" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
+
+            <!-- 5. GHG Limit Field -->
+            <div class="mui-field-box empty-unfocused" id="boxGhgLimit" data-field="ghgLimit">
+              <label>GHG Limit<span class="req-star">*</span></label>
+              <input type="text" id="inputGhgLimit" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
+
+            <!-- 6. LCV Limit Field -->
+            <div class="mui-field-box empty-unfocused" id="boxLcvLimit" data-field="lcvLimit">
+              <label>LCV Limit<span class="req-star">*</span></label>
+              <input type="text" id="inputLcvLimit" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
+          </form>
+        </div>
 
         <!-- Modal Action Buttons matching reference popup -->
         <div class="fuel-modal-footer">
@@ -1639,38 +1708,43 @@
   <!-- ================= ADD / EDIT EUA PRICE MODAL (same style as Fuel modal) ================= -->
   <div class="modal-overlay" id="euaModalOverlay">
     <div class="fuel-modal-card">
-      <div class="fuel-modal-header" id="euaModalTitle">Add EUA Price Details</div>
+      <div class="fuel-modal-header">
+        <span id="euaModalTitle">Add EUA Price Details</span>
+        <span class="material-symbols-outlined fuel-close-btn" id="btnCloseEuaModal">close</span>
+      </div>
 
       <div class="fuel-modal-body">
-        <form id="euaForm" onsubmit="return false;">
-          <!-- Year Field -->
-          <div class="mui-field-box empty-unfocused" id="boxEuaYear">
-            <label>Year<span class="req-star">*</span></label>
-            <input type="text" id="inputEuaYear" placeholder="" maxlength="4">
-            <span class="error-text" id="errEuaYear">Please enter a valid 4-digit year</span>
-          </div>
+        <div class="inner-fuel-form-box">
+          <form id="euaForm" onsubmit="return false;" class="fuel-fields-stack">
+            <!-- Year Field -->
+            <div class="mui-field-box empty-unfocused" id="boxEuaYear" data-field="euaYear">
+              <label>Year<span class="req-star">*</span></label>
+              <input type="text" id="inputEuaYear" placeholder="" maxlength="4">
+              <span class="error-text" id="errEuaYear">Please enter a valid 4-digit year</span>
+            </div>
 
-          <!-- VCM Price Min Field -->
-          <div class="mui-field-box empty-unfocused" id="boxEuaVcmMin">
-            <label>VCM Price Min<span class="req-star">*</span></label>
-            <input type="text" id="inputEuaVcmMin" placeholder="">
-            <span class="error-text">Please enter a valid numeric value</span>
-          </div>
+            <!-- VCM Price Min Field -->
+            <div class="mui-field-box empty-unfocused" id="boxEuaVcmMin" data-field="euaVcmMin">
+              <label>VCM Price Min<span class="req-star">*</span></label>
+              <input type="text" id="inputEuaVcmMin" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
 
-          <!-- VCM Price Max Field -->
-          <div class="mui-field-box empty-unfocused" id="boxEuaVcmMax">
-            <label>VCM Price Max<span class="req-star">*</span></label>
-            <input type="text" id="inputEuaVcmMax" placeholder="">
-            <span class="error-text" id="errEuaVcmMax">Please enter a valid value (≥ VCM Price Min)</span>
-          </div>
+            <!-- VCM Price Max Field -->
+            <div class="mui-field-box empty-unfocused" id="boxEuaVcmMax" data-field="euaVcmMax">
+              <label>VCM Price Max<span class="req-star">*</span></label>
+              <input type="text" id="inputEuaVcmMax" placeholder="">
+              <span class="error-text" id="errEuaVcmMax">Please enter a valid value (≥ VCM Price Min)</span>
+            </div>
 
-          <!-- EUA Price Field -->
-          <div class="mui-field-box empty-unfocused" id="boxEuaPrice">
-            <label>EUA Price<span class="req-star">*</span></label>
-            <input type="text" id="inputEuaPrice" placeholder="">
-            <span class="error-text">Please enter a valid numeric value</span>
-          </div>
-        </form>
+            <!-- EUA Price Field -->
+            <div class="mui-field-box empty-unfocused" id="boxEuaPrice" data-field="euaPrice">
+              <label>EUA Price<span class="req-star">*</span></label>
+              <input type="text" id="inputEuaPrice" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
+          </form>
+        </div>
 
         <!-- Modal Action Buttons -->
         <div class="fuel-modal-footer">
@@ -2028,14 +2102,18 @@
     const fuelModalTitle = document.getElementById('fuelModalTitle');
     const openAddFuelModalBtn = document.getElementById('openAddFuelModalBtn');
     const btnCancelFuelModal = document.getElementById('btnCancelFuelModal');
+    const btnCloseFuelModal = document.getElementById('btnCloseFuelModal');
     const btnSaveFuelModal = document.getElementById('btnSaveFuelModal');
 
-    const inputFuelType = document.getElementById('inputFuelType');
+    const selectFuelType = document.getElementById('selectFuelType');
     const inputPrice = document.getElementById('inputPrice');
-    const inputCarbon = document.getElementById('inputCarbon');
+    const inputCfTtw = document.getElementById('inputCfTtw');
+    const inputCfWtw = document.getElementById('inputCfWtw');
+    const inputGhgLimit = document.getElementById('inputGhgLimit');
+    const inputLcvLimit = document.getElementById('inputLcvLimit');
 
     function clearFuelErrors() {
-      ['boxFuelType', 'boxPrice', 'boxCarbon'].forEach(id => {
+      ['boxFuelType', 'boxPrice', 'boxCfTtw', 'boxCfWtw', 'boxGhgLimit', 'boxLcvLimit'].forEach(id => {
         const box = document.getElementById(id);
         if (box) box.classList.remove('error');
       });
@@ -2046,15 +2124,21 @@
       if (isEdit && item) {
         editingFuelSlno = item.slno;
         fuelModalTitle.textContent = 'Edit Fuel Details';
-        inputFuelType.value = item.fuelType;
-        inputPrice.value = item.price;
-        inputCarbon.value = item.carbon;
+        if (selectFuelType) selectFuelType.value = item.fuelType || '';
+        if (inputPrice) inputPrice.value = item.price || '';
+        if (inputCfTtw) inputCfTtw.value = item.cfTtw || '82.02';
+        if (inputCfWtw) inputCfWtw.value = item.cfWtw || '90.00';
+        if (inputGhgLimit) inputGhgLimit.value = item.ghgLimit || '89.3';
+        if (inputLcvLimit) inputLcvLimit.value = item.lcvLimit || '44.0';
       } else {
         editingFuelSlno = null;
         fuelModalTitle.textContent = 'Add Fuel Details';
-        inputFuelType.value = '';
-        inputPrice.value = '';
-        inputCarbon.value = '';
+        if (selectFuelType) selectFuelType.value = '';
+        if (inputPrice) inputPrice.value = '';
+        if (inputCfTtw) inputCfTtw.value = '';
+        if (inputCfWtw) inputCfWtw.value = '';
+        if (inputGhgLimit) inputGhgLimit.value = '';
+        if (inputLcvLimit) inputLcvLimit.value = '';
       }
       fuelModalOverlay.classList.add('open');
       updateFieldStates();
@@ -2066,6 +2150,7 @@
 
     if (openAddFuelModalBtn) openAddFuelModalBtn.addEventListener('click', () => openFuelModal(false));
     if (btnCancelFuelModal) btnCancelFuelModal.addEventListener('click', closeFuelModal);
+    if (btnCloseFuelModal) btnCloseFuelModal.addEventListener('click', closeFuelModal);
 
     if (fuelModalOverlay) {
       fuelModalOverlay.addEventListener('click', (e) => {
@@ -2089,9 +2174,12 @@
         clearFuelErrors();
         let isValid = true;
 
-        const typeVal = inputFuelType.value.trim();
-        const priceVal = inputPrice.value.trim();
-        const carbonVal = inputCarbon.value.trim();
+        const typeVal = selectFuelType ? selectFuelType.value.trim() : '';
+        const priceVal = inputPrice ? inputPrice.value.trim() : '';
+        const cfTtwVal = inputCfTtw ? inputCfTtw.value.trim() : '';
+        const cfWtwVal = inputCfWtw ? inputCfWtw.value.trim() : '';
+        const ghgLimitVal = inputGhgLimit ? inputGhgLimit.value.trim() : '';
+        const lcvLimitVal = inputLcvLimit ? inputLcvLimit.value.trim() : '';
 
         if (!typeVal) {
           document.getElementById('boxFuelType').classList.add('error');
@@ -2103,8 +2191,23 @@
           isValid = false;
         }
 
-        if (!carbonVal || isNaN(carbonVal) || Number(carbonVal) < 0) {
-          document.getElementById('boxCarbon').classList.add('error');
+        if (!cfTtwVal || isNaN(cfTtwVal)) {
+          document.getElementById('boxCfTtw').classList.add('error');
+          isValid = false;
+        }
+
+        if (!cfWtwVal || isNaN(cfWtwVal)) {
+          document.getElementById('boxCfWtw').classList.add('error');
+          isValid = false;
+        }
+
+        if (!ghgLimitVal || isNaN(ghgLimitVal)) {
+          document.getElementById('boxGhgLimit').classList.add('error');
+          isValid = false;
+        }
+
+        if (!lcvLimitVal || isNaN(lcvLimitVal)) {
+          document.getElementById('boxLcvLimit').classList.add('error');
           isValid = false;
         }
 
@@ -2118,7 +2221,10 @@
           if (item) {
             item.fuelType = typeVal;
             item.price = priceVal;
-            item.carbon = carbonVal;
+            item.cfTtw = cfTtwVal;
+            item.cfWtw = cfWtwVal;
+            item.ghgLimit = ghgLimitVal;
+            item.lcvLimit = lcvLimitVal;
             showToast('Fuel details updated successfully.');
           }
         } else {
@@ -2127,7 +2233,10 @@
             slno: nextSlno,
             fuelType: typeVal,
             price: priceVal,
-            carbon: carbonVal
+            cfTtw: cfTtwVal,
+            cfWtw: cfWtwVal,
+            ghgLimit: ghgLimitVal,
+            lcvLimit: lcvLimitVal
           });
           showToast('Fuel type added successfully.');
         }
@@ -2268,8 +2377,11 @@
       euaModalOverlay.classList.remove('open');
     }
 
+    const btnCloseEuaModal = document.getElementById('btnCloseEuaModal');
+
     if (openAddEuaModalBtn) openAddEuaModalBtn.addEventListener('click', () => openEuaModal(false));
     if (btnCancelEuaModal) btnCancelEuaModal.addEventListener('click', closeEuaModal);
+    if (btnCloseEuaModal) btnCloseEuaModal.addEventListener('click', closeEuaModal);
 
     if (euaModalOverlay) {
       euaModalOverlay.addEventListener('click', (e) => {
