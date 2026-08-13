@@ -1719,8 +1719,27 @@
             <!-- Year Field -->
             <div class="mui-field-box empty-unfocused" id="boxEuaYear" data-field="euaYear">
               <label>Year<span class="req-star">*</span></label>
-              <input type="text" id="inputEuaYear" placeholder="" maxlength="4">
-              <span class="error-text" id="errEuaYear">Please enter a valid 4-digit year</span>
+              <select id="selectEuaYear">
+                <option value=""></option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+                <option value="2026" selected>2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+                <option value="2030">2030</option>
+                <option value="2031">2031</option>
+                <option value="2032">2032</option>
+                <option value="2033">2033</option>
+                <option value="2034">2034</option>
+                <option value="2035">2035</option>
+              </select>
+              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+              <span class="error-text" id="errEuaYear">Please select a valid year</span>
             </div>
 
             <!-- VCM Price Min Field -->
@@ -2338,7 +2357,7 @@
     const btnCancelEuaModal = document.getElementById('btnCancelEuaModal');
     const btnSaveEuaModal = document.getElementById('btnSaveEuaModal');
 
-    const inputEuaYear = document.getElementById('inputEuaYear');
+    const selectEuaYear = document.getElementById('selectEuaYear');
     const inputEuaVcmMin = document.getElementById('inputEuaVcmMin');
     const inputEuaVcmMax = document.getElementById('inputEuaVcmMax');
     const inputEuaPrice = document.getElementById('inputEuaPrice');
@@ -2357,14 +2376,14 @@
       if (isEdit && item) {
         editingEuaSlno = item.slno;
         euaModalTitle.textContent = 'Edit EUA Price Details';
-        inputEuaYear.value = item.year;
+        if (selectEuaYear) selectEuaYear.value = item.year || '2026';
         inputEuaVcmMin.value = item.vcmMin;
         inputEuaVcmMax.value = item.vcmMax;
         inputEuaPrice.value = item.euaPrice;
       } else {
         editingEuaSlno = null;
         euaModalTitle.textContent = 'Add EUA Price Details';
-        inputEuaYear.value = '';
+        if (selectEuaYear) selectEuaYear.value = '2026';
         inputEuaVcmMin.value = '';
         inputEuaVcmMax.value = '';
         inputEuaPrice.value = '';
@@ -2405,16 +2424,15 @@
         clearEuaErrors();
         let isValid = true;
 
-        const yearVal = inputEuaYear.value.trim();
+        const yearVal = selectEuaYear ? selectEuaYear.value.trim() : '';
         const vcmMinVal = inputEuaVcmMin.value.trim();
         const vcmMaxVal = inputEuaVcmMax.value.trim();
         const euaPriceVal = inputEuaPrice.value.trim();
 
-        // Validate Year: 4-digit numeric
-        const yearNum = Number(yearVal);
-        const yearIsValid = yearVal.length === 4 && /^\d{4}$/.test(yearVal) && yearNum >= 1900 && yearNum <= 2100;
-        if (!yearIsValid) {
+        // Validate Year: required selection & uniqueness
+        if (!yearVal) {
           document.getElementById('boxEuaYear').classList.add('error');
+          document.getElementById('errEuaYear').textContent = 'Please select a valid year';
           isValid = false;
         } else {
           // Check duplicate year (exclude current row when editing)
@@ -2424,7 +2442,7 @@
             document.getElementById('errEuaYear').textContent = 'This year already exists';
             isValid = false;
           } else {
-            document.getElementById('errEuaYear').textContent = 'Please enter a valid 4-digit year';
+            document.getElementById('errEuaYear').textContent = 'Please select a valid year';
           }
         }
 
