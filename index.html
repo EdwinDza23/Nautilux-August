@@ -871,6 +871,14 @@
       grid-column: 1 / -1;
     }
 
+    .grid-col-1 {
+      grid-column: 1;
+    }
+
+    .grid-col-2 {
+      grid-column: 2;
+    }
+
     /* Section heading for Engine Details */
     .section-divider-title {
       font-size: 11px;
@@ -883,6 +891,12 @@
       padding-top: 14px;
       border-top: 1px dashed #d0c7ad;
       grid-column: 1 / -1;
+    }
+
+    .section-divider-title.first-section {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
     }
 
     /* ================= INPUT FIELD STYLING (EXACT REFERENCE MATCH) ================= */
@@ -906,6 +920,10 @@
       color: var(--text-dark);
       font-family: inherit;
       transition: border-color 0.15s ease;
+    }
+
+    .mui-field-box input:has(+ .date-icon) {
+      padding-right: 36px;
     }
 
     .mui-field-box textarea {
@@ -936,7 +954,7 @@
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: #555555;
+      color: #666666;
       font-size: 20px;
     }
 
@@ -1356,8 +1374,11 @@
 
       <div class="modal-scroll-body">
         <div class="inner-form-box">
-          <!-- Section 1: Vessel Details Fields -->
+          <!-- Section 1 & 2: Form Grid -->
           <div class="form-grid-2col" id="vesselDetailsGrid">
+            <!-- Section 1: Vessel Details -->
+            <div class="section-divider-title first-section">Vessel Details</div>
+
             <!-- Company Name -->
             <div class="mui-field-box disabled" data-field="companyName">
               <label>Company Name</label>
@@ -1403,7 +1424,7 @@
 
             <!-- Flag State -->
             <div class="mui-field-box empty-unfocused" data-field="flagState">
-              <label>Flag State<span class="req-star"> *</span></label>
+              <label>Flag State<span class="req-star">*</span></label>
               <select id="selectFlagState">
                 <option value=""></option>
                 <option value="Argentina">Argentina</option>
@@ -1419,7 +1440,7 @@
 
             <!-- Class Society -->
             <div class="mui-field-box empty-unfocused" data-field="classSociety">
-              <label>Class Society<span class="req-star"> *</span></label>
+              <label>Class Society<span class="req-star">*</span></label>
               <select id="selectClassSociety">
                 <option value=""></option>
                 <option value="ABS">ABS</option>
@@ -1435,7 +1456,7 @@
 
             <!-- GRT -->
             <div class="mui-field-box empty-unfocused" data-field="grt">
-              <label>GRT<span class="req-star"> *</span></label>
+              <label>GRT<span class="req-star">*</span></label>
               <input type="text" id="inputGrt" placeholder="">
               <span class="error-text">This field is required</span>
             </div>
@@ -1456,14 +1477,14 @@
             </div>
 
             <!-- Built Year -->
-            <div class="mui-field-box empty-unfocused" data-field="builtYear">
+            <div class="mui-field-box form-field-full empty-unfocused" data-field="builtYear">
               <label>Built Year<span class="req-star">*</span></label>
               <input type="text" id="inputBuiltYear" placeholder="">
               <span class="material-symbols-outlined date-icon">calendar_today</span>
               <span class="error-text">This field is required</span>
             </div>
 
-            <!-- Section 2: Engine Details Extension -->
+            <!-- Section 2: Engine Details -->
             <div class="section-divider-title">Engine Details</div>
 
             <!-- 1. MCR_ME -->
@@ -1484,57 +1505,31 @@
               <input type="text" id="inputMppLim" placeholder="">
             </div>
 
-            <!-- 4. PTI (P_PTI) -->
-            <div class="mui-field-box">
-              <label>PTI (P_PTI)</label>
-              <select id="selectPti">
-                <option value="No" selected>No</option>
-                <option value="Yes">Yes</option>
-              </select>
-              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
-            </div>
-
-            <!-- 4a. PTI Comment (Conditional) -->
-            <div class="mui-field-box form-field-full empty-unfocused" id="ptiCommentBox" style="display: none;">
-              <label>Enter PTI Value</label>
-              <input type="text" id="inputPtiComment" placeholder="">
-            </div>
-
-            <!-- 5. Original MCR -->
+            <!-- 4. Original MCR -->
             <div class="mui-field-box empty-unfocused">
               <label>Original MCR</label>
               <input type="text" id="inputOriginalMcr" placeholder="">
             </div>
 
-            <!-- 6. MCR_lim -->
+            <!-- 5. MCR_lim -->
             <div class="mui-field-box empty-unfocused">
               <label>MCR_lim</label>
               <input type="text" id="inputMcrLim" placeholder="">
             </div>
 
-            <!-- 7. SFC_ME -->
+            <!-- 6. SFC_ME -->
             <div class="mui-field-box empty-unfocused">
               <label>SFC_ME</label>
               <input type="text" id="inputSfcMe" placeholder="">
             </div>
 
-            <!-- 8. SFC_AE -->
+            <!-- 7. SFC_AE -->
             <div class="mui-field-box empty-unfocused">
               <label>SFC_AE</label>
               <input type="text" id="inputSfcAe" placeholder="">
             </div>
 
-            <!-- 9. EPL Status -->
-            <div class="mui-field-box">
-              <label>EPL Status</label>
-              <select id="selectEplStatus">
-                <option value="No" selected>No</option>
-                <option value="Yes">Yes</option>
-              </select>
-              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
-            </div>
-
-            <!-- 10. PME Config -->
+            <!-- 8. PME Config -->
             <div class="mui-field-box empty-unfocused">
               <label>PME Config</label>
               <select id="selectPmeConfig">
@@ -1548,10 +1543,40 @@
               <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
             </div>
 
-            <!-- 9a. EPL Comment (Conditional) -->
-            <div class="mui-field-box form-field-full empty-unfocused" id="eplCommentBox" style="display: none;">
-              <label>Enter EPL Value</label>
-              <textarea id="textareaEplComment" placeholder=""></textarea>
+            <!-- 9. PTI (P_PTI) Decision Field (Column 1) -->
+            <div class="mui-field-box empty-unfocused grid-col-1" data-field="selectPti">
+              <label>PTI (P_PTI)<span class="req-star">*</span></label>
+              <select id="selectPti">
+                <option value="No" selected>No</option>
+                <option value="Yes">Yes</option>
+              </select>
+              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+              <span class="error-text">This field is required</span>
+            </div>
+
+            <!-- 10. EPL Status Decision Field (Column 2) -->
+            <div class="mui-field-box empty-unfocused grid-col-2" data-field="eplStatus">
+              <label>EPL Status<span class="req-star">*</span></label>
+              <select id="selectEplStatus">
+                <option value="No" selected>No</option>
+                <option value="Yes">Yes</option>
+              </select>
+              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+              <span class="error-text">This field is required</span>
+            </div>
+
+            <!-- 9a. PTI Details (Conditional Input in Column 1 directly under PTI) -->
+            <div class="mui-field-box empty-unfocused grid-col-1" id="ptiCommentBox" style="display: none;" data-field="ptiDetails">
+              <label>PTI Details<span class="req-star">*</span></label>
+              <input type="text" id="inputPtiComment" placeholder="">
+              <span class="error-text">This field is required</span>
+            </div>
+
+            <!-- 10a. EPL Details (Conditional Input in Column 2 directly under EPL Status) -->
+            <div class="mui-field-box empty-unfocused grid-col-2" id="eplCommentBox" style="display: none;" data-field="eplDetails">
+              <label>EPL Details<span class="req-star">*</span></label>
+              <input type="text" id="inputEplComment" placeholder="">
+              <span class="error-text">This field is required</span>
             </div>
           </div>
         </div>
@@ -1772,7 +1797,14 @@
         if (!input) return;
 
         const isFocused = document.activeElement === input;
-        const hasVal = input.value && input.value.trim() !== '';
+        let hasVal = false;
+        if (input.tagName === 'SELECT') {
+          const selectedOpt = input.options[input.selectedIndex];
+          const optText = selectedOpt ? selectedOpt.text.trim() : '';
+          hasVal = (input.value && input.value.trim() !== '') || optText !== '';
+        } else {
+          hasVal = input.value && input.value.trim() !== '';
+        }
 
         if (!isFocused && !hasVal) {
           box.classList.add('empty-unfocused');
@@ -1829,6 +1861,7 @@
       } else {
         ptiCommentBox.style.display = 'none';
         inputPtiComment.value = '';
+        ptiCommentBox.classList.remove('error');
       }
       updateFieldStates();
     });
@@ -1836,14 +1869,15 @@
     // ---------- Conditional Field: EPL Status ----------
     const selectEplStatus = document.getElementById('selectEplStatus');
     const eplCommentBox = document.getElementById('eplCommentBox');
-    const textareaEplComment = document.getElementById('textareaEplComment');
+    const inputEplComment = document.getElementById('inputEplComment');
 
     selectEplStatus.addEventListener('change', () => {
       if (selectEplStatus.value === 'Yes') {
         eplCommentBox.style.display = 'flex';
       } else {
         eplCommentBox.style.display = 'none';
-        textareaEplComment.value = '';
+        if (inputEplComment) inputEplComment.value = '';
+        eplCommentBox.classList.remove('error');
       }
       updateFieldStates();
     });
@@ -1854,11 +1888,17 @@
 
     btnSubmitForm.addEventListener('click', () => {
       let isFormValid = true;
-      const requiredFields = vesselDetailsGrid.querySelectorAll('.mui-field-box:not(.disabled)');
+      const requiredFields = vesselDetailsGrid.querySelectorAll('.mui-field-box[data-field]:not(.disabled)');
 
       requiredFields.forEach(box => {
-        const input = box.querySelector('input, select');
-        if (input && box.dataset.field) {
+        // Skip hidden conditional boxes
+        if (box.style.display === 'none') {
+          box.classList.remove('error');
+          return;
+        }
+
+        const input = box.querySelector('input, select, textarea');
+        if (input) {
           const val = input.value.trim();
           if (!val) {
             box.classList.add('error');
@@ -1870,7 +1910,7 @@
       });
 
       if (!isFormValid) {
-        showToast('Please fill all required Vessel Details fields.');
+        showToast('Please fill all required fields correctly.');
         return;
       }
 
