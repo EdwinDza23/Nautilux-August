@@ -465,21 +465,27 @@
     }
 
     .filter-btn {
-      width: 36px;
-      height: 36px;
+      background: transparent;
+      border: none;
+      padding: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid var(--border-field);
-      border-radius: 4px;
-      background: #ffffff;
-      color: #444444;
       cursor: pointer;
-      transition: background 0.15s ease;
+      color: #132419;
+      border-radius: 4px;
+      transition: opacity 0.15s ease;
     }
 
     .filter-btn:hover {
-      background: #f0f0f0;
+      background: transparent;
+      opacity: 0.75;
+    }
+
+    .filter-btn .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+      font-size: 22px;
+      color: currentColor;
     }
 
     /* ================= FUEL CONFIGURATION & MODAL STYLES ================= */
