@@ -47,6 +47,40 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
+    }
+
+    /* ================= MODERN UNIVERSAL SCROLLBAR SYSTEM ================= */
+    /* WebKit / Chromium / Edge / Safari */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(30, 36, 45, 0.45);
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
     }
 
     html,
@@ -183,17 +217,34 @@
       width: var(--sidebar-w);
       background-color: var(--bg-sidebar);
       overflow-y: auto;
-      padding: 8px 0 16px;
-      z-index: 400;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
     }
 
     .sidebar::-webkit-scrollbar {
-      width: 4px;
+      width: 5px;
+      height: 5px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 4px;
     }
 
     .sidebar::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 2px;
+      background-color: rgba(255, 255, 255, 0.14);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(255, 255, 255, 0.32);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
     }
 
     .nav-item {
@@ -744,20 +795,36 @@
     .table-container {
       flex: 1;
       overflow-y: auto;
+      overflow-x: auto;
       background: transparent;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
     }
 
     .table-container::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
     }
 
     .table-container::-webkit-scrollbar-track {
       background: transparent;
+      margin: 2px;
     }
 
     .table-container::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 3px;
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(30, 36, 45, 0.42);
+    }
+
+    .table-container::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
     }
 
     table.vessel-table {
@@ -893,15 +960,34 @@
       overflow-y: auto;
       flex: 1;
       padding-right: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
     }
 
     .modal-scroll-body::-webkit-scrollbar {
       width: 6px;
+      height: 6px;
+    }
+
+    .modal-scroll-body::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 4px;
     }
 
     .modal-scroll-body::-webkit-scrollbar-thumb {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 3px;
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-scroll-body::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(30, 36, 45, 0.42);
+    }
+
+    .modal-scroll-body::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
     }
 
     /* Inner Main Bordered Box with dark outline matching reference image */
@@ -1044,22 +1130,35 @@
       font-weight: 600;
     }
 
+    .year-picker-popover {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
+    }
+
     .year-picker-popover::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
+      height: 6px;
     }
 
     .year-picker-popover::-webkit-scrollbar-track {
-      background: #eae3cd;
-      border-radius: 4px;
+      background: transparent;
+      margin: 3px;
     }
 
     .year-picker-popover::-webkit-scrollbar-thumb {
-      background: #8e9587;
-      border-radius: 4px;
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .year-picker-popover::-webkit-scrollbar-thumb:hover {
-      background: #757d6e;
+      background-color: rgba(30, 36, 45, 0.42);
+    }
+
+    .year-picker-popover::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
     }
 
 
@@ -1312,11 +1411,36 @@
     .btn-cii-calculate .material-symbols-outlined { font-size: 17px; }
 
     .cii-page-body {
-      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 12px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 12px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
     }
-    .cii-page-body::-webkit-scrollbar { width: 6px; }
-    .cii-page-body::-webkit-scrollbar-track { background: transparent; }
-    .cii-page-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.22); border-radius: 3px; }
+    .cii-page-body::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .cii-page-body::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 4px;
+    }
+    .cii-page-body::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .cii-page-body::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(30, 36, 45, 0.42);
+    }
+    .cii-page-body::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
+    }
 
     .cii-data-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex-shrink: 0; }
     .cii-data-card {
@@ -1337,56 +1461,54 @@
 
     /* ================= CII PERFORMANCE SECTION (REDESIGNED ENTERPRISE SAAS) ================= */
     .cii-performance-section {
-      background: #ffffff;
-      border: 1px solid #e8ebed;
-      border-radius: 12px;
-      padding: 22px 24px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      padding: 14px 18px;
       flex-shrink: 0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     }
     .cii-section-header {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-      gap: 16px;
+      margin-bottom: 12px;
+      gap: 12px;
     }
     .cii-header-text {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 2px;
     }
     .cii-section-title {
-      font-size: 19px;
+      font-size: 13px;
       font-weight: 700;
-      color: #1e242d;
-      letter-spacing: -0.2px;
+      color: var(--text-dark);
+      letter-spacing: -0.1px;
       line-height: 1.2;
     }
     .cii-section-desc {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 400;
-      color: #64748b;
-      line-height: 1.4;
+      color: var(--text-muted);
+      line-height: 1.3;
     }
     
     .btn-cii-download {
-      height: 36px;
-      padding: 0 16px;
-      background-color: #ffffff;
+      height: 28px;
+      padding: 0 11px;
+      background-color: rgba(255, 255, 255, 0.7);
       color: #a37825;
-      font-size: 12.5px;
+      font-size: 11.5px;
       font-weight: 600;
-      border: 1px solid #dfc79b;
-      border-radius: 6px;
+      border: 1px solid var(--border-canvas);
+      border-radius: 4px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
       transition: all 0.15s ease;
       white-space: nowrap;
       font-family: inherit;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
       flex-shrink: 0;
     }
     .btn-cii-download:hover:not(:disabled) {
@@ -1399,49 +1521,55 @@
       cursor: not-allowed;
     }
     .btn-cii-download .material-symbols-outlined {
-      font-size: 18px;
+      font-size: 15px;
       color: inherit;
     }
 
     /* Main Two-Card Grid */
     .cii-performance-grid {
       display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 20px;
+      grid-template-columns: 330px 1fr;
+      gap: 12px;
       align-items: stretch;
     }
 
     /* Left Card: Yearly Data Table */
     .cii-table-card {
-      background: #ffffff;
-      border: 1px solid #edf0f2;
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 430px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      height: 234px;
     }
     .cii-table-wrap {
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
       scrollbar-width: thin;
-      scrollbar-color: #94a3b8 #f1f5f9;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
     }
     .cii-table-wrap::-webkit-scrollbar {
-      width: 8px;
+      width: 4px;
+      height: 4px;
     }
     .cii-table-wrap::-webkit-scrollbar-track {
-      background: #f1f5f9;
-      border-radius: 4px;
+      background: transparent;
+      margin: 2px;
     }
     .cii-table-wrap::-webkit-scrollbar-thumb {
-      background: #94a3b8;
-      border-radius: 4px;
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+      transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .cii-table-wrap::-webkit-scrollbar-thumb:hover {
-      background: #64748b;
+      background-color: rgba(30, 36, 45, 0.45);
+    }
+    .cii-table-wrap::-webkit-scrollbar-thumb:active {
+      background-color: var(--gold-brand);
     }
 
     .cii-data-table {
@@ -1457,17 +1585,17 @@
     .cii-data-table thead th {
       background-color: #21252d;
       color: #ffffff;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
-      height: 46px;
-      padding: 0 16px;
+      height: 29px;
+      padding: 0 10px;
       border: none;
       white-space: nowrap;
       letter-spacing: 0.1px;
       vertical-align: middle;
     }
     .cii-data-table thead th.col-year {
-      padding-left: 20px;
+      padding-left: 12px;
       text-align: left;
       width: 28%;
     }
@@ -1477,43 +1605,46 @@
     }
     .cii-data-table thead th.col-grade {
       text-align: center;
-      padding-right: 20px;
+      padding-right: 12px;
       width: 28%;
     }
     .cii-th-info {
-      font-size: 15px !important;
+      font-size: 12px !important;
       vertical-align: middle;
-      margin-left: 4px;
+      margin-left: 3px;
       opacity: 0.85;
       cursor: help;
       color: inherit;
     }
 
     .cii-data-table tbody td {
-      height: 48px;
-      padding: 0 16px;
-      font-size: 13px;
-      color: #1e242d;
-      border-bottom: 1px solid #f1f3f5;
+      height: 25px;
+      padding: 0 10px;
+      font-size: 11.5px;
+      color: var(--text-dark);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.055);
       vertical-align: middle;
+    }
+    .cii-data-table tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.45);
     }
     .cii-data-table tbody tr:last-child td {
       border-bottom: none;
     }
     .cii-data-table tbody td.col-year {
-      padding-left: 20px;
+      padding-left: 12px;
       font-weight: 500;
-      color: #1e242d;
+      color: var(--text-dark);
     }
     .cii-data-table tbody td.col-score {
       text-align: center;
       font-weight: 500;
-      color: #1e242d;
+      color: var(--text-dark);
       font-variant-numeric: tabular-nums;
     }
     .cii-data-table tbody td.col-grade {
       text-align: center;
-      padding-right: 20px;
+      padding-right: 12px;
     }
 
     /* Grade Badges */
@@ -1521,11 +1652,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 32px;
-      height: 22px;
-      padding: 0 6px;
-      border-radius: 4px;
-      font-size: 12px;
+      min-width: 22px;
+      height: 17px;
+      padding: 0 4px;
+      border-radius: 3px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
       line-height: 1;
@@ -1552,39 +1683,38 @@
     }
     .cii-grade-dash {
       color: #94a3b8;
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 600;
     }
 
     /* Right Card: Horizontal Bar Visualization */
     .cii-chart-card {
-      background: #ffffff;
-      border: 1px solid #edf0f2;
-      border-radius: 10px;
-      padding: 22px 24px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      padding: 9px 14px;
       display: flex;
       flex-direction: column;
-      height: 430px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      height: 234px;
     }
     .cii-chart-legend {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 6px;
+      margin-bottom: 6px;
       flex-shrink: 0;
     }
     .cii-legend-dot {
-      width: 10px;
-      height: 10px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background-color: #c99a45;
       flex-shrink: 0;
     }
     .cii-legend-text {
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 600;
-      color: #334155;
+      color: var(--text-dark);
     }
 
     .cii-chart-rows {
@@ -1592,39 +1722,40 @@
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
+      gap: 0px;
     }
     .cii-chart-row {
       display: flex;
       align-items: center;
-      gap: 16px;
-      height: 32px;
+      gap: 10px;
+      height: 20px;
     }
     .cii-chart-year {
-      width: 38px;
-      font-size: 13px;
+      width: 34px;
+      font-size: 11.5px;
       font-weight: 500;
-      color: #334155;
+      color: var(--text-dark);
       flex-shrink: 0;
     }
     .cii-chart-track {
       flex: 1;
-      height: 10px;
-      background-color: #f1f4f8;
-      border-radius: 5px;
+      height: 7px;
+      background-color: rgba(0, 0, 0, 0.06);
+      border-radius: 4px;
       overflow: hidden;
       position: relative;
     }
     .cii-chart-bar {
       height: 100%;
       background-color: #c99a45;
-      border-radius: 5px;
+      border-radius: 4px;
       transition: width 0.5s ease-out;
     }
     .cii-chart-val {
-      width: 52px;
-      font-size: 13px;
+      width: 44px;
+      font-size: 11.5px;
       font-weight: 600;
-      color: #334155;
+      color: var(--text-dark);
       text-align: right;
       flex-shrink: 0;
       font-variant-numeric: tabular-nums;
@@ -1637,63 +1768,63 @@
       }
       .cii-table-card, .cii-chart-card {
         height: auto;
-        min-height: 350px;
+        min-height: 220px;
       }
       .cii-chart-rows {
-        gap: 16px;
+        gap: 8px;
       }
     }
     @media (max-width: 640px) {
       .cii-performance-section {
-        padding: 16px;
+        padding: 10px 12px;
       }
       .cii-section-header {
         flex-direction: column;
         align-items: stretch;
-        gap: 12px;
+        gap: 6px;
       }
       .btn-cii-download {
         align-self: flex-start;
       }
       .cii-data-table thead th, .cii-data-table tbody td {
-        padding: 10px 10px;
-        font-size: 12px;
+        padding: 4px 6px;
+        font-size: 10.5px;
       }
     }
 
     .cii-empty-state {
       display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 36px 16px; text-align: center; gap: 8px;
+      justify-content: center; padding: 20px 16px; text-align: center; gap: 6px;
     }
-    .cii-empty-state .material-symbols-outlined { font-size: 36px; color: #cbd5e1; }
-    .cii-empty-title { font-size: 14px; font-weight: 600; color: #475569; }
-    .cii-empty-sub { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+    .cii-empty-state .material-symbols-outlined { font-size: 28px; color: #cbd5e1; }
+    .cii-empty-title { font-size: 13px; font-weight: 600; color: #475569; }
+    .cii-empty-sub { font-size: 11.5px; color: #94a3b8; line-height: 1.4; }
 
     .cii-loading-state {
       display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 36px 16px; gap: 10px;
+      justify-content: center; padding: 20px 16px; gap: 8px;
     }
     .cii-spinner {
-      width: 26px; height: 26px;
-      border: 2.5px solid #e2e8f0; border-top-color: #cda250;
+      width: 22px; height: 22px;
+      border: 2px solid #e2e8f0; border-top-color: #cda250;
       border-radius: 50%; animation: ciiSpin 0.75s linear infinite;
     }
     @keyframes ciiSpin { to { transform: rotate(360deg); } }
-    .cii-loading-text { font-size: 12.5px; color: #64748b; font-weight: 500; }
+    .cii-loading-text { font-size: 12px; color: #64748b; font-weight: 500; }
 
     .cii-error-state {
       display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 30px 16px; text-align: center; gap: 8px;
+      justify-content: center; padding: 18px 16px; text-align: center; gap: 6px;
     }
-    .cii-error-state .material-symbols-outlined { font-size: 30px; color: var(--error-color); }
-    .cii-error-title { font-size: 13.5px; font-weight: 600; color: var(--text-dark); }
-    .cii-error-sub { font-size: 12px; color: var(--text-muted); max-width: 300px; line-height: 1.4; }
+    .cii-error-state .material-symbols-outlined { font-size: 26px; color: var(--error-color); }
+    .cii-error-title { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+    .cii-error-sub { font-size: 11.5px; color: var(--text-muted); max-width: 300px; line-height: 1.3; }
     .btn-cii-retry {
-      height: 30px; padding: 0 16px;
+      height: 28px; padding: 0 14px;
       background: transparent; color: var(--green-btn);
-      font-size: 11.5px; font-weight: 600;
+      font-size: 11px; font-weight: 600;
       border: 1px solid var(--green-btn); border-radius: 4px;
-      cursor: pointer; margin-top: 6px; font-family: inherit;
+      cursor: pointer; margin-top: 4px; font-family: inherit;
       transition: background 0.15s ease;
     }
     .btn-cii-retry:hover { background: var(--green-btn); color: #ffffff; }
