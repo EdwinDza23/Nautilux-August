@@ -1072,6 +1072,7 @@
 
     .mui-field-box input[type="text"],
     .mui-field-box input[type="number"],
+    .mui-field-box input[type="email"],
     .mui-field-box select,
     .mui-field-box textarea {
       width: 100%;
@@ -1269,6 +1270,528 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ================= CII READINESS CHECK PAGE ================= */
+    .cii-page-header { display: flex; align-items: flex-start; justify-content: space-between; flex-shrink: 0; }
+    .cii-page-header .page-title { margin-bottom: 4px; font-size: 14px; font-weight: 700; letter-spacing: 0.6px; }
+    .cii-page-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+
+    .cii-config-bar {
+      display: flex; align-items: flex-end; gap: 16px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+    .cii-config-field { display: flex; flex-direction: column; gap: 6px; }
+    .cii-field-label { font-size: 10.5px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .cii-select {
+      height: 36px; padding: 0 28px 0 12px;
+      font-size: 12.5px; font-weight: 500;
+      border: 1px solid var(--border-field); border-radius: 4px;
+      background-color: #ffffff; color: var(--text-dark);
+      appearance: none; cursor: pointer; font-family: inherit;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 0 24 24' width='20' fill='%23666666'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 8px center;
+    }
+    .cii-select:focus { outline: none; border-color: var(--green-btn); box-shadow: 0 0 0 1px var(--green-btn); }
+    .cii-calc-type-field { gap: 6px; }
+    .cii-calc-type-group { display: flex; align-items: center; gap: 16px; height: 36px; }
+    .btn-cii-calculate {
+      height: 36px; padding: 0 20px;
+      background-color: var(--green-btn); color: #ffffff;
+      font-size: 12px; font-weight: 600; border: none; border-radius: 4px;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      white-space: nowrap; transition: background 0.15s ease; flex-shrink: 0;
+      align-self: flex-end; font-family: inherit; margin-left: auto;
+    }
+    .btn-cii-calculate:hover { background-color: var(--green-btn-hover); }
+    .btn-cii-calculate:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-cii-calculate .material-symbols-outlined { font-size: 17px; }
+
+    .cii-page-body {
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding-bottom: 12px;
+    }
+    .cii-page-body::-webkit-scrollbar { width: 6px; }
+    .cii-page-body::-webkit-scrollbar-track { background: transparent; }
+    .cii-page-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.22); border-radius: 3px; }
+
+    .cii-data-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex-shrink: 0; }
+    .cii-data-card {
+      background: rgba(255,255,255,0.5); border: 1px solid var(--border-canvas);
+      border-radius: 6px; padding: 14px 16px;
+    }
+    .cii-card-header {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12.5px; font-weight: 700; color: var(--text-dark);
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .cii-card-header .material-symbols-outlined { font-size: 18px; color: var(--gold-text); }
+    .cii-data-row { display: flex; align-items: baseline; padding: 4px 0; font-size: 12px; gap: 6px; }
+    .cii-data-label { color: var(--text-muted); flex: 1; }
+    .cii-data-colon { color: var(--text-muted); flex-shrink: 0; }
+    .cii-data-value { color: var(--text-dark); font-weight: 600; flex-shrink: 0; }
+
+    /* ================= CII PERFORMANCE SECTION (REDESIGNED ENTERPRISE SAAS) ================= */
+    .cii-performance-section {
+      background: #ffffff;
+      border: 1px solid #e8ebed;
+      border-radius: 12px;
+      padding: 22px 24px;
+      flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+    .cii-section-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 16px;
+    }
+    .cii-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cii-section-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #1e242d;
+      letter-spacing: -0.2px;
+      line-height: 1.2;
+    }
+    .cii-section-desc {
+      font-size: 13px;
+      font-weight: 400;
+      color: #64748b;
+      line-height: 1.4;
+    }
+    
+    .btn-cii-download {
+      height: 36px;
+      padding: 0 16px;
+      background-color: #ffffff;
+      color: #a37825;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: 1px solid #dfc79b;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      font-family: inherit;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+      flex-shrink: 0;
+    }
+    .btn-cii-download:hover:not(:disabled) {
+      background-color: #fdfaf3;
+      border-color: #b88b2a;
+      color: #8c6418;
+    }
+    .btn-cii-download:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .btn-cii-download .material-symbols-outlined {
+      font-size: 18px;
+      color: inherit;
+    }
+
+    /* Main Two-Card Grid */
+    .cii-performance-grid {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    /* Left Card: Yearly Data Table */
+    .cii-table-card {
+      background: #ffffff;
+      border: 1px solid #edf0f2;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 430px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .cii-table-wrap {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: #94a3b8 #f1f5f9;
+    }
+    .cii-table-wrap::-webkit-scrollbar {
+      width: 8px;
+    }
+    .cii-table-wrap::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    .cii-table-wrap::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 4px;
+    }
+    .cii-table-wrap::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    .cii-data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .cii-data-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .cii-data-table thead th {
+      background-color: #21252d;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      height: 46px;
+      padding: 0 16px;
+      border: none;
+      white-space: nowrap;
+      letter-spacing: 0.1px;
+      vertical-align: middle;
+    }
+    .cii-data-table thead th.col-year {
+      padding-left: 20px;
+      text-align: left;
+      width: 28%;
+    }
+    .cii-data-table thead th.col-score {
+      text-align: center;
+      width: 44%;
+    }
+    .cii-data-table thead th.col-grade {
+      text-align: center;
+      padding-right: 20px;
+      width: 28%;
+    }
+    .cii-th-info {
+      font-size: 15px !important;
+      vertical-align: middle;
+      margin-left: 4px;
+      opacity: 0.85;
+      cursor: help;
+      color: inherit;
+    }
+
+    .cii-data-table tbody td {
+      height: 48px;
+      padding: 0 16px;
+      font-size: 13px;
+      color: #1e242d;
+      border-bottom: 1px solid #f1f3f5;
+      vertical-align: middle;
+    }
+    .cii-data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .cii-data-table tbody td.col-year {
+      padding-left: 20px;
+      font-weight: 500;
+      color: #1e242d;
+    }
+    .cii-data-table tbody td.col-score {
+      text-align: center;
+      font-weight: 500;
+      color: #1e242d;
+      font-variant-numeric: tabular-nums;
+    }
+    .cii-data-table tbody td.col-grade {
+      text-align: center;
+      padding-right: 20px;
+    }
+
+    /* Grade Badges */
+    .cii-grade-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .cii-grade-badge.grade-A {
+      background-color: #c6e6c8;
+      color: #1c5e26;
+    }
+    .cii-grade-badge.grade-B {
+      background-color: #dcecc7;
+      color: #33691e;
+    }
+    .cii-grade-badge.grade-C {
+      background-color: #a8d5ba;
+      color: #1b4d29;
+    }
+    .cii-grade-badge.grade-D {
+      background-color: #fed79e;
+      color: #8c4c03;
+    }
+    .cii-grade-badge.grade-E {
+      background-color: #fba4a4;
+      color: #881e1e;
+    }
+    .cii-grade-dash {
+      color: #94a3b8;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Right Card: Horizontal Bar Visualization */
+    .cii-chart-card {
+      background: #ffffff;
+      border: 1px solid #edf0f2;
+      border-radius: 10px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      height: 430px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+    .cii-chart-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-shrink: 0;
+    }
+    .cii-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #c99a45;
+      flex-shrink: 0;
+    }
+    .cii-legend-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .cii-chart-rows {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+    }
+    .cii-chart-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 32px;
+    }
+    .cii-chart-year {
+      width: 38px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #334155;
+      flex-shrink: 0;
+    }
+    .cii-chart-track {
+      flex: 1;
+      height: 10px;
+      background-color: #f1f4f8;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+    }
+    .cii-chart-bar {
+      height: 100%;
+      background-color: #c99a45;
+      border-radius: 5px;
+      transition: width 0.5s ease-out;
+    }
+    .cii-chart-val {
+      width: 52px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      text-align: right;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .cii-performance-grid {
+        grid-template-columns: 1fr;
+      }
+      .cii-table-card, .cii-chart-card {
+        height: auto;
+        min-height: 350px;
+      }
+      .cii-chart-rows {
+        gap: 16px;
+      }
+    }
+    @media (max-width: 640px) {
+      .cii-performance-section {
+        padding: 16px;
+      }
+      .cii-section-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .btn-cii-download {
+        align-self: flex-start;
+      }
+      .cii-data-table thead th, .cii-data-table tbody td {
+        padding: 10px 10px;
+        font-size: 12px;
+      }
+    }
+
+    .cii-empty-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 36px 16px; text-align: center; gap: 8px;
+    }
+    .cii-empty-state .material-symbols-outlined { font-size: 36px; color: #cbd5e1; }
+    .cii-empty-title { font-size: 14px; font-weight: 600; color: #475569; }
+    .cii-empty-sub { font-size: 12px; color: #94a3b8; line-height: 1.5; }
+
+    .cii-loading-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 36px 16px; gap: 10px;
+    }
+    .cii-spinner {
+      width: 26px; height: 26px;
+      border: 2.5px solid #e2e8f0; border-top-color: #cda250;
+      border-radius: 50%; animation: ciiSpin 0.75s linear infinite;
+    }
+    @keyframes ciiSpin { to { transform: rotate(360deg); } }
+    .cii-loading-text { font-size: 12.5px; color: #64748b; font-weight: 500; }
+
+    .cii-error-state {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 30px 16px; text-align: center; gap: 8px;
+    }
+    .cii-error-state .material-symbols-outlined { font-size: 30px; color: var(--error-color); }
+    .cii-error-title { font-size: 13.5px; font-weight: 600; color: var(--text-dark); }
+    .cii-error-sub { font-size: 12px; color: var(--text-muted); max-width: 300px; line-height: 1.4; }
+    .btn-cii-retry {
+      height: 30px; padding: 0 16px;
+      background: transparent; color: var(--green-btn);
+      font-size: 11.5px; font-weight: 600;
+      border: 1px solid var(--green-btn); border-radius: 4px;
+      cursor: pointer; margin-top: 6px; font-family: inherit;
+      transition: background 0.15s ease;
+    }
+    .btn-cii-retry:hover { background: var(--green-btn); color: #ffffff; }
+
+    .cii-mitigation-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; flex-shrink: 0; }
+    .cii-mitigation-panel, .cii-results-panel {
+      background: rgba(255,255,255,0.5); border: 1px solid var(--border-canvas);
+      border-radius: 6px; padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .cii-panel-header {
+      display: flex; align-items: center; gap: 6px;
+      padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.08); flex-shrink: 0;
+    }
+    .cii-panel-title { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+    .cii-info-icon { font-size: 16px !important; color: var(--text-muted); cursor: help; }
+
+    table.cii-scenario-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.cii-scenario-table thead th {
+      color: var(--gold-text); font-weight: 600; font-size: 10.5px;
+      text-transform: capitalize; padding: 6px 8px;
+      border-bottom: 1.5px solid rgba(0,0,0,0.1);
+      white-space: nowrap; text-align: left; background: transparent;
+    }
+    table.cii-scenario-table thead th.th-center { text-align: center; }
+    table.cii-scenario-table thead th.th-right { text-align: right; }
+    table.cii-scenario-table tbody td {
+      padding: 9px 8px; border-bottom: 1px solid rgba(0,0,0,0.055);
+      color: var(--text-dark); vertical-align: middle;
+    }
+    table.cii-scenario-table tbody td.td-center { text-align: center; }
+    table.cii-scenario-table tbody td.td-right { text-align: right; color: var(--text-muted); font-weight: 500; }
+    table.cii-scenario-table tbody tr:hover { background-color: rgba(255,255,255,0.45); }
+    table.cii-scenario-table tbody tr.sc-selected { background-color: rgba(19,36,25,0.04); }
+
+    .cii-checkbox {
+      appearance: none; -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border: 1.5px solid #aaaaaa; border-radius: 3px;
+      cursor: pointer; position: relative; flex-shrink: 0;
+      transition: border-color 0.12s ease, background 0.12s ease;
+      vertical-align: middle; background: #ffffff;
+    }
+    .cii-checkbox:checked { background-color: var(--green-btn); border-color: var(--green-btn); }
+    .cii-checkbox:checked::after {
+      content: ''; position: absolute; top: 0px; left: 4.5px;
+      width: 4px; height: 8px; border: 2px solid #ffffff;
+      border-top: none; border-left: none; transform: rotate(45deg);
+    }
+    .cii-checkbox:indeterminate { background-color: var(--green-btn); border-color: var(--green-btn); }
+    .cii-checkbox:indeterminate::after {
+      content: ''; position: absolute; top: 6px; left: 2.5px;
+      width: 8px; height: 2px; background-color: #ffffff;
+      border: none; transform: none;
+    }
+    .cii-checkbox:focus { outline: 2px solid var(--gold-brand); outline-offset: 1px; }
+    .cii-checkbox:disabled { opacity: 0.4; cursor: not-allowed; }
+    .cii-scenario-name-cell { display: flex; align-items: center; gap: 6px; }
+    .cii-sc-icon { font-size: 15px !important; color: var(--text-muted); flex-shrink: 0; }
+
+    .btn-cii-run {
+      width: 100%; height: 36px;
+      background-color: var(--green-btn); color: #ffffff;
+      font-size: 12px; font-weight: 600; border: none; border-radius: 4px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: background 0.15s ease; flex-shrink: 0; font-family: inherit; margin-top: auto;
+    }
+    .btn-cii-run:hover:not(:disabled) { background-color: var(--green-btn-hover); }
+    .btn-cii-run:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-cii-run .material-symbols-outlined { font-size: 17px; }
+    .cii-validation-msg { font-size: 11px; color: var(--error-color); display: none; text-align: center; font-weight: 500; }
+    .cii-validation-msg.show { display: block; }
+
+    table.cii-results-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.cii-results-table thead th {
+      color: var(--gold-text); font-weight: 600; font-size: 10.5px;
+      text-transform: capitalize; padding: 6px 8px;
+      border-bottom: 1.5px solid rgba(0,0,0,0.1);
+      white-space: nowrap; text-align: left; background: transparent;
+    }
+    table.cii-results-table thead th.th-right { text-align: right; }
+    table.cii-results-table tbody td {
+      padding: 9px 8px; border-bottom: 1px solid rgba(0,0,0,0.055);
+      color: var(--text-dark); vertical-align: middle;
+    }
+    table.cii-results-table tbody td.td-right { text-align: right; font-weight: 600; }
+    table.cii-results-table tbody tr.baseline-row { background-color: rgba(0,0,0,0.03); font-weight: 600; }
+    table.cii-results-table tbody tr:hover { background-color: rgba(255,255,255,0.45); }
+    .cii-status-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 3px;
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+    }
+    .cii-status-badge.compliant { background-color: rgba(46,125,50,0.1); color: #2e7d32; border: 1px solid rgba(46,125,50,0.25); }
+    .cii-status-badge.non-compliant { background-color: rgba(198,40,40,0.08); color: #c62828; border: 1px solid rgba(198,40,40,0.2); }
+    .cii-results-note {
+      font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 6px;
+    }
+    .cii-results-note .material-symbols-outlined { font-size: 13px; }
   </style>
 </head>
 
@@ -1315,14 +1838,26 @@
       <span class="material-symbols-outlined">sailing</span>
       <span>Voyage History</span>
     </div>
-    <div class="nav-item">
-      <span class="material-symbols-outlined">grading</span>
-      <span>CII Readiness Check</span>
+    <div class="nav-group-header expanded" id="configHeader">
+      <span class="material-symbols-outlined">tune</span>
+      <span>CII Configuration</span>
+      <span class="material-symbols-outlined caret">expand_more</span>
     </div>
-    <div class="nav-item">
-      <span class="material-symbols-outlined">schedule</span>
-      <span>Schedule Request</span>
+    <div class="nav-subitems" id="configSubitems">
+      <div class="nav-item active" id="navCiiReadiness">
+        <span class="material-symbols-outlined">grading</span>
+        <span>CII Readiness Check</span>
+      </div>
+      <div class="nav-item" id="navFuelTypes">
+        <span class="material-symbols-outlined">local_gas_station</span>
+        <span>Fuel Types</span>
+      </div>
+      <div class="nav-item" id="navFuelPrice">
+        <span class="material-symbols-outlined">sell</span>
+        <span>Price</span>
+      </div>
     </div>
+
     <div class="nav-item">
       <span class="material-symbols-outlined">ballot</span>
       <span>List of Requests</span>
@@ -1349,10 +1884,6 @@
       <div class="nav-item">
         <span class="material-symbols-outlined">person_outline</span>
         <span>User List</span>
-      </div>
-      <div class="nav-item active" id="navFuelConfig">
-        <span class="material-symbols-outlined">local_gas_station</span>
-        <span>Fuel Configuration</span>
       </div>
     </div>
 
@@ -1430,7 +1961,7 @@
     </div>
 
     <!-- ================= FUEL CONFIGURATION PAGE ================= -->
-    <div class="page-view" id="fuelConfigPage">
+    <div class="page-view" id="fuelConfigPage" style="display: none;">
 
       <!-- Shared: Page Header with Title & Top-Right Selector -->
       <div class="fuel-header-container">
@@ -1535,6 +2066,263 @@
       </div>
 
     </div>
+
+    <!-- ================= CII READINESS CHECK PAGE ================= -->
+    <div class="page-view" id="ciiReadinessPage">
+
+      <!-- Page Header -->
+      <div class="cii-page-header">
+        <div>
+          <div class="page-title">CII VERIFICATION — ACTUAL PERFORMANCE</div>
+          <div class="cii-page-subtitle">Calculated using actual voyage history and fuel consumption data.</div>
+        </div>
+      </div>
+
+      <!-- Calculation Configuration Bar -->
+      <div class="cii-config-bar">
+        <div class="cii-config-field" style="flex: 2; min-width: 190px;">
+          <label class="cii-field-label" for="ciiVesselSelect">Vessel</label>
+          <select id="ciiVesselSelect" class="cii-select" aria-label="Select vessel">
+            <option value="">Select vessel…</option>
+            <option value="AB SERENA">AB SERENA</option>
+            <option value="ACADIA">ACADIA</option>
+            <option value="AMBER ECO">AMBER ECO</option>
+            <option value="AMI VESSEL -1">AMI VESSEL -1</option>
+            <option value="AQUAA ECO">AQUAA ECO</option>
+            <option value="AQUAA RAYY">AQUAA RAYY</option>
+            <option value="AQUA RAY">AQUA RAY</option>
+            <option value="AQUS RAY">AQUS RAY</option>
+          </select>
+        </div>
+        <div class="cii-config-field" style="min-width: 100px;">
+          <label class="cii-field-label" for="ciiYearSelect">Year</label>
+          <select id="ciiYearSelect" class="cii-select" aria-label="Select year">
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+          </select>
+        </div>
+        <div class="cii-config-field cii-calc-type-field">
+          <span class="cii-field-label">Calculation Type</span>
+          <div class="cii-calc-type-group">
+            <label class="mui-radio-item checked" id="ciiRadioLabelBase">
+              <input type="radio" name="ciiCalcType" value="base" checked class="mui-radio-input" id="ciiRadioBase">
+              <span class="mui-radio-dot"><span class="inner"></span></span>
+              <span class="mui-radio-text">Base</span>
+            </label>
+            <label class="mui-radio-item" id="ciiRadioLabelActual">
+              <input type="radio" name="ciiCalcType" value="actual" class="mui-radio-input" id="ciiRadioActual">
+              <span class="mui-radio-dot"><span class="inner"></span></span>
+              <span class="mui-radio-text">Actual</span>
+            </label>
+          </div>
+        </div>
+        <button class="btn-cii-calculate" id="btnCalculateCII" aria-label="Calculate CII Score">
+          <span class="material-symbols-outlined">calculate</span>
+          Calculate CII Score
+        </button>
+      </div>
+
+      <!-- Scrollable Page Body -->
+      <div class="cii-page-body">
+
+        <!-- Operational Data Cards (hidden until calculation) -->
+        <div class="cii-data-cards" id="ciiDataCards" style="display: none;">
+          <div class="cii-data-card">
+            <div class="cii-card-header">
+              <span class="material-symbols-outlined">sailing</span>
+              <span>Voyage History</span>
+            </div>
+            <div class="cii-data-row">
+              <span class="cii-data-label">Voyages considered</span>
+              <span class="cii-data-colon">:</span>
+              <span class="cii-data-value" id="ciiVoyagesCount">—</span>
+            </div>
+            <div class="cii-data-row">
+              <span class="cii-data-label">Period</span>
+              <span class="cii-data-colon">:</span>
+              <span class="cii-data-value" id="ciiPeriod">—</span>
+            </div>
+            <div class="cii-data-row">
+              <span class="cii-data-label">Total Distance</span>
+              <span class="cii-data-colon">:</span>
+              <span class="cii-data-value" id="ciiDistance">—</span>
+            </div>
+            <div class="cii-data-row">
+              <span class="cii-data-label">Total Cargo</span>
+              <span class="cii-data-colon">:</span>
+              <span class="cii-data-value" id="ciiCargo">—</span>
+            </div>
+          </div>
+          <div class="cii-data-card">
+            <div class="cii-card-header">
+              <span class="material-symbols-outlined">local_gas_station</span>
+              <span>Fuel Details</span>
+            </div>
+            <div class="cii-data-row">
+              <span class="cii-data-label">Fuel types used</span>
+              <span class="cii-data-colon">:</span>
+              <span class="cii-data-value" id="ciiFuelTypes">—</span>
+            </div>
+            <div class="cii-data-row">
+              <span class="cii-data-label">Total fuel consumed</span>
+              <span class="cii-data-colon">:</span>
+              <span class="cii-data-value" id="ciiFuelConsumed">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CII Performance Section -->
+        <div class="cii-performance-section">
+          <div class="cii-section-header">
+            <div class="cii-header-text">
+              <span class="cii-section-title">CII Performance</span>
+              <span class="cii-section-desc">Overview of yearly CII score and grade with performance trend.</span>
+            </div>
+            <button class="btn-cii-download" id="btnDownloadReport" disabled aria-label="Download CII Report">
+              <span class="material-symbols-outlined">download</span>
+              Download Report
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div class="cii-empty-state" id="ciiPerfEmptyState">
+            <span class="material-symbols-outlined">analytics</span>
+            <span class="cii-empty-title">No CII calculation available.</span>
+            <span class="cii-empty-sub">Select a vessel, year and calculation type,<br>then calculate the CII score.</span>
+          </div>
+
+          <!-- Loading State -->
+          <div class="cii-loading-state" id="ciiPerfLoadingState" style="display: none;">
+            <div class="cii-spinner"></div>
+            <span class="cii-loading-text">Calculating CII…</span>
+          </div>
+
+          <!-- Error State -->
+          <div class="cii-error-state" id="ciiPerfErrorState" style="display: none;">
+            <span class="material-symbols-outlined">error_outline</span>
+            <span class="cii-error-title">Unable to calculate CII.</span>
+            <span class="cii-error-sub">Please verify the voyage and fuel data and try again.</span>
+            <button class="btn-cii-retry" id="btnCiiRetry">Try Again</button>
+          </div>
+
+          <!-- CII Results (Two Card Layout Matching Reference) -->
+          <div id="ciiPerfResults" style="display: none;">
+            <div class="cii-performance-grid">
+              <!-- Left Card: Yearly Data Table -->
+              <div class="cii-table-card">
+                <div class="cii-table-wrap">
+                  <table class="cii-data-table" aria-label="Yearly CII Score and Grade Table">
+                    <thead>
+                      <tr>
+                        <th class="col-year" scope="col">Year</th>
+                        <th class="col-score" scope="col">
+                          CII Score
+                          <span class="material-symbols-outlined cii-th-info" title="Carbon Intensity Indicator (gCO₂e / dwt-nm)">info</span>
+                        </th>
+                        <th class="col-grade" scope="col">Grade</th>
+                      </tr>
+                    </thead>
+                    <tbody id="ciiTableBody">
+                      <!-- Dynamic rows rendered by JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Right Card: CII Performance Horizontal Bar Visualization -->
+              <div class="cii-chart-card">
+                <div class="cii-chart-legend">
+                  <span class="cii-legend-dot" aria-hidden="true"></span>
+                  <span class="cii-legend-text">CII Score</span>
+                </div>
+                <div class="cii-chart-rows" id="ciiChartRows" role="region" aria-label="CII Performance Trend Bars">
+                  <!-- Dynamic horizontal bar rows rendered by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mitigation + Results Layout (shown after CII calculation) -->
+        <div class="cii-mitigation-layout" id="ciiMitigationSection" style="display: none;">
+
+          <!-- Left: Mitigation Scenario Analysis -->
+          <div class="cii-mitigation-panel">
+            <div class="cii-panel-header">
+              <span class="cii-panel-title">Mitigation Scenario Analysis</span>
+              <span class="material-symbols-outlined cii-info-icon"
+                title="Select one or more scenarios and run the analysis to view projected CII results.">info</span>
+            </div>
+            <div style="overflow-x: auto;">
+              <table class="cii-scenario-table" aria-label="Mitigation scenarios">
+                <thead>
+                  <tr>
+                    <th class="th-center" style="width: 44px;">
+                      <input type="checkbox" class="cii-checkbox" id="scSelectAll" aria-label="Select all mitigation scenarios" disabled>
+                    </th>
+                    <th>Scenario</th>
+                    <th class="th-right">CII Reduction</th>
+                    <th class="th-right">Fuel Reduction</th>
+                  </tr>
+                </thead>
+                <tbody id="ciiScenarioTableBody"></tbody>
+              </table>
+            </div>
+            <div id="ciiScenarioValidation" class="cii-validation-msg" role="alert">
+              Select at least one mitigation scenario to run the analysis.
+            </div>
+            <button class="btn-cii-run" id="btnRunScenario" disabled aria-label="Run Scenario Analysis">
+              <span class="material-symbols-outlined">play_arrow</span>
+              Run Scenario Analysis
+            </button>
+          </div>
+
+          <!-- Right: Scenario Results vs Baseline -->
+          <div class="cii-results-panel">
+            <div class="cii-panel-header">
+              <span class="cii-panel-title">Scenario Results vs Baseline</span>
+            </div>
+            <div class="cii-empty-state" id="ciiResultsEmptyState">
+              <span class="material-symbols-outlined">bar_chart</span>
+              <span class="cii-empty-title">No results yet.</span>
+              <span class="cii-empty-sub">Select one or more mitigation scenarios<br>and run the analysis to view projected results.</span>
+            </div>
+            <div class="cii-loading-state" id="ciiResultsLoadingState" style="display: none;">
+              <div class="cii-spinner"></div>
+              <span class="cii-loading-text">Running scenario analysis…</span>
+            </div>
+            <div class="cii-error-state" id="ciiResultsErrorState" style="display: none;">
+              <span class="material-symbols-outlined">error_outline</span>
+              <span class="cii-error-title">Unable to run scenario analysis.</span>
+              <span class="cii-error-sub">Please try again.</span>
+            </div>
+            <div id="ciiResultsTableWrap" style="display: none; overflow-x: auto;">
+              <table class="cii-results-table" aria-label="Scenario results vs baseline">
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th class="th-right">New CII</th>
+                    <th>Rating</th>
+                    <th class="th-right">ETS Saving (Annually)</th>
+                    <th>FuelEU Status</th>
+                  </tr>
+                </thead>
+                <tbody id="ciiResultsTableBody"></tbody>
+              </table>
+              <div class="cii-results-note">
+                <span class="material-symbols-outlined">info</span>
+                Savings are estimated based on current fuel price and EUA price.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <!-- ================= CREATE VESSEL MODAL (EXACT POPUP MATCH) ================= -->
@@ -1629,13 +2417,6 @@
               <span class="error-text">This field is required</span>
             </div>
 
-            <!-- GRT -->
-            <div class="mui-field-box empty-unfocused vessel-field-group" data-field="grt">
-              <label>GRT<span class="req-star">*</span></label>
-              <input type="text" id="inputGrt" placeholder="">
-              <span class="error-text">This field is required</span>
-            </div>
-
             <!-- Port of Registry -->
             <div class="mui-field-box empty-unfocused vessel-field-group" data-field="portOfRegistry">
               <label>Port of Registry<span class="req-star">*</span></label>
@@ -1652,9 +2433,9 @@
             </div>
 
             <!-- Built Year -->
-            <div class="mui-field-box form-field-full empty-unfocused vessel-field-group" data-field="builtYear" style="position: relative;">
+            <div class="mui-field-box empty-unfocused vessel-field-group" data-field="builtYear" style="position: relative;">
               <label>Built Year<span class="req-star">*</span></label>
-              <input type="text" id="inputBuiltYear" placeholder="YYYY" readonly style="cursor: pointer;">
+              <input type="text" id="inputBuiltYear" placeholder="" readonly style="cursor: pointer;">
               <span class="material-symbols-outlined date-icon" id="iconBuiltYear" style="cursor: pointer;">calendar_today</span>
               <span class="error-text">This field is required</span>
 
@@ -1662,6 +2443,37 @@
               <div class="year-picker-popover" id="yearPickerPopover">
                 <div class="year-picker-grid" id="yearPickerGrid"></div>
               </div>
+            </div>
+
+            <!-- Vessel Email -->
+            <div class="mui-field-box empty-unfocused vessel-field-group">
+              <label>Vessel Email</label>
+              <input type="email" id="inputVesselEmail" placeholder="">
+            </div>
+
+            <!-- GRT -->
+            <div class="mui-field-box empty-unfocused vessel-field-group" data-field="grt">
+              <label>GRT<span class="req-star">*</span></label>
+              <input type="text" id="inputGrt" placeholder="">
+              <span class="error-text">This field is required</span>
+            </div>
+
+            <!-- DWT -->
+            <div class="mui-field-box empty-unfocused vessel-field-group">
+              <label>DWT</label>
+              <input type="text" id="inputDwt" placeholder="">
+            </div>
+
+            <!-- TEU -->
+            <div class="mui-field-box empty-unfocused vessel-field-group">
+              <label>TEU</label>
+              <input type="text" id="inputTeu" placeholder="">
+            </div>
+
+            <!-- CMB -->
+            <div class="mui-field-box empty-unfocused vessel-field-group">
+              <label>CMB</label>
+              <input type="text" id="inputCmb" placeholder="">
             </div>
 
             <!-- 1. MCR_ME -->
@@ -1742,16 +2554,16 @@
               <span class="error-text">This field is required</span>
             </div>
 
-            <!-- 9a. PTI Details (Conditional Input in Column 1 directly under PTI) -->
+            <!-- 9a. PTI Value (Conditional Input in Column 1 directly under PTI) -->
             <div class="mui-field-box empty-unfocused grid-col-1 engine-field-group field-hidden" id="ptiCommentBox" style="display: none;" data-field="ptiDetails">
-              <label>PTI Details<span class="req-star">*</span></label>
+              <label>PTI Value<span class="req-star">*</span></label>
               <input type="text" id="inputPtiComment" placeholder="">
               <span class="error-text">This field is required</span>
             </div>
 
-            <!-- 10a. EPL Details (Conditional Input in Column 2 directly under EPL Status) -->
+            <!-- 10a. EPL Value (Conditional Input in Column 2 directly under EPL Status) -->
             <div class="mui-field-box empty-unfocused grid-col-2 engine-field-group field-hidden" id="eplCommentBox" style="display: none;" data-field="eplDetails">
-              <label>EPL Details<span class="req-star">*</span></label>
+              <label>EPL Value<span class="req-star">*</span></label>
               <input type="text" id="inputEplComment" placeholder="">
               <span class="error-text">This field is required</span>
             </div>
@@ -1969,13 +2781,24 @@
       }, 2200);
     }
 
-    // ---------- Maintenance Nav Collapsible ----------
+    // ---------- Nav Collapsible (Configuration & Maintenance) ----------
+    const configHeader = document.getElementById('configHeader');
+    const configSubitems = document.getElementById('configSubitems');
+    if (configHeader && configSubitems) {
+      configHeader.addEventListener('click', () => {
+        configHeader.classList.toggle('expanded');
+        configSubitems.style.display = configSubitems.style.display === 'none' ? 'flex' : 'none';
+      });
+    }
+
     const maintenanceHeader = document.getElementById('maintenanceHeader');
     const maintenanceSubitems = document.getElementById('maintenanceSubitems');
-    maintenanceHeader.addEventListener('click', () => {
-      maintenanceHeader.classList.toggle('expanded');
-      maintenanceSubitems.style.display = maintenanceSubitems.style.display === 'none' ? 'flex' : 'none';
-    });
+    if (maintenanceHeader && maintenanceSubitems) {
+      maintenanceHeader.addEventListener('click', () => {
+        maintenanceHeader.classList.toggle('expanded');
+        maintenanceSubitems.style.display = maintenanceSubitems.style.display === 'none' ? 'flex' : 'none';
+      });
+    }
 
     // ---------- Active/Inactive Toggle ----------
     const statusSwitch = document.getElementById('statusSwitch');
@@ -2305,28 +3128,48 @@
       }
     });
 
-    // ================= FUEL CONFIGURATION LOGIC =================
-    const navVesselList = document.getElementById('navVesselList');
-    const navFuelConfig = document.getElementById('navFuelConfig');
-    const vesselListPage = document.getElementById('vesselListPage');
-    const fuelConfigPage = document.getElementById('fuelConfigPage');
+    // ================= PAGE & NAVIGATION LOGIC =================
+    const navVesselList    = document.getElementById('navVesselList');
+    const navFuelTypes     = document.getElementById('navFuelTypes');
+    const navFuelPrice     = document.getElementById('navFuelPrice');
+    const navCiiReadiness  = document.getElementById('navCiiReadiness');
+    const vesselListPage   = document.getElementById('vesselListPage');
+    const fuelConfigPage   = document.getElementById('fuelConfigPage');
+    const ciiReadinessPage = document.getElementById('ciiReadinessPage');
 
-    function switchPage(page) {
+    function clearActiveNav() {
+      document.querySelectorAll('.sidebar .nav-item').forEach(item => item.classList.remove('active'));
+    }
+
+    function switchPage(page, subview) {
+      clearActiveNav();
+      // Hide all pages
+      if (vesselListPage)   vesselListPage.style.display   = 'none';
+      if (fuelConfigPage)   fuelConfigPage.style.display   = 'none';
+      if (ciiReadinessPage) ciiReadinessPage.style.display = 'none';
+
       if (page === 'vessel') {
-        navVesselList.classList.add('active');
-        navFuelConfig.classList.remove('active');
-        vesselListPage.style.display = 'flex';
-        fuelConfigPage.style.display = 'none';
+        if (navVesselList)  navVesselList.classList.add('active');
+        if (vesselListPage) vesselListPage.style.display = 'flex';
       } else if (page === 'fuel') {
-        navFuelConfig.classList.add('active');
-        navVesselList.classList.remove('active');
-        fuelConfigPage.style.display = 'flex';
-        vesselListPage.style.display = 'none';
+        if (fuelConfigPage) fuelConfigPage.style.display = 'flex';
+        if (subview === 'price') {
+          if (navFuelPrice) navFuelPrice.classList.add('active');
+          if (typeof switchFuelView === 'function') switchFuelView('eua');
+        } else {
+          if (navFuelTypes) navFuelTypes.classList.add('active');
+          if (typeof switchFuelView === 'function') switchFuelView('types');
+        }
+      } else if (page === 'cii') {
+        if (navCiiReadiness)  navCiiReadiness.classList.add('active');
+        if (ciiReadinessPage) ciiReadinessPage.style.display = 'flex';
       }
     }
 
-    if (navVesselList) navVesselList.addEventListener('click', () => switchPage('vessel'));
-    if (navFuelConfig) navFuelConfig.addEventListener('click', () => switchPage('fuel'));
+    if (navVesselList)   navVesselList.addEventListener('click',   () => switchPage('vessel'));
+    if (navFuelTypes)    navFuelTypes.addEventListener('click',    () => switchPage('fuel', 'types'));
+    if (navFuelPrice)    navFuelPrice.addEventListener('click',    () => switchPage('fuel', 'price'));
+    if (navCiiReadiness) navCiiReadiness.addEventListener('click', () => switchPage('cii'));
 
     // Fuel Types Data (Demo data matching reference screenshot)
     let fuelTypesData = [
@@ -2417,6 +3260,7 @@
       if (isEdit && item) {
         editingFuelSlno = item.slno;
         fuelModalTitle.textContent = 'Edit Fuel Details';
+        if (btnSaveFuelModal) btnSaveFuelModal.textContent = 'UPDATE';
         if (selectFuelType) selectFuelType.value = item.fuelType || '';
         if (inputPrice) inputPrice.value = item.price || '';
         if (inputCfTtw) inputCfTtw.value = item.cfTtw || '82.02';
@@ -2426,6 +3270,7 @@
       } else {
         editingFuelSlno = null;
         fuelModalTitle.textContent = 'Add Fuel Details';
+        if (btnSaveFuelModal) btnSaveFuelModal.textContent = 'SAVE';
         if (selectFuelType) selectFuelType.value = '';
         if (inputPrice) inputPrice.value = '';
         if (inputCfTtw) inputCfTtw.value = '';
@@ -2560,6 +3405,10 @@
         radioFuelTypes.checked = true;
         fuelConfigTitle.textContent = 'FUEL TYPES';
         fuelConfigDesc.textContent = 'Manage and update fuel types and their associated emission metrics. These values are used across vessels for rating and reporting.';
+        if (vesselListPage && vesselListPage.style.display !== 'flex') {
+          clearActiveNav();
+          if (navFuelTypes) navFuelTypes.classList.add('active');
+        }
       } else {
         fuelTypesSection.style.display = 'none';
         euaPriceSection.style.display = '';
@@ -2568,6 +3417,10 @@
         radioEUAPrice.checked = true;
         fuelConfigTitle.textContent = 'EUA PRICE';
         fuelConfigDesc.textContent = 'Manage yearly EUA and VCM pricing used for fuel calculations and reporting.';
+        if (vesselListPage && vesselListPage.style.display !== 'flex') {
+          clearActiveNav();
+          if (navFuelPrice) navFuelPrice.classList.add('active');
+        }
       }
     }
 
@@ -2649,7 +3502,8 @@
       clearEuaErrors();
       if (isEdit && item) {
         editingEuaSlno = item.slno;
-        euaModalTitle.textContent = 'Edit EUA Price Details';
+        euaModalTitle.textContent = 'Edit Price Details';
+        if (btnSaveEuaModal) btnSaveEuaModal.textContent = 'UPDATE';
         if (selectEuaYear) selectEuaYear.value = item.year || '2026';
         inputEuaVcmMin.value = item.vcmMin;
         inputEuaVcmMax.value = item.vcmMax;
@@ -2657,6 +3511,7 @@
       } else {
         editingEuaSlno = null;
         euaModalTitle.textContent = 'Add EUA Price Details';
+        if (btnSaveEuaModal) btnSaveEuaModal.textContent = 'SAVE';
         if (selectEuaYear) selectEuaYear.value = '2026';
         inputEuaVcmMin.value = '';
         inputEuaVcmMax.value = '';
@@ -2769,6 +3624,607 @@
         closeEuaModal();
       });
     }
+
+    // ================= CII READINESS CHECK LOGIC =================
+
+    // --- Scenario Templates (data-driven configuration) ---
+    const CII_SCENARIO_TEMPLATES = [
+      {
+        id: 'no-action',
+        name: 'No Action (Baseline)',
+        description: 'No mitigation applied. Current performance baseline.',
+        ciiReductionLabel: '0%',
+        fuelReductionLabel: '0%',
+        reductionFactor: 0.00,
+        fuelFactor: 0.00,
+        icon: 'block',
+        type: 'baseline',
+        fuelEuCompliant: false
+      },
+      {
+        id: 'speed-reduction',
+        name: 'Speed Reduction (-1 kn)',
+        description: 'Reduce vessel service speed by 1 knot.',
+        ciiReductionLabel: '~6%',
+        fuelReductionLabel: '~6%',
+        reductionFactor: 0.06,
+        fuelFactor: 0.06,
+        icon: 'speed',
+        type: 'operational',
+        fuelEuCompliant: false
+      },
+      {
+        id: 'hull-cleaning',
+        name: 'Speed + Hull Clean',
+        description: 'Speed reduction combined with hull cleaning.',
+        ciiReductionLabel: '~10%',
+        fuelReductionLabel: '~10%',
+        reductionFactor: 0.10,
+        fuelFactor: 0.10,
+        icon: 'cleaning_services',
+        type: 'operational',
+        fuelEuCompliant: false
+      },
+      {
+        id: 'b20-biofuel',
+        name: 'Above + B20 Biofuel',
+        description: 'Speed + hull clean + B20 biofuel blend.',
+        ciiReductionLabel: '~10%',
+        fuelReductionLabel: '~10%',
+        reductionFactor: 0.10,
+        fuelFactor: 0.10,
+        icon: 'eco',
+        type: 'fuel',
+        fuelEuCompliant: true
+      },
+      {
+        id: 'lng-retrofit',
+        name: 'LNG Dual-Fuel Retrofit',
+        description: 'LNG dual-fuel engine retrofit.',
+        ciiReductionLabel: '~23%',
+        fuelReductionLabel: '~23%',
+        reductionFactor: 0.23,
+        fuelFactor: 0.23,
+        icon: 'local_fire_department',
+        type: 'technical',
+        fuelEuCompliant: true
+      },
+      {
+        id: 'wind-assist',
+        name: 'Wind Assist (Rotor)',
+        description: 'Wind assist via rotor sail technology.',
+        ciiReductionLabel: '~5–8%',
+        fuelReductionLabel: '~5–8%',
+        reductionFactor: 0.065,
+        fuelFactor: 0.065,
+        icon: 'air',
+        type: 'technical',
+        fuelEuCompliant: false
+      }
+    ];
+
+    // --- CII Page State ---
+    const ciiState = {
+      hasBaseline: false,
+      baselineCII: null,
+      requiredCII: null,
+      rating: null,
+      ratingYear: null,
+      baseFuelMT: 0,
+      selectedScenarios: new Set(),
+      scenarioResults: null,
+      isCalculating: false,
+      isRunningAnalysis: false
+    };
+
+    // CII rating thresholds (gCO2e / dwt-nm) — MARPOL Annex VI basis
+    const CII_RATING_THRESHOLDS = [
+      { rating: 'A', min: 0,    max: 2.16 },
+      { rating: 'B', min: 2.16, max: 3.08 },
+      { rating: 'C', min: 3.08, max: 4.43 },
+      { rating: 'D', min: 4.43, max: 5.38 },
+      { rating: 'E', min: 5.38, max: 10   }
+    ];
+    const CII_SCALE_MAX = 10;
+
+    function getCIIRating(cii) {
+      for (const t of CII_RATING_THRESHOLDS) {
+        if (cii >= t.min && cii < t.max) return t.rating;
+      }
+      return 'E';
+    }
+
+    function calcETSSaving(baselineCII, projectedCII, baseFuelMT) {
+      // Estimated annual ETS saving based on CO2 reduction
+      const EUA_PRICE = 75;           // €/tCO2 (configurable)
+      const CARBON_FACTOR = 3.114;    // tCO2e per tonne HFO
+      const ratio = Math.max(0, (baselineCII - projectedCII) / baselineCII);
+      const fuelSaved = baseFuelMT * ratio;
+      const co2Saved = fuelSaved * CARBON_FACTOR;
+      return Math.round(co2Saved * EUA_PRICE);
+    }
+
+    function formatETSSaving(amount) {
+      if (amount === 0) return '€0';
+      if (amount >= 1000) return `€${Math.round(amount / 1000)}K`;
+      return `€${amount}`;
+    }
+
+    // --- CII Performance Dataset & Render Engine ---
+    const DEFAULT_YEARLY_CII_DATA = [
+      { year: 2023, ciiScore: 0.0431, grade: 'C' },
+      { year: 2024, ciiScore: 0.0417, grade: 'D' },
+      { year: 2025, ciiScore: 0.0408, grade: 'D' },
+      { year: 2026, ciiScore: 0.0401, grade: 'D' },
+      { year: 2027, ciiScore: 0.0392, grade: 'D' },
+      { year: 2028, ciiScore: 0.0380, grade: 'E' },
+      { year: 2029, ciiScore: 0.0371, grade: 'E' },
+      { year: 2030, ciiScore: 0.0362, grade: 'E' }
+    ];
+
+    // Vessel specific dataset registry (allowing dynamic vessel datasets)
+    const VESSEL_YEARLY_CII_MAP = {
+      'AB SERENA': DEFAULT_YEARLY_CII_DATA
+    };
+
+    function getYearlyCiiDataForVessel(vesselName, selectedYear) {
+      if (VESSEL_YEARLY_CII_MAP[vesselName]) {
+        return VESSEL_YEARLY_CII_MAP[vesselName];
+      }
+      // If another vessel is selected, generate dynamic dataset based on base score
+      const baseSeed = vesselName ? (vesselName.charCodeAt(0) % 5) * 0.0008 : 0;
+      return [
+        { year: 2023, ciiScore: +(0.0431 + baseSeed).toFixed(4), grade: 'C' },
+        { year: 2024, ciiScore: +(0.0417 + baseSeed).toFixed(4), grade: 'D' },
+        { year: 2025, ciiScore: +(0.0408 + baseSeed).toFixed(4), grade: 'D' },
+        { year: 2026, ciiScore: +(0.0401 + baseSeed).toFixed(4), grade: 'D' },
+        { year: 2027, ciiScore: +(0.0392 + baseSeed).toFixed(4), grade: 'D' },
+        { year: 2028, ciiScore: +(0.0380 + baseSeed).toFixed(4), grade: 'E' },
+        { year: 2029, ciiScore: +(0.0371 + baseSeed).toFixed(4), grade: 'E' },
+        { year: 2030, ciiScore: +(0.0362 + baseSeed).toFixed(4), grade: 'E' }
+      ];
+    }
+
+    // --- Render Yearly Data Table (Left Card) ---
+    function renderCiiTable(data) {
+      const tbody = document.getElementById('ciiTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        const scoreVal = typeof item.ciiScore === 'number' ? item.ciiScore.toFixed(4) : item.ciiScore;
+
+        let gradeHTML = '<span class="cii-grade-dash">-</span>';
+        if (item.grade && item.grade !== '-') {
+          const upperGrade = item.grade.toUpperCase();
+          gradeHTML = `<span class="cii-grade-badge grade-${upperGrade}">${upperGrade}</span>`;
+        }
+
+        tr.innerHTML = `
+          <td class="col-year">${item.year}</td>
+          <td class="col-score">${scoreVal}</td>
+          <td class="col-grade">${gradeHTML}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const wrap = tbody.closest('.cii-table-wrap');
+      if (wrap) wrap.scrollTop = 0;
+    }
+
+    // --- Render CII Performance Horizontal Bar Chart (Right Card) ---
+    function renderCiiChart(data) {
+      const container = document.getElementById('ciiChartRows');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const validScores = data.map(d => typeof d.ciiScore === 'number' ? d.ciiScore : parseFloat(d.ciiScore) || 0);
+      const maxScore = Math.max(...validScores, 0.045);
+      const scaleMax = maxScore * 1.05;
+
+      data.forEach(item => {
+        const scoreNum = typeof item.ciiScore === 'number' ? item.ciiScore : parseFloat(item.ciiScore) || 0;
+        const scoreFormatted = scoreNum.toFixed(4);
+        const pct = scaleMax > 0 ? ((scoreNum / scaleMax) * 100).toFixed(1) : 0;
+
+        const row = document.createElement('div');
+        row.className = 'cii-chart-row';
+        row.innerHTML = `
+          <span class="cii-chart-year">${item.year}</span>
+          <div class="cii-chart-track" role="progressbar" aria-valuenow="${scoreNum}" aria-valuemin="0" aria-valuemax="${scaleMax}" aria-label="Year ${item.year} CII Score ${scoreFormatted}">
+            <div class="cii-chart-bar" style="width: ${pct}%;"></div>
+          </div>
+          <span class="cii-chart-val">${scoreFormatted}</span>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // --- Shared Performance Render Handler ---
+    function renderCiiPerformance(data) {
+      renderCiiTable(data);
+      renderCiiChart(data);
+    }
+
+    // --- Update Select All Checkbox State ---
+    function updateSelectAllState() {
+      const selectAllCb = document.getElementById('scSelectAll');
+      if (!selectAllCb) return;
+
+      if (!ciiState.hasBaseline) {
+        selectAllCb.disabled = true;
+        selectAllCb.checked = false;
+        selectAllCb.indeterminate = false;
+        return;
+      }
+
+      selectAllCb.disabled = false;
+      const total = CII_SCENARIO_TEMPLATES.length;
+      const selectedCount = ciiState.selectedScenarios.size;
+
+      if (selectedCount === 0) {
+        selectAllCb.checked = false;
+        selectAllCb.indeterminate = false;
+      } else if (selectedCount === total) {
+        selectAllCb.checked = true;
+        selectAllCb.indeterminate = false;
+      } else {
+        selectAllCb.checked = false;
+        selectAllCb.indeterminate = true;
+      }
+    }
+
+    // --- Render scenario selection table ---
+    function renderScenarioTable() {
+      const tbody = document.getElementById('ciiScenarioTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      CII_SCENARIO_TEMPLATES.forEach(scenario => {
+        const isSelected = ciiState.selectedScenarios.has(scenario.id);
+        const tr = document.createElement('tr');
+        if (isSelected) tr.classList.add('sc-selected');
+        tr.dataset.scenarioId = scenario.id;
+
+        tr.innerHTML = `
+          <td class="td-center">
+            <input type="checkbox" class="cii-checkbox" id="sc-${scenario.id}"
+              ${isSelected ? 'checked' : ''}
+              ${!ciiState.hasBaseline ? 'disabled' : ''}
+              aria-label="Select ${scenario.name}">
+          </td>
+          <td>
+            <div class="cii-scenario-name-cell">
+              <span class="material-symbols-outlined cii-sc-icon">${scenario.icon}</span>
+              <label for="sc-${scenario.id}" style="cursor:pointer;">${scenario.name}</label>
+            </div>
+          </td>
+          <td class="td-right">${scenario.ciiReductionLabel}</td>
+          <td class="td-right">${scenario.fuelReductionLabel}</td>`;
+        tbody.appendChild(tr);
+      });
+
+      // Attach checkbox change listeners
+      tbody.querySelectorAll('.cii-checkbox').forEach(cb => {
+        cb.addEventListener('change', e => {
+          const id = e.target.closest('tr').dataset.scenarioId;
+          const row = e.target.closest('tr');
+          if (e.target.checked) {
+            ciiState.selectedScenarios.add(id);
+            row.classList.add('sc-selected');
+          } else {
+            ciiState.selectedScenarios.delete(id);
+            row.classList.remove('sc-selected');
+          }
+          updateCiiRunButton();
+        });
+      });
+
+      updateSelectAllState();
+    }
+
+    function updateCiiRunButton() {
+      const btn    = document.getElementById('btnRunScenario');
+      const valMsg = document.getElementById('ciiScenarioValidation');
+      if (!btn) return;
+      const hasSelection = ciiState.selectedScenarios.size > 0;
+      btn.disabled = !ciiState.hasBaseline || !hasSelection;
+      if (valMsg) valMsg.classList.toggle('show', ciiState.hasBaseline && !hasSelection);
+      updateSelectAllState();
+    }
+
+    // --- Simulate CII calculation (mock — ready for API replacement) ---
+    function ciiCalculate() {
+      const vesselEl = document.getElementById('ciiVesselSelect');
+      const yearEl   = document.getElementById('ciiYearSelect');
+      const vessel   = vesselEl ? vesselEl.value : '';
+      const year     = yearEl   ? yearEl.value   : '';
+
+      if (!vessel) { showToast('Please select a vessel.'); return; }
+      if (!year)   { showToast('Please select a year.');   return; }
+      if (ciiState.isCalculating) return;
+
+      ciiState.isCalculating = true;
+      const btn = document.getElementById('btnCalculateCII');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="material-symbols-outlined" style="animation:ciiSpin .75s linear infinite">sync</span> Calculating…`;
+      }
+
+      const perfEmpty   = document.getElementById('ciiPerfEmptyState');
+      const perfLoading = document.getElementById('ciiPerfLoadingState');
+      const perfError   = document.getElementById('ciiPerfErrorState');
+      const perfResults = document.getElementById('ciiPerfResults');
+      if (perfEmpty)   perfEmpty.style.display   = 'none';
+      if (perfLoading) perfLoading.style.display = 'flex';
+      if (perfError)   perfError.style.display   = 'none';
+      if (perfResults) perfResults.style.display = 'none';
+
+      setTimeout(() => {
+        // Mock result object — structured for future API integration
+        const result = {
+          attainedCII: 4.99,
+          requiredCII: 5.35,
+          rating:      'D',
+          ratingYear:  year === '2026' ? '2025' : year,
+          voyages:     2,
+          period:      '2024–2025',
+          distance:    '12,212 NM',
+          cargo:       '257,323 DWT',
+          fuelTypes:   'HFO, MGO',
+          fuelConsumed: '233 MT',
+          baseFuelMT:  233
+        };
+
+        // Update page state
+        ciiState.hasBaseline   = true;
+        ciiState.baselineCII   = result.attainedCII;
+        ciiState.requiredCII   = result.requiredCII;
+        ciiState.rating        = result.rating;
+        ciiState.ratingYear    = result.ratingYear;
+        ciiState.baseFuelMT    = result.baseFuelMT;
+        ciiState.selectedScenarios.clear();
+        ciiState.scenarioResults = null;
+
+        // Populate operational data cards
+        const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+        setTxt('ciiVoyagesCount', result.voyages);
+        setTxt('ciiPeriod',       result.period);
+        setTxt('ciiDistance',     result.distance);
+        setTxt('ciiCargo',        result.cargo);
+        setTxt('ciiFuelTypes',    result.fuelTypes);
+        setTxt('ciiFuelConsumed', result.fuelConsumed);
+        const dataCards = document.getElementById('ciiDataCards');
+        if (dataCards) dataCards.style.display = 'grid';
+
+        // Populate metric boxes
+        const attainedEl = document.getElementById('ciiAttainedValue');
+        if (attainedEl) attainedEl.textContent = result.attainedCII.toFixed(2);
+
+        const attainedBadge = document.getElementById('ciiAttainedBadge');
+        if (attainedBadge) {
+          attainedBadge.className = `cii-inline-badge rating-${result.rating}`;
+          attainedBadge.textContent = result.rating;
+        }
+
+        const reqEl = document.getElementById('ciiRequiredValue');
+        if (reqEl) reqEl.textContent = result.requiredCII.toFixed(2);
+
+        const ratingBadgeLg = document.getElementById('ciiRatingBadgeLg');
+        if (ratingBadgeLg) {
+          ratingBadgeLg.className = `cii-rating-text-lg rating-${result.rating}`;
+          ratingBadgeLg.textContent = result.rating;
+        }
+
+        const ratingYearEl = document.getElementById('ciiRatingYear');
+        if (ratingYearEl) ratingYearEl.textContent = result.ratingYear;
+
+        // Render shared dynamic yearly CII performance data (Table + Chart)
+        const yearlyData = getYearlyCiiDataForVessel(vessel, year);
+        ciiState.yearlyData = yearlyData;
+        renderCiiPerformance(yearlyData);
+
+        // Show results, hide loading
+        if (perfLoading) perfLoading.style.display = 'none';
+        if (perfResults) perfResults.style.display = 'block';
+
+        // Enable download report
+        const dlBtn = document.getElementById('btnDownloadReport');
+        if (dlBtn) dlBtn.disabled = false;
+
+        // Show mitigation section
+        const mitSection = document.getElementById('ciiMitigationSection');
+        if (mitSection) mitSection.style.display = 'grid';
+
+        // Reset scenario table and results
+        renderScenarioTable();
+        updateCiiRunButton();
+        const resEmpty   = document.getElementById('ciiResultsEmptyState');
+        const resLoading = document.getElementById('ciiResultsLoadingState');
+        const resError   = document.getElementById('ciiResultsErrorState');
+        const resTable   = document.getElementById('ciiResultsTableWrap');
+        if (resEmpty)   resEmpty.style.display   = 'flex';
+        if (resLoading) resLoading.style.display = 'none';
+        if (resError)   resError.style.display   = 'none';
+        if (resTable)   resTable.style.display   = 'none';
+
+        // Restore calculate button
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<span class="material-symbols-outlined">calculate</span> Calculate CII Score`;
+        }
+        ciiState.isCalculating = false;
+      }, 1400);
+    }
+
+    // --- Scenario calculation engine ---
+    function ciiRunScenarioAnalysis() {
+      if (!ciiState.hasBaseline) { showToast('Please calculate CII score first.'); return; }
+      if (ciiState.selectedScenarios.size === 0) {
+        const valMsg = document.getElementById('ciiScenarioValidation');
+        if (valMsg) valMsg.classList.add('show');
+        return;
+      }
+      if (ciiState.isRunningAnalysis) return;
+      ciiState.isRunningAnalysis = true;
+
+      const runBtn = document.getElementById('btnRunScenario');
+      if (runBtn) {
+        runBtn.disabled = true;
+        runBtn.innerHTML = `<span class="material-symbols-outlined" style="animation:ciiSpin .75s linear infinite">sync</span> Running analysis…`;
+      }
+
+      const resEmpty   = document.getElementById('ciiResultsEmptyState');
+      const resLoading = document.getElementById('ciiResultsLoadingState');
+      const resError   = document.getElementById('ciiResultsErrorState');
+      const resTable   = document.getElementById('ciiResultsTableWrap');
+      if (resEmpty)   resEmpty.style.display   = 'none';
+      if (resLoading) resLoading.style.display = 'flex';
+      if (resError)   resError.style.display   = 'none';
+      if (resTable)   resTable.style.display   = 'none';
+
+      setTimeout(() => {
+        const baseline = ciiState.baselineCII;
+        const baseFuel = ciiState.baseFuelMT || 233;
+        const results  = [];
+
+        // Baseline is always the first row (reference anchor)
+        results.push({
+          name: 'Baseline (Current)',
+          cii:  baseline,
+          rating: getCIIRating(baseline),
+          etsSaving: 0,
+          fuelEuCompliant: false,
+          isBaseline: true
+        });
+
+        // Each selected scenario is calculated INDEPENDENTLY against baseline.
+        // The engine does NOT simply add percentages when multiple scenarios
+        // are selected — each row represents that scenario's standalone result.
+        // Combined scenario impacts require a dedicated calculation layer.
+        ciiState.selectedScenarios.forEach(id => {
+          const scenario = CII_SCENARIO_TEMPLATES.find(s => s.id === id);
+          if (!scenario || scenario.id === 'no-action') return;
+
+          const projectedCII = parseFloat(
+            (baseline * (1 - scenario.reductionFactor)).toFixed(2)
+          );
+          results.push({
+            name: scenario.name,
+            cii:  projectedCII,
+            rating: getCIIRating(projectedCII),
+            etsSaving: calcETSSaving(baseline, projectedCII, baseFuel),
+            fuelEuCompliant: scenario.fuelEuCompliant || projectedCII < 3.5,
+            isBaseline: false
+          });
+        });
+
+        ciiState.scenarioResults = results;
+        renderScenarioResults(results);
+
+        if (resLoading) resLoading.style.display = 'none';
+        if (resTable)   resTable.style.display   = 'block';
+
+        if (runBtn) {
+          runBtn.disabled = false;
+          runBtn.innerHTML = `<span class="material-symbols-outlined">play_arrow</span> Run Scenario Analysis`;
+        }
+        updateCiiRunButton();
+        ciiState.isRunningAnalysis = false;
+      }, 1200);
+    }
+
+    function renderScenarioResults(results) {
+      const tbody = document.getElementById('ciiResultsTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      results.forEach(row => {
+        const tr = document.createElement('tr');
+        if (row.isBaseline) tr.classList.add('baseline-row');
+        const statusCls  = row.fuelEuCompliant ? 'compliant'     : 'non-compliant';
+        const statusText = row.fuelEuCompliant ? '✓ Compliant' : 'Non-Compliant';
+        tr.innerHTML = `
+          <td>${row.name}</td>
+          <td class="td-right"><strong>${row.cii.toFixed(2)}</strong></td>
+          <td><span class="cii-rating-badge rating-${row.rating}">${row.rating}</span></td>
+          <td class="td-right">${formatETSSaving(row.etsSaving)}</td>
+          <td><span class="cii-status-badge ${statusCls}" aria-label="FuelEU Status: ${statusText}">${statusText}</span></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // --- Wire CII page events ---
+    (function initCIIPage() {
+      const btnCalc    = document.getElementById('btnCalculateCII');
+      const btnRun     = document.getElementById('btnRunScenario');
+      const btnDl      = document.getElementById('btnDownloadReport');
+      const btnRetry   = document.getElementById('btnCiiRetry');
+      const lblBase    = document.getElementById('ciiRadioLabelBase');
+      const lblActual  = document.getElementById('ciiRadioLabelActual');
+      const radioBase  = document.getElementById('ciiRadioBase');
+      const radioAct   = document.getElementById('ciiRadioActual');
+      const selectAllCb = document.getElementById('scSelectAll');
+
+      if (btnCalc)  btnCalc.addEventListener('click',  ciiCalculate);
+      if (btnRun)   btnRun.addEventListener('click',   ciiRunScenarioAnalysis);
+      if (btnRetry) btnRetry.addEventListener('click', ciiCalculate);
+      if (selectAllCb) {
+        selectAllCb.addEventListener('change', e => {
+          if (!ciiState.hasBaseline) return;
+          const isChecked = e.target.checked;
+          const rows = document.querySelectorAll('#ciiScenarioTableBody tr');
+          if (isChecked) {
+            CII_SCENARIO_TEMPLATES.forEach(s => ciiState.selectedScenarios.add(s.id));
+            rows.forEach(tr => {
+              tr.classList.add('sc-selected');
+              const cb = tr.querySelector('.cii-checkbox');
+              if (cb) cb.checked = true;
+            });
+          } else {
+            ciiState.selectedScenarios.clear();
+            rows.forEach(tr => {
+              tr.classList.remove('sc-selected');
+              const cb = tr.querySelector('.cii-checkbox');
+              if (cb) cb.checked = false;
+            });
+          }
+          updateCiiRunButton();
+        });
+      }
+      if (btnDl) {
+        btnDl.addEventListener('click', () => {
+          const reportPath = 'assets/CII_Risk_Forecast_Report_Filled_1.pdf';
+          const a = document.createElement('a');
+          a.href = reportPath;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(() => document.body.removeChild(a), 300);
+
+          if (typeof showToast === 'function') {
+            showToast('Opening CII Risk Forecast Report in a new tab...');
+          }
+        });
+      }
+
+      function setCiiRadioVisual(val) {
+        if (val === 'base') {
+          if (radioBase)  radioBase.checked = true;
+          if (lblBase)    lblBase.classList.add('checked');
+          if (lblActual)  lblActual.classList.remove('checked');
+        } else {
+          if (radioAct)   radioAct.checked = true;
+          if (lblActual)  lblActual.classList.add('checked');
+          if (lblBase)    lblBase.classList.remove('checked');
+        }
+      }
+
+      if (lblBase)   lblBase.addEventListener('click',   () => setCiiRadioVisual('base'));
+      if (lblActual) lblActual.addEventListener('click', () => setCiiRadioVisual('actual'));
+    })();
+
   </script>
 </body>
 
