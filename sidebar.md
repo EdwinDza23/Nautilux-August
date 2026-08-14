@@ -4,9 +4,11 @@ Upload Documents
 
 Document List
 
-Voyage History
-
-CII Readiness Check
+CII Configuration
+├── Voyage History
+├── CII Readiness Check
+├── Fuel Types
+└── Price
 
 Schedule Request
 

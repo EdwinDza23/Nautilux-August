@@ -1456,10 +1456,16 @@
       border-bottom: 1px solid rgba(0,0,0,0.08);
     }
     .cii-card-header .material-symbols-outlined { font-size: 18px; color: var(--gold-text); }
-    .cii-data-row { display: flex; align-items: baseline; padding: 4px 0; font-size: 12px; gap: 6px; }
-    .cii-data-label { color: var(--text-muted); flex: 1; }
-    .cii-data-colon { color: var(--text-muted); flex-shrink: 0; }
-    .cii-data-value { color: var(--text-dark); font-weight: 600; flex-shrink: 0; }
+    .cii-data-row {
+      display: grid;
+      grid-template-columns: 140px 16px 1fr;
+      align-items: baseline;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+    .cii-data-label { color: var(--text-muted); white-space: nowrap; }
+    .cii-data-colon { color: var(--text-muted); text-align: left; }
+    .cii-data-value { color: var(--text-dark); font-weight: 600; word-break: break-word; }
 
     /* ================= CII PERFORMANCE SECTION (REDESIGNED ENTERPRISE SAAS) ================= */
     .cii-performance-section {
@@ -1967,16 +1973,16 @@
       <span class="material-symbols-outlined">content_copy</span>
       <span>Document List</span>
     </div>
-    <div class="nav-item">
-      <span class="material-symbols-outlined">sailing</span>
-      <span>Voyage History</span>
-    </div>
     <div class="nav-group-header expanded" id="configHeader">
       <span class="material-symbols-outlined">tune</span>
       <span>CII Configuration</span>
       <span class="material-symbols-outlined caret">expand_more</span>
     </div>
     <div class="nav-subitems" id="configSubitems">
+      <div class="nav-item" id="navVoyageHistory">
+        <span class="material-symbols-outlined">sailing</span>
+        <span>Voyage History</span>
+      </div>
       <div class="nav-item active" id="navCiiReadiness">
         <span class="material-symbols-outlined">grading</span>
         <span>CII Readiness Check</span>
@@ -2437,9 +2443,8 @@
                 <thead>
                   <tr>
                     <th>Scenario</th>
-                    <th class="th-right">New CII</th>
+                    <th class="th-right">New CII Score</th>
                     <th>Rating</th>
-                    <th class="th-right">ETS Saving (Annually)</th>
                     <th>FuelEU Status</th>
                   </tr>
                 </thead>
@@ -3861,9 +3866,17 @@
     const CII_SCALE_MAX = 10;
 
     function getCIIRating(cii) {
-      for (const t of CII_RATING_THRESHOLDS) {
-        if (cii >= t.min && cii < t.max) return t.rating;
+      if (cii > 1) {
+        for (const t of CII_RATING_THRESHOLDS) {
+          if (cii >= t.min && cii < t.max) return t.rating;
+        }
+        return 'E';
       }
+      // Standard 0.0431 scale matching CII Performance
+      if (cii <= 0.0340) return 'A';
+      if (cii <= 0.0380) return 'B';
+      if (cii <= 0.0435) return 'C';
+      if (cii <= 0.0470) return 'D';
       return 'E';
     }
 
@@ -4095,19 +4108,24 @@
       if (perfResults) perfResults.style.display = 'none';
 
       setTimeout(() => {
+        const yearlyData = getYearlyCiiDataForVessel(vessel, year);
+        const baseYearItem = yearlyData.find(d => d.year == 2023) || yearlyData[0];
+        const baseScore = baseYearItem ? baseYearItem.ciiScore : 0.0431;
+        const baseGrade = baseYearItem ? baseYearItem.grade : 'C';
+
         // Mock result object — structured for future API integration
         const result = {
-          attainedCII: 4.99,
-          requiredCII: 5.35,
-          rating:      'D',
-          ratingYear:  year === '2026' ? '2025' : year,
-          voyages:     2,
-          period:      '2024–2025',
-          distance:    '12,212 NM',
-          cargo:       '257,323 DWT',
-          fuelTypes:   'HFO, MGO',
+          attainedCII:  baseScore,
+          requiredCII:  +(baseScore * 1.07).toFixed(4),
+          rating:       baseGrade,
+          ratingYear:   year === '2026' ? '2025' : year,
+          voyages:      2,
+          period:       '2024–2025',
+          distance:     '12,212 NM',
+          cargo:        '257,323 DWT',
+          fuelTypes:    'HFO, MGO',
           fuelConsumed: '233 MT',
-          baseFuelMT:  233
+          baseFuelMT:   233
         };
 
         // Update page state
@@ -4154,7 +4172,6 @@
         if (ratingYearEl) ratingYearEl.textContent = result.ratingYear;
 
         // Render shared dynamic yearly CII performance data (Table + Chart)
-        const yearlyData = getYearlyCiiDataForVessel(vessel, year);
         ciiState.yearlyData = yearlyData;
         renderCiiPerformance(yearlyData);
 
@@ -4218,8 +4235,7 @@
       if (resTable)   resTable.style.display   = 'none';
 
       setTimeout(() => {
-        const baseline = ciiState.baselineCII;
-        const baseFuel = ciiState.baseFuelMT || 233;
+        const baseline = ciiState.baselineCII || 0.0431;
         const results  = [];
 
         // Baseline is always the first row (reference anchor)
@@ -4227,7 +4243,6 @@
           name: 'Baseline (Current)',
           cii:  baseline,
           rating: getCIIRating(baseline),
-          etsSaving: 0,
           fuelEuCompliant: false,
           isBaseline: true
         });
@@ -4235,20 +4250,18 @@
         // Each selected scenario is calculated INDEPENDENTLY against baseline.
         // The engine does NOT simply add percentages when multiple scenarios
         // are selected — each row represents that scenario's standalone result.
-        // Combined scenario impacts require a dedicated calculation layer.
         ciiState.selectedScenarios.forEach(id => {
           const scenario = CII_SCENARIO_TEMPLATES.find(s => s.id === id);
           if (!scenario || scenario.id === 'no-action') return;
 
           const projectedCII = parseFloat(
-            (baseline * (1 - scenario.reductionFactor)).toFixed(2)
+            (baseline * (1 - scenario.reductionFactor)).toFixed(4)
           );
           results.push({
             name: scenario.name,
             cii:  projectedCII,
             rating: getCIIRating(projectedCII),
-            etsSaving: calcETSSaving(baseline, projectedCII, baseFuel),
-            fuelEuCompliant: scenario.fuelEuCompliant || projectedCII < 3.5,
+            fuelEuCompliant: scenario.fuelEuCompliant || projectedCII < 0.035,
             isBaseline: false
           });
         });
@@ -4277,11 +4290,11 @@
         if (row.isBaseline) tr.classList.add('baseline-row');
         const statusCls  = row.fuelEuCompliant ? 'compliant'     : 'non-compliant';
         const statusText = row.fuelEuCompliant ? '✓ Compliant' : 'Non-Compliant';
+        const scoreStr   = typeof row.cii === 'number' ? row.cii.toFixed(4) : row.cii;
         tr.innerHTML = `
           <td>${row.name}</td>
-          <td class="td-right"><strong>${row.cii.toFixed(2)}</strong></td>
+          <td class="td-right"><strong>${scoreStr}</strong></td>
           <td><span class="cii-rating-badge rating-${row.rating}">${row.rating}</span></td>
-          <td class="td-right">${formatETSSaving(row.etsSaving)}</td>
           <td><span class="cii-status-badge ${statusCls}" aria-label="FuelEU Status: ${statusText}">${statusText}</span></td>`;
         tbody.appendChild(tr);
       });
