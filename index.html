@@ -4375,7 +4375,7 @@
           <!-- Voyage Year -->
           <div class="mui-field-box empty-unfocused vh-modal-year-field" id="vhVoyageYearBox">
             <label for="vhVoyageYearInput">Voyage Year<span class="req-star">*</span></label>
-            <input type="text" id="vhVoyageYearInput" placeholder="YYYY" readonly aria-required="true" aria-label="Select voyage year" aria-haspopup="listbox" aria-expanded="false" aria-controls="vhVoyageYearPopover" style="cursor: pointer; padding-right: 28px;">
+            <input type="text" id="vhVoyageYearInput" placeholder="" readonly aria-required="true" aria-label="Select voyage year" aria-haspopup="listbox" aria-expanded="false" aria-controls="vhVoyageYearPopover" style="cursor: pointer; padding-right: 28px;">
             <span class="material-symbols-outlined date-icon" id="vhVoyageYearIcon" style="cursor: pointer;" aria-hidden="true">calendar_today</span>
             <!-- Voyage year popover -->
             <div class="vh-modal-year-popover" id="vhVoyageYearPopover" role="listbox" aria-label="Select voyage year" tabindex="-1">
@@ -6495,9 +6495,9 @@
     const vhUploadedFileName  = document.getElementById('vhUploadedFileName');
     const vhDeleteFileBtn     = document.getElementById('vhDeleteFileBtn');
 
-    // Years range: 2006 to 2026 (ascending order)
+    // Years range: 1950 to 2026 (ascending order)
     const VH_MODAL_YEARS = [];
-    for (let y = 2006; y <= 2026; y++) {
+    for (let y = 1950; y <= 2026; y++) {
       VH_MODAL_YEARS.push(y);
     }
 
@@ -6564,8 +6564,8 @@
       if (!vhVoyageYearGrid) return;
       vhVoyageYearGrid.innerHTML = '';
 
-      // Highlight active selected year or default to 2026 matching reference
-      const activeYear = vhModalSelectedYear || '2026';
+      // Highlight active selected year if set
+      const activeYear = vhModalSelectedYear || '';
 
       VH_MODAL_YEARS.forEach((yr, index) => {
         const item = document.createElement('div');
@@ -6657,11 +6657,15 @@
         vhVoyageYearBox.classList.remove('empty-unfocused');
       }
 
-      // Set initial focus to selected year or 2026
-      const activeYear = Number(vhModalSelectedYear || 2026);
-      const selIdx = VH_MODAL_YEARS.indexOf(activeYear);
-      vhModalFocusedYearIndex = selIdx >= 0 ? selIdx : VH_MODAL_YEARS.length - 1;
-      updateVhModalYearFocus(true);
+      // Set initial focus to selected year, or top if none selected
+      if (vhModalSelectedYear) {
+        const selIdx = VH_MODAL_YEARS.indexOf(Number(vhModalSelectedYear));
+        vhModalFocusedYearIndex = selIdx >= 0 ? selIdx : 0;
+        updateVhModalYearFocus(true);
+      } else {
+        vhModalFocusedYearIndex = -1;
+        vhVoyageYearPopover.scrollTop = 0;
+      }
       positionVhModalYearPopover();
     }
 
@@ -6702,22 +6706,22 @@
         switch (e.key) {
           case 'ArrowRight':
             e.preventDefault();
-            vhModalFocusedYearIndex = Math.min(VH_MODAL_YEARS.length - 1, vhModalFocusedYearIndex + 1);
+            vhModalFocusedYearIndex = vhModalFocusedYearIndex < 0 ? 0 : Math.min(VH_MODAL_YEARS.length - 1, vhModalFocusedYearIndex + 1);
             updateVhModalYearFocus(true);
             break;
           case 'ArrowLeft':
             e.preventDefault();
-            vhModalFocusedYearIndex = Math.max(0, vhModalFocusedYearIndex - 1);
+            vhModalFocusedYearIndex = vhModalFocusedYearIndex < 0 ? 0 : Math.max(0, vhModalFocusedYearIndex - 1);
             updateVhModalYearFocus(true);
             break;
           case 'ArrowDown':
             e.preventDefault();
-            vhModalFocusedYearIndex = Math.min(VH_MODAL_YEARS.length - 1, vhModalFocusedYearIndex + 4);
+            vhModalFocusedYearIndex = vhModalFocusedYearIndex < 0 ? 0 : Math.min(VH_MODAL_YEARS.length - 1, vhModalFocusedYearIndex + 4);
             updateVhModalYearFocus(true);
             break;
           case 'ArrowUp':
             e.preventDefault();
-            vhModalFocusedYearIndex = Math.max(0, vhModalFocusedYearIndex - 4);
+            vhModalFocusedYearIndex = vhModalFocusedYearIndex < 0 ? 0 : Math.max(0, vhModalFocusedYearIndex - 4);
             updateVhModalYearFocus(true);
             break;
           case 'Home':
