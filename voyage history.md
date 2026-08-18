@@ -84,10 +84,10 @@ Client Portal
     │   └── Required
     │
     ├── Download File Format
-    │   └── Enabled after Vessel selection
+    │   └── Enabled by default
     │
     ├── Upload Vessel Excel File
-    │   └── Disabled — Future Functionality
+    │   └── Disabled by default — Enabled after Vessel and Voyage Year selection
     │
     └── Modal Actions
         ├── Close
@@ -497,9 +497,9 @@ Before a vessel is selected:
 └────────────────────────┘
 ```
 
-**Disabled.**
+**Enabled by default.**
 
-The user should not be able to download a vessel-specific format until a vessel is selected.
+The user can download the standard file format at any time, or a vessel-specific format once a vessel is selected.
 
 ---
 
@@ -510,10 +510,8 @@ Vessel = ABCD
         ↓
 Download File Format
         ↓
-Enabled
+Enabled (Vessel template)
 ```
-
-The button becomes interactive.
 
 ---
 
@@ -522,15 +520,10 @@ The button becomes interactive.
 ```mermaid
 flowchart TD
     A[Open Upload Voyage History File] --> B[Company Pre-selected]
-    B --> C[Select Vessel]
-    C --> D{Vessel Selected?}
-    D -->|No| E[Download File Format Disabled]
-    D -->|Yes| F[Download File Format Enabled]
-    F --> G[Click Download File Format]
-    G --> H[Download Vessel-specific Excel Format]
+    B --> C[Download File Format Enabled by Default]
+    C --> D[Click Download File Format]
+    D --> E[Download Excel Format]
 ```
-
-The downloaded format should correspond to the selected vessel where supported by the backend.
 
 ---
 
@@ -538,26 +531,15 @@ The downloaded format should correspond to the selected vessel where supported b
 
 ## Current State
 
-The **Upload Vessel Excel File** control must remain **disabled for now**.
+The **Upload Vessel Excel File** control is **disabled by default**.
 
-This is intentional.
+It becomes **enabled** once both **Vessel** and **Voyage Year** are selected:
 
 ```text
 Upload Vessel
 Excel File
+(Enabled when Vessel & Voyage Year are selected)
 ```
-
-### Current behaviour
-
-```text
-Click
-   ↓
-No interaction
-```
-
-The user should visually understand that the feature is currently unavailable.
-
-Do not open the file picker yet.
 
 ---
 
