@@ -8468,8 +8468,12 @@
           group.innerHTML = `
             <div class="fleet-cost-col-total">€${totalM}M</div>
             <div class="fleet-cost-col-stack" style="height: ${colH}px;">
-              <div class="fleet-cost-col-seg seg-ets" style="height: ${etsH}px;" title="EU ETS: €${etsM}M"></div>
-              <div class="fleet-cost-col-seg seg-fue" style="height: ${fueH}px;" title="FuelEU: €${fueM}M"></div>
+              <div class="fleet-cost-col-seg seg-ets" style="height: ${etsH}px;" title="EU ETS: €${etsM}M">
+                ${etsH >= 18 ? `<span>€${etsM}M</span>` : ''}
+              </div>
+              <div class="fleet-cost-col-seg seg-fue" style="height: ${fueH}px;" title="FuelEU: €${fueM}M">
+                ${fueH >= 18 ? `<span>€${fueM}M</span>` : ''}
+              </div>
             </div>
             <div class="fleet-cost-tooltip">
               <div><b>${r.yr}</b></div>
