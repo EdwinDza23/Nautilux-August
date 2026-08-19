@@ -3368,21 +3368,27 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 6px;
       padding-bottom: 8px;
       border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       flex-shrink: 0;
+      min-height: 28px;
     }
     .fleet-card-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--text-dark);
       letter-spacing: -0.1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .fleet-card-hint {
-      font-size: 11px;
+      font-size: 10.5px;
       color: var(--text-muted);
       font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     /* Top KPI 4-Card Grid */
@@ -3449,33 +3455,277 @@
       color: var(--text-muted);
     }
 
-    /* Distribution Cards 2-Column Grid */
+    /* Fleet Overview 2-Card Summary Grid (Distribution + Cost Exposure in One Row) */
     .fleet-dist-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
       flex-shrink: 0;
     }
-    @media (max-width: 860px) {
+    @media (max-width: 960px) {
       .fleet-dist-grid { grid-template-columns: 1fr; }
     }
 
-    .fleet-dist-bars {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding-top: 2px;
+    /* Card Header Tabs */
+    .fleet-card-tabs {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
     }
-    .fleet-dist-col {
-      flex: 1;
+    .fleet-card-tab {
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted, #5a6a85);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      line-height: 1.3;
+    }
+    .fleet-card-tab:hover {
+      color: var(--text-dark, #1e293b);
+    }
+    .fleet-card-tab.active {
+      background: #ffffff;
+      color: var(--text-dark, #1e293b);
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Donut Chart Layout */
+    .fleet-dist-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      padding: 6px 4px;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.45);
+      justify-content: space-between;
+      flex: 1;
+      gap: 12px;
+      padding-top: 4px;
+    }
+    .fleet-donut-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px 0;
+      flex: 1;
+      width: 100%;
+    }
+    .fleet-donut-chart-container {
+      position: relative;
+      width: 135px;
+      height: 135px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fleet-donut-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+      overflow: visible;
+    }
+    .fleet-donut-slice {
+      transition: stroke-dasharray 0.4s ease, stroke-dashoffset 0.4s ease, opacity 0.2s ease;
+      cursor: pointer;
+    }
+    .fleet-donut-slice:hover {
+      opacity: 0.85;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    }
+    .fleet-donut-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+    .fleet-donut-number {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-dark, #1e293b);
+      line-height: 1;
+      font-family: inherit;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-donut-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted, #64748b);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Donut Legend Row (A 1   B 3   C 4   D 3   E 1) */
+    .fleet-donut-legend {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .fleet-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.6);
       border: 1px solid rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .fleet-legend-item:hover {
+      background: rgba(255, 255, 255, 0.95);
+      border-color: rgba(0, 0, 0, 0.15);
+    }
+    .fleet-legend-count {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-dark, #1e293b);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 3-Year Cost Exposure Card Styling */
+    .fleet-cost-header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .fleet-cost-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10.5px;
+      color: var(--text-muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .fleet-cost-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .fleet-cost-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .fleet-cost-dot.dot-ets {
+      background-color: #e57373;
+    }
+    .fleet-cost-dot.dot-fue {
+      background-color: #ffb74d;
+    }
+    .fleet-cost-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1;
+      gap: 12px;
+      padding-top: 4px;
+    }
+    .fleet-cost-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+      flex: 1;
+    }
+    .fleet-cost-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    .fleet-cost-year {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      min-width: 36px;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-cost-track {
+      flex: 1;
+      display: flex;
+      height: 22px;
+      background: rgba(0, 0, 0, 0.06);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .fleet-cost-bar {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+      padding: 0 4px;
+      transition: width 0.4s ease;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-cost-bar.bar-ets {
+      background-color: #e57373;
+      color: #ffffff;
+    }
+    .fleet-cost-bar.bar-fue {
+      background-color: #ffb74d;
+      color: #1a1a1a;
+    }
+    .fleet-cost-total {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-dark);
+      min-width: 58px;
+      text-align: right;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-cost-summary-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 12px;
+      background: rgba(183, 28, 28, 0.06);
+      border-left: 3px solid #b71c1c;
+      border-radius: 4px;
+      margin-top: auto;
+    }
+    .fleet-cost-summary-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted, #475569);
+    }
+    .fleet-cost-summary-val {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #b71c1c;
+      font-variant-numeric: tabular-nums;
     }
 
     /* Matrix Table Card */
@@ -4407,45 +4657,96 @@
         <!-- Scrollable Page Body reusing the exact cii-page-body layout and scrollbar -->
         <div class="cii-page-body" id="fleetOverviewBody">
 
-          <!-- 4 Top KPI Cards -->
-          <div class="fleet-kpi-grid" id="ndKpiCardsGrid">
-            <div class="fleet-kpi-card" id="ndKpiCardCo2" title="Click for CO₂ emissions breakdown">
+          <!-- Top D/E Alert Banner (Source of Truth: NautiluxCII_WorkingDemo.html) -->
+          <div id="ndAlertBanner" style="background:var(--rdB);border-left:3px solid var(--rd);border-radius:6px;padding:12px 18px;margin-bottom:20px;display:none;">
+            <div style="font-size:12px;font-weight:700;color:var(--rd);margin-bottom:2px;" id="ndAlertTitle">4 Vessels Rated D or E</div>
+            <div style="font-size:13px;color:var(--text-dark);" id="ndAlertDesc">MT Pacific Dawn requires immediate CAP. 3 D-rated with CAP triggers approaching.</div>
+          </div>
+
+          <!-- 6 Top KPI Cards (Source of Truth: NautiluxCII_WorkingDemo.html) -->
+          <div class="fleet-kpi-grid" id="ndKpiCardsGrid" style="grid-template-columns: repeat(6, 1fr);">
+            <div class="fleet-kpi-card" id="ndKpiCardVessels">
+              <div class="fleet-kpi-label">Total Vessels</div>
+              <div class="fleet-kpi-val" id="ndKpiTotVessels">12</div>
+              <div class="fleet-kpi-sub">685.3K DWT</div>
+            </div>
+            <div class="fleet-kpi-card fleet-kpi-clickable" id="ndKpiCardCo2" title="Click for Fleet CO₂ emissions breakdown">
               <div class="fleet-kpi-label">Fleet Total CO₂</div>
               <div class="fleet-kpi-val" id="ndKpiTotCo2">289,320 <span class="fleet-kpi-unit">t/yr</span></div>
-              <div class="fleet-kpi-sub">Across 12 Active Vessels</div>
+              <div class="fleet-kpi-sub">Annual Emissions</div>
             </div>
-            <div class="fleet-kpi-card" id="ndKpiCardEts" title="Click for EU ETS cost breakdown">
-              <div class="fleet-kpi-label">EU ETS Exposure (2026)</div>
+            <div class="fleet-kpi-card fleet-kpi-clickable" id="ndKpiCardEts" title="Click for EU ETS cost breakdown">
+              <div class="fleet-kpi-label">EU ETS Exposure</div>
               <div class="fleet-kpi-val val-danger" id="ndKpiTotEts">€6,367K</div>
-              <div class="fleet-kpi-sub">3-Yr Total: €20.4M</div>
+              <div class="fleet-kpi-sub">Fleet Total</div>
             </div>
-            <div class="fleet-kpi-card" id="ndKpiCardFue" title="Click for FuelEU Maritime penalty details">
-              <div class="fleet-kpi-label">FuelEU Maritime Penalty</div>
+            <div class="fleet-kpi-card fleet-kpi-clickable" id="ndKpiCardFue" title="Click for FuelEU Maritime penalty details">
+              <div class="fleet-kpi-label">FuelEU Penalties</div>
               <div class="fleet-kpi-val val-warning" id="ndKpiTotFue">€1,859K</div>
-              <div class="fleet-kpi-sub">10 Non-Compliant Vessels</div>
+              <div class="fleet-kpi-sub">10 Non-Compliant</div>
             </div>
-            <div class="fleet-kpi-card" id="ndKpiCardRisk" title="Click for D/E and CAP vessel details">
-              <div class="fleet-kpi-label">High-Risk / CAP Due</div>
-              <div class="fleet-kpi-val val-danger" id="ndKpiTotDe">4 <span class="fleet-kpi-unit">Vessels</span></div>
-              <div class="fleet-kpi-sub">Rated D or E in 2026</div>
+            <div class="fleet-kpi-card fleet-kpi-clickable" id="ndKpiCardRisk" title="Click for D/E and CAP vessel details">
+              <div class="fleet-kpi-label">D/E Rated</div>
+              <div class="fleet-kpi-val val-danger" id="ndKpiTotDe">4 <span class="fleet-kpi-unit">(33%)</span></div>
+              <div class="fleet-kpi-sub">75% by 2030</div>
+            </div>
+            <div class="fleet-kpi-card fleet-kpi-clickable" id="ndKpiCardEexi" title="Click for Fleet EEXI status breakdown">
+              <div class="fleet-kpi-label">EEXI Status</div>
+              <div class="fleet-kpi-val val-success" id="ndKpiTotEexi">11/12</div>
+              <div class="fleet-kpi-sub">1 Non-Compliant</div>
             </div>
           </div>
 
-          <!-- Grade Distribution Cards (2026 Actual vs 2030 Trajectory) -->
+          <!-- Fleet Overview 2-Card Analytical Summary Row (Fleet Grade Distribution & 3-Year Cost Exposure) -->
           <div class="fleet-dist-grid">
-            <div class="fleet-card fleet-card-clickable" id="ndDistCardNow" title="Click to view vessels by 2026 grade">
+            <!-- Card 1: Fleet Grade Distribution -->
+            <div class="fleet-card" id="ndCardFleetDist">
               <div class="fleet-card-header">
-                <span class="fleet-card-title">2026 Fleet Grade Distribution</span>
-                <span class="fleet-card-hint">Click to inspect</span>
+                <span class="fleet-card-title">Fleet Grade Distribution</span>
+                <div class="fleet-card-tabs" id="ndDistCardTabs" role="tablist">
+                  <button type="button" class="fleet-card-tab active" id="ndDistTab2026" data-tab="2026" role="tab" aria-selected="true">2026 Distribution</button>
+                  <button type="button" class="fleet-card-tab" id="ndDistTab2030" data-tab="2030" role="tab" aria-selected="false">2030 Projection</button>
+                </div>
               </div>
-              <div id="ndDistCurrentBars" class="fleet-dist-bars"></div>
+              <div class="fleet-dist-content">
+                <div class="fleet-donut-wrapper">
+                  <div class="fleet-donut-chart-container" id="ndDonutContainer" style="cursor:pointer;" title="Click to view detailed vessel distribution modal">
+                    <svg class="fleet-donut-svg" viewBox="0 0 160 160" aria-label="Fleet Grade Donut Chart" id="ndDonutSvg">
+                      <!-- Donut arcs dynamically rendered -->
+                    </svg>
+                    <div class="fleet-donut-center">
+                      <span class="fleet-donut-number" id="ndDonutCount">12</span>
+                      <span class="fleet-donut-label">Vessels</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="fleet-donut-legend" id="ndDonutLegend">
+                  <!-- Grade items (A 1, B 3, C 4, D 3, E 1) dynamically rendered -->
+                </div>
+              </div>
             </div>
-            <div class="fleet-card fleet-card-clickable" id="ndDistCard30" title="Click to view vessels by 2030 projected grade">
+
+            <!-- Card 2: 3-Year Cost Exposure -->
+            <div class="fleet-card fleet-card-clickable" id="ndCostExposureCard" title="Click to view 3-Year Cost Exposure breakdown">
               <div class="fleet-card-header">
-                <span class="fleet-card-title">2030 Projected Trajectory (No Action)</span>
-                <span class="cii-status-badge non-compliant">Degrading</span>
+                <span class="fleet-card-title">3-Year Cost Exposure</span>
+                <div class="fleet-cost-header-right" style="display:flex;align-items:center;gap:12px;">
+                  <div class="fleet-cost-legend">
+                    <span class="fleet-cost-legend-item"><span class="fleet-cost-dot dot-ets"></span>EU ETS</span>
+                    <span class="fleet-cost-legend-item"><span class="fleet-cost-dot dot-fue"></span>FuelEU</span>
+                  </div>
+                  <button type="button" class="btn-cii-retry" id="ndBtnViewRiskMatrix" style="height:24px;padding:0 10px;font-size:11px;margin:0;" title="Click to open Fleet Risk Matrix modal">
+                    View Risk Matrix
+                  </button>
+                </div>
               </div>
-              <div id="ndDist2030Bars" class="fleet-dist-bars"></div>
+              <div class="fleet-cost-body">
+                <div id="ndCostExposureBars" class="fleet-cost-bars"></div>
+                <div class="fleet-cost-summary-footer">
+                  <span class="fleet-cost-summary-label">Total 3-Year Exposure</span>
+                  <span class="fleet-cost-summary-val">€26.0M</span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -4453,7 +4754,7 @@
           <div class="fleet-table-card">
             <div class="fleet-table-header">
               <div class="fleet-table-header-text">
-                <span class="fleet-table-title">Vessel Performance & Compliance Matrix</span>
+                <span class="fleet-table-title">Fleet Vessels</span>
                 <span class="fleet-table-desc">Click any vessel row to view full operational profile, mitigation scenarios, and AI analysis.</span>
               </div>
               <div class="fleet-filter-pills" id="ndFleetFilterPills">
@@ -4469,17 +4770,18 @@
               <table class="fleet-matrix-table" aria-label="Fleet Performance & Compliance Matrix">
                 <thead>
                   <tr>
-                    <th style="width: 190px;">Vessel Name</th>
-                    <th>Type / Subtype</th>
-                    <th style="text-align: right;">DWT</th>
-                    <th style="text-align: center;">CII Score</th>
-                    <th style="text-align: center;">2026</th>
-                    <th style="text-align: center;">2030</th>
-                    <th style="text-align: right;">ETS 2026</th>
-                    <th style="text-align: right;">FuelEU</th>
-                    <th style="text-align: center;">Risk Level</th>
-                    <th style="text-align: center;">CAP Due</th>
-                    <th style="text-align: center; width: 60px;">Action</th>
+                    <th style="width: 180px; cursor: pointer;" data-sort="nm" title="Click to sort by Vessel Name">Vessel Name</th>
+                    <th style="cursor: pointer;" data-sort="sub" title="Click to sort by Type/Subtype">Type / Subtype</th>
+                    <th style="text-align: right; cursor: pointer;" data-sort="dwt" title="Click to sort by DWT">DWT</th>
+                    <th style="text-align: center; cursor: pointer;" data-sort="cii" title="Click to sort by CII Score">CII Score</th>
+                    <th style="text-align: center; cursor: pointer;" data-sort="rt" title="Click to sort by 2026 Grade">2026</th>
+                    <th style="text-align: center; cursor: pointer;" data-sort="r30" title="Click to sort by 2030 Grade">2030</th>
+                    <th style="text-align: center; cursor: pointer;" data-sort="pp" title="Click to sort by Poseidon Alignment">Poseidon</th>
+                    <th style="text-align: right; cursor: pointer;" data-sort="ets" title="Click to sort by ETS 2026">ETS 2026</th>
+                    <th style="text-align: right; cursor: pointer;" data-sort="fue" title="Click to sort by FuelEU">FuelEU</th>
+                    <th style="text-align: center; cursor: pointer;" data-sort="rk" title="Click to sort by Risk Level">Risk Level</th>
+                    <th style="text-align: center; cursor: pointer;" data-sort="cap" title="Click to sort by CAP Due">CAP Due</th>
+                    <th style="text-align: center; width: 50px;">Action</th>
                   </tr>
                 </thead>
                 <tbody id="ndFleetTableBody">
@@ -4489,11 +4791,14 @@
             </div>
           </div>
 
-          <!-- Bottom Row: Priority Mitigation Actions & Regulatory Calendar -->
+          <!-- Bottom Row: Priority Actions & Compliance Calendar (Source of Truth: NautiluxCII_WorkingDemo.html) -->
           <div class="fleet-bottom-grid">
             <div class="fleet-card">
               <div class="fleet-card-header">
-                <span class="fleet-card-title">Priority Mitigation Actions</span>
+                <div>
+                  <span class="fleet-card-title">Priority Actions</span>
+                  <span class="fleet-card-hint" style="margin-left:6px;">Mitigation & Remediation</span>
+                </div>
                 <span class="cii-status-badge non-compliant">Action Required</span>
               </div>
               <div id="ndPriorityActionsList" class="fleet-act-list"></div>
@@ -4501,8 +4806,11 @@
 
             <div class="fleet-card">
               <div class="fleet-card-header">
-                <span class="fleet-card-title">Regulatory & Compliance Timeline</span>
-                <span class="fleet-card-hint">2025–2030</span>
+                <div>
+                  <span class="fleet-card-title">Compliance Calendar</span>
+                  <span class="fleet-card-hint" style="margin-left:6px;">2025–2030 Milestones</span>
+                </div>
+                <span class="fleet-card-hint">Regulatory Timeline</span>
               </div>
               <div id="ndComplianceCalendarList" class="fleet-cal-list"></div>
             </div>
@@ -8045,28 +8353,131 @@
       // --- State ---
       let ndSelectedVessel = null;
       let ndCurrentFilter = 'all';
+      let ndSortCol = 'rk';
+      let ndSortDir = 1;
 
-      // --- Render KPI Bars ---
-      function ndRenderDistBars(containerId, distObj) {
-        const el = document.getElementById(containerId);
+      // State for Fleet Grade Distribution Tab
+      let ndDistActiveYear = '2026';
+
+      // --- Render SVG Donut Chart ---
+      function ndRenderDonutChart(distObj, year) {
+        const svg = document.getElementById('ndDonutSvg');
+        const legend = document.getElementById('ndDonutLegend');
+        if (!svg || !legend) return;
+
+        const grades = ['A', 'B', 'C', 'D', 'E'];
+        const gradeColors = {
+          A: '#2e7d32',
+          B: '#4caf50',
+          C: '#fbc02d',
+          D: '#ef6c00',
+          E: '#c62828'
+        };
+
+        const total = ND_VL.length; // 12
+        const countEl = document.getElementById('ndDonutCount');
+        if (countEl) countEl.textContent = total;
+
+        const R = 55;
+        const cx = 80;
+        const cy = 80;
+        const C = 2 * Math.PI * R;
+        let strokeDashoffset = 0;
+
+        let svgHtml = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="16" />`;
+        let legendHtml = '';
+
+        grades.forEach(g => {
+          const count = distObj[g] ? (typeof distObj[g] === 'number' ? distObj[g] : distObj[g].c) : 0;
+          const pct = count / total;
+          const strokeDasharray = `${pct * C} ${C}`;
+
+          if (count > 0) {
+            svgHtml += `
+              <circle class="fleet-donut-slice"
+                      cx="${cx}" cy="${cy}" r="${R}"
+                      fill="none"
+                      stroke="${gradeColors[g]}"
+                      stroke-width="16"
+                      stroke-dasharray="${strokeDasharray}"
+                      stroke-dashoffset="-${strokeDashoffset}"
+                      data-grade="${g}"
+                      data-count="${count}">
+                <title>Grade ${g}: ${count} vessel${count > 1 ? 's' : ''} (${Math.round(pct * 100)}%)</title>
+              </circle>
+            `;
+            strokeDashoffset += pct * C;
+          }
+
+          legendHtml += `
+            <div class="fleet-legend-item" data-grade="${g}" title="Filter by Grade ${g}">
+              ${ndRg(g)}
+              <span class="fleet-legend-count">${count}</span>
+            </div>
+          `;
+        });
+
+        svg.innerHTML = svgHtml;
+        legend.innerHTML = legendHtml;
+      }
+
+      function ndSwitchDistTab(year) {
+        ndDistActiveYear = year;
+        const tab2026 = document.getElementById('ndDistTab2026');
+        const tab2030 = document.getElementById('ndDistTab2030');
+        if (tab2026 && tab2030) {
+          if (year === '2026') {
+            tab2026.classList.add('active');
+            tab2026.setAttribute('aria-selected', 'true');
+            tab2030.classList.remove('active');
+            tab2030.setAttribute('aria-selected', 'false');
+            ndRenderDonutChart(ND_DN, '2026');
+          } else {
+            tab2030.classList.add('active');
+            tab2030.setAttribute('aria-selected', 'true');
+            tab2026.classList.remove('active');
+            tab2026.setAttribute('aria-selected', 'false');
+            ndRenderDonutChart(ND_D30, '2030');
+          }
+        }
+      }
+
+      // --- Render 3-Year Cost Exposure Horizontal Bars ---
+      function ndRenderCostExposureBars() {
+        const el = document.getElementById('ndCostExposureBars');
         if (!el) return;
         el.innerHTML = '';
-        const grades = ['A', 'B', 'C', 'D', 'E'];
-        grades.forEach(g => {
-          const count = distObj[g] ? distObj[g].c : 0;
-          const pct = Math.round((count / ND_VL.length) * 100);
-          const div = document.createElement('div');
-          div.className = 'fleet-dist-col';
-          div.innerHTML = `
-            ${ndRg(g)}
-            <span class="fleet-mono" style="font-size:12.5px;font-weight:700;color:var(--text-dark);">${count}</span>
-            <span style="font-size:10px;color:var(--text-muted);">${pct}%</span>
+        const maxVal = 9500; // Reference max scale from NautiluxCII demo
+        ND_CEXP.forEach(r => {
+          const etsPct = ((r.ets / maxVal) * 100).toFixed(1);
+          const fuePct = ((r.fue / maxVal) * 100).toFixed(1);
+          const etsM = (r.ets / 1000).toFixed(1);
+          const fueM = (r.fue / 1000).toFixed(1);
+          const totK = r.ets + r.fue;
+
+          const row = document.createElement('div');
+          row.className = 'fleet-cost-row';
+          row.innerHTML = `
+            <span class="fleet-cost-year">${r.yr}</span>
+            <div class="fleet-cost-track">
+              <div class="fleet-cost-bar bar-ets" style="width: ${etsPct}%;" title="${r.yr} EU ETS Exposure: €${r.ets.toLocaleString()}K (€${etsM}M)">
+                €${etsM}M
+              </div>
+              <div class="fleet-cost-bar bar-fue" style="width: ${fuePct}%;" title="${r.yr} FuelEU Penalty: €${r.fue.toLocaleString()}K (€${fueM}M)">
+                €${fueM}M
+              </div>
+            </div>
+            <span class="fleet-cost-total">€${totK.toLocaleString()}K</span>
           `;
-          el.appendChild(div);
+          el.appendChild(row);
         });
       }
 
-      // --- Render Fleet Table ---
+      // --- Render Fleet Table with Poseidon Column & Sorting ---
+      const riskOrder = { Low: 0, Medium: 1, High: 2, Critical: 3 };
+      const rtOrder = { A: 0, B: 1, C: 2, D: 3, E: 4 };
+      const ppOrder = { Aligned: 0, Marginal: 1, Misaligned: 2 };
+
       function ndRenderFleetTable(filter = 'all') {
         const tbody = document.getElementById('ndFleetTableBody');
         if (!tbody) return;
@@ -8076,6 +8487,23 @@
         if (filter !== 'all') {
           list = list.filter(v => v.rt === filter);
         }
+
+        // Apply sorting
+        list.sort((a, b) => {
+          const col = ndSortCol, dir = ndSortDir;
+          if (col === "rk") return dir * ((riskOrder[b.rk] || 0) - (riskOrder[a.rk] || 0));
+          if (col === "rt") return dir * ((rtOrder[b.rt] || 0) - (rtOrder[a.rt] || 0));
+          if (col === "r30") return dir * ((rtOrder[b.r30] || 0) - (rtOrder[a.r30] || 0));
+          if (col === "pp") return dir * ((ppOrder[b.pp] || 0) - (ppOrder[a.pp] || 0));
+          if (col === "cii") return dir * (b.cii - a.cii);
+          if (col === "ets") return dir * (b.ets - a.ets);
+          if (col === "fue") return dir * (b.fue - a.fue);
+          if (col === "nm") return dir * a.nm.localeCompare(b.nm);
+          if (col === "sub") return dir * a.sub.localeCompare(b.sub);
+          if (col === "dwt") return dir * (b.dwt - a.dwt);
+          if (col === "cap") { const ca = a.cap === "---" ? 9999 : +a.cap, cb = b.cap === "---" ? 9999 : +b.cap; return dir * (ca - cb); }
+          return 0;
+        });
 
         list.forEach((v, idx) => {
           const origIdx = ND_VL.findIndex(x => x.imo === v.imo);
@@ -8094,6 +8522,7 @@
             <td style="text-align:center;" class="fleet-mono"><strong>${v.cii.toFixed(2)}</strong></td>
             <td style="text-align:center;">${ndRg(v.rt)}</td>
             <td style="text-align:center;">${ndRg(v.r30)}</td>
+            <td style="text-align:center;">${ndTag(v.pp)}</td>
             <td style="text-align:right;color:#b71c1c;font-weight:600;" class="fleet-mono">€${v.ets}K</td>
             <td style="text-align:right;color:${v.fue > 0 ? '#b71c1c' : '#2e7d32'};font-weight:600;" class="fleet-mono">${v.fue > 0 ? '€' + v.fue + 'K' : '€0'}</td>
             <td style="text-align:center;">${ndTag(v.rk)}</td>
@@ -8589,23 +9018,6 @@
         if (drawer) drawer.classList.remove('open');
       }
 
-      function ndOpenVesselByName(name, secIdx) {
-        const idx = ND_VL.findIndex(x => x.nm === name);
-        if (idx >= 0) ndOpenDrawer(idx, secIdx !== undefined && secIdx >= 0 ? secIdx : 0);
-      }
-
-      function ndCloseDrawer() {
-        const overlay = document.getElementById('ndDrawerOverlay');
-        const drawer = document.getElementById('ndVesselDrawer');
-        if (overlay) overlay.classList.remove('open');
-        if (drawer) drawer.classList.remove('open');
-      }
-
-      function ndOpenVesselByName(name, secIdx) {
-        const idx = ND_VL.findIndex(x => x.nm === name);
-        if (idx >= 0) ndOpenDrawer(idx, secIdx !== undefined && secIdx >= 0 ? secIdx : 0);
-      }
-
       // --- Modal Open / Close ---
       function ndOpenModal(htmlContent) {
         const modal = document.getElementById('ndReportModal');
@@ -8963,6 +9375,74 @@
         document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
       }
 
+      function ndShowEexiModal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">Fleet EEXI Status Breakdown</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <table class="fleet-matrix-table">
+            <thead>
+              <tr>
+                <th>Vessel</th>
+                <th style="text-align:right;">Attained EEXI</th>
+                <th style="text-align:right;">Required EEXI</th>
+                <th style="text-align:center;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        ND_VL.forEach(x => {
+          h += `
+            <tr>
+              <td style="font-weight:600;">${x.nm}</td>
+              <td class="fleet-mono" style="text-align:right;font-weight:700;color:${x.eA <= x.eR ? '#2e7d32' : '#b71c1c'};">${x.eA}</td>
+              <td class="fleet-mono" style="text-align:right;">${x.eR}</td>
+              <td style="text-align:center;">${ndTag(x.eS)}</td>
+            </tr>
+          `;
+        });
+        h += `</tbody></table>`;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
+      function ndShowRiskMatrixModal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">Fleet Risk Matrix</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <div style="font-family:var(--font-sans, sans-serif)">
+            <div style="display:flex;margin-bottom:6px">
+              <div style="width:65px"></div>
+              <div style="flex:1;text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">HIGH COST (>€500K/yr)</div>
+              <div style="flex:1;text-align:center;font-size:10px;font-weight:700;color:var(--text-muted)">LOW COST (<€500K/yr)</div>
+            </div>
+            ${[
+              ["HIGH", ["MT Nordic Spirit", "MT Pacific Dawn", "MV Southern Cross"], ["MV Eastern Wave"], "rgba(183,28,28,0.12)", "rgba(230,81,0,0.12)"],
+              ["MEDIUM", ["MT Caspian Voyager", "MV Nordic Harmony"], ["MV Baltic Trader", "MT Coral Bay"], "rgba(199,119,0,0.12)", "#FFFDE7"],
+              ["LOW", ["MV Atlantic Star"], ["MV Green Pioneer", "MT River Pearl", "MV Jade Fortune"], "#F1F8E9", "rgba(46,125,50,0.12)"]
+            ].map(([lbl, hi, lo, bgH, bgL]) => `
+              <div style="display:flex;gap:6px;margin-bottom:6px">
+                <div style="width:59px;display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:10px;font-weight:700;color:var(--text-muted)">${lbl}</div>
+                <div style="flex:1;border-radius:6px;padding:8px 10px;min-height:48px;font-size:12px;line-height:1.5;background:${bgH};border:1px solid rgba(0,0,0,0.08)">
+                  ${hi.map(n => `<div style="font-weight:600;color:var(--text-dark);">${n}</div>`).join("")}
+                </div>
+                <div style="flex:1;border-radius:6px;padding:8px 10px;min-height:48px;font-size:12px;line-height:1.5;background:${bgL};border:1px solid rgba(0,0,0,0.08)">
+                  ${lo.length ? lo.map(n => `<div style="font-weight:600;color:var(--text-dark);">${n}</div>`).join("") : `<div style="color:var(--text-muted);font-style:italic">—</div>`}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);font-style:italic;margin-top:12px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.08);line-height:1.5">
+            Top-right quadrant (High Risk + High Cost) = priority investment targets.
+          </div>
+        `;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
       function ndShowDistributionModal(isCurrent) {
         const dist = isCurrent ? ND_DN : ND_D30;
         const title = isCurrent ? "2026 Fleet Grade Distribution" : "2030 Projected Trajectory";
@@ -9003,15 +9483,66 @@
         document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
       }
 
+      function ndShowCostModal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">3-Year Fleet Cost Exposure Breakdown</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <table class="fleet-matrix-table">
+            <thead>
+              <tr>
+                <th>Vessel</th>
+                <th style="text-align:center;">Grade</th>
+                <th style="text-align:right;">EU ETS</th>
+                <th style="text-align:right;">FuelEU</th>
+                <th style="text-align:right;">Combined</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        [...ND_VL].sort((a, b) => (b.ets + b.fue) - (a.ets + a.fue)).forEach(x => {
+          h += `
+            <tr>
+              <td style="font-weight:600;">${x.nm}</td>
+              <td style="text-align:center;">${ndRg(x.rt)}</td>
+              <td class="fleet-mono" style="text-align:right;color:#b71c1c;font-weight:600;">€${x.ets}K</td>
+              <td class="fleet-mono" style="text-align:right;color:${x.fue > 0 ? '#c77700' : '#2e7d32'};font-weight:600;">${x.fue > 0 ? '€' + x.fue + 'K' : '€0'}</td>
+              <td class="fleet-mono" style="text-align:right;font-weight:700;color:var(--text-dark);">€${x.ets + x.fue}K</td>
+            </tr>
+          `;
+        });
+        h += `
+            </tbody>
+          </table>
+          <div style="background:rgba(183, 28, 28, 0.08);border-left:3px solid #b71c1c;border-radius:4px;padding:8px 12px;text-align:center;margin-top:12px;">
+            <span class="fleet-mono" style="font-size:12px;font-weight:700;color:#b71c1c;">3-Year Total Exposure: €26.0M (2026: €8.2M • 2027: €8.7M • 2028: €9.1M)</span>
+          </div>
+        `;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
       // --- Initialize Dashboard ---
       let ndDashboardInitialized = false;
       function ndInit() {
         if (ndDashboardInitialized) return;
         ndDashboardInitialized = true;
 
-        // Render KPI distribution bars
-        ndRenderDistBars('ndDistCurrentBars', ND_DN);
-        ndRenderDistBars('ndDist2030Bars', ND_D30);
+        // Render D/E Alert banner if D or E vessels exist
+        const alertBanner = document.getElementById('ndAlertBanner');
+        if (alertBanner && deCount > 0) {
+          alertBanner.style.display = 'block';
+          const alertTitle = document.getElementById('ndAlertTitle');
+          const alertDesc = document.getElementById('ndAlertDesc');
+          const dCount = ND_VL.filter(x => x.rt === "D").length;
+          if (alertTitle) alertTitle.textContent = `${deCount} vessels rated D or E`;
+          if (alertDesc) alertDesc.textContent = `MT Pacific Dawn requires immediate CAP. ${dCount} D-rated with CAP triggers approaching.`;
+        }
+
+        // Render KPI distribution donut & 3-year cost exposure
+        ndSwitchDistTab(ndDistActiveYear);
+        ndRenderCostExposureBars();
 
         // Render Matrix table
         ndRenderFleetTable('all');
@@ -9019,6 +9550,23 @@
         // Render Priority Actions & Calendar
         ndRenderPriorityActions();
         ndRenderComplianceCalendar();
+
+        // Wire Table header click sorting
+        const tableWrap = document.querySelector('.fleet-table-wrap table thead');
+        if (tableWrap) {
+          tableWrap.addEventListener('click', e => {
+            const th = e.target.closest('th[data-sort]');
+            if (!th) return;
+            const sortKey = th.dataset.sort;
+            if (ndSortCol === sortKey) {
+              ndSortDir = -ndSortDir;
+            } else {
+              ndSortCol = sortKey;
+              ndSortDir = 1;
+            }
+            ndRenderFleetTable(ndCurrentFilter);
+          });
+        }
 
         // Wire filter pills
         const pillWrap = document.getElementById('ndFleetFilterPills');
@@ -9101,13 +9649,32 @@
           btnGenReport.addEventListener('click', ndStartFleetGeneration);
         }
 
-        // Wire KPI Card click events
+        // Wire KPI Card click events & Donut Distribution tabs/legend
         document.getElementById('ndKpiCardCo2')?.addEventListener('click', ndShowCo2Modal);
         document.getElementById('ndKpiCardEts')?.addEventListener('click', ndShowEtsModal);
         document.getElementById('ndKpiCardFue')?.addEventListener('click', ndShowFueModal);
         document.getElementById('ndKpiCardRisk')?.addEventListener('click', ndShowRiskModal);
-        document.getElementById('ndDistCardNow')?.addEventListener('click', () => ndShowDistributionModal(true));
-        document.getElementById('ndDistCard30')?.addEventListener('click', () => ndShowDistributionModal(false));
+        document.getElementById('ndKpiCardEexi')?.addEventListener('click', ndShowEexiModal);
+        document.getElementById('ndDonutContainer')?.addEventListener('click', () => ndShowDistributionModal(ndDistActiveYear === '2026'));
+        document.getElementById('ndDistTab2026')?.addEventListener('click', () => ndSwitchDistTab('2026'));
+        document.getElementById('ndDistTab2030')?.addEventListener('click', () => ndSwitchDistTab('2030'));
+        document.getElementById('ndDonutLegend')?.addEventListener('click', e => {
+          const item = e.target.closest('.fleet-legend-item');
+          if (!item) return;
+          const grade = item.dataset.grade;
+          if (grade) {
+            const pillWrap = document.getElementById('ndFleetFilterPills');
+            if (pillWrap) {
+              const targetPill = Array.from(pillWrap.querySelectorAll('.fleet-pill')).find(p => p.dataset.filter === grade);
+              if (targetPill) targetPill.click();
+            }
+          }
+        });
+        document.getElementById('ndCostExposureCard')?.addEventListener('click', ndShowCostModal);
+        document.getElementById('ndBtnViewRiskMatrix')?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          ndShowRiskMatrixModal();
+        });
 
         // Wire Priority Action "Inspect" buttons
         const actList = document.getElementById('ndPriorityActionsList');
