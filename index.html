@@ -12,6 +12,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     rel="stylesheet">
+  <!-- XLSX library for Fleet Overview report export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <style>
     :root {
@@ -1893,9 +1895,81 @@
     }
 
     /* ================= CII READINESS CHECK PAGE ================= */
+    .cii-tab-nav-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .cii-tab-nav {
+      display: inline-flex;
+      align-items: center;
+      background-color: #e5decb;
+      border: 1px solid #cbbd9e;
+      border-radius: 6px;
+      padding: 3px;
+      gap: 4px;
+      user-select: none;
+    }
+
+    .cii-tab-btn {
+      background: transparent;
+      border: none;
+      padding: 6px 18px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: #444444;
+      border-radius: 4px;
+      cursor: pointer;
+      line-height: 1.2;
+      transition: background-color 0.18s cubic-bezier(0.4, 0, 0.2, 1), color 0.18s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.18s ease;
+    }
+
+    .cii-tab-btn:hover:not(.active) {
+      color: var(--text-dark);
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .cii-tab-btn.active {
+      background-color: var(--green-btn);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .cii-tab-panel {
+      display: none;
+      flex-direction: column;
+      flex: 1;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(3px);
+    }
+
+    .cii-tab-panel.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+      animation: ciiTabFadeSlideIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes ciiTabFadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(3px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .cii-page-header { display: flex; align-items: flex-start; justify-content: space-between; flex-shrink: 0; }
     .cii-page-header .page-title { margin-bottom: 4px; font-size: 14px; font-weight: 700; letter-spacing: 0.6px; }
-    .cii-page-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+    .cii-page-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; flex-shrink: 0; }
 
     .cii-config-bar {
       display: flex; align-items: flex-end; gap: 16px;
@@ -3215,7 +3289,589 @@
       outline-offset: 1px;
       background-color: #c4baa1;
     }
+
+    /* ============================================================
+       FLEET OVERVIEW DASHBOARD — NATIVE INTEGRATION STYLES
+       Seamlessly reuses the Client Portal design system, tokens,
+       spacing, and layout conventions.
+    ============================================================ */
+
+    /* Monospace font helper for numerical scores / amounts */
+    /* Monospace / Tabular numbers helper matching CII Verification numbers */
+    .fleet-mono {
+      font-family: inherit;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: 'tnum';
+    }
+
+    /* Header row matching CII Verification subtitle alignment */
+    .fleet-overview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .btn-fleet-report {
+      height: 36px;
+      padding: 0 18px;
+      background-color: var(--green-btn);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      transition: background-color 0.15s ease;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: inherit;
+    }
+    .btn-fleet-report:hover:not(:disabled) {
+      background-color: var(--green-btn-hover);
+    }
+    .btn-fleet-report:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .btn-fleet-report .material-symbols-outlined {
+      font-size: 17px;
+    }
+
+    /* Generic Fleet Card container */
+    .fleet-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .fleet-card-clickable {
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .fleet-card-clickable:hover {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: #cbbd9e;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .fleet-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      flex-shrink: 0;
+    }
+    .fleet-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.1px;
+    }
+    .fleet-card-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Top KPI 4-Card Grid */
+    .fleet-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 1080px) {
+      .fleet-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .fleet-kpi-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      padding: 12px 16px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .fleet-kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--gold-brand);
+    }
+    .fleet-kpi-card:hover {
+      background: rgba(255, 255, 255, 0.75);
+      border-color: #cbbd9e;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .fleet-kpi-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .fleet-kpi-val {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 4px 0 2px;
+      line-height: 1.15;
+      font-family: inherit;
+      font-variant-numeric: tabular-nums;
+    }
+    .fleet-kpi-val.val-danger { color: #b71c1c; }
+    .fleet-kpi-val.val-warning { color: #c77700; }
+    .fleet-kpi-val.val-success { color: #2e7d32; }
+    .fleet-kpi-unit {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      font-family: inherit;
+    }
+    .fleet-kpi-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Distribution Cards 2-Column Grid */
+    .fleet-dist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 860px) {
+      .fleet-dist-grid { grid-template-columns: 1fr; }
+    }
+
+    .fleet-dist-bars {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 2px;
+    }
+    .fleet-dist-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 4px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    /* Matrix Table Card */
+    .fleet-table-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .fleet-table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-canvas);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .fleet-table-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .fleet-table-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.1px;
+    }
+    .fleet-table-desc {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    .fleet-filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .fleet-pill {
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 11px;
+      border-radius: 14px;
+      border: 1px solid var(--border-canvas);
+      background: rgba(255, 255, 255, 0.6);
+      color: #555555;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .fleet-pill:hover {
+      border-color: #b88b2a;
+      color: #8c6418;
+      background: #ffffff;
+    }
+    .fleet-pill.active {
+      background-color: var(--green-btn);
+      color: #ffffff;
+      border-color: var(--green-btn);
+      font-weight: 600;
+    }
+
+    .fleet-table-wrap {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    table.fleet-matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+      text-align: left;
+    }
+    table.fleet-matrix-table thead th {
+      background-color: #21252d;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      height: 30px;
+      padding: 0 10px;
+      border: none;
+      white-space: nowrap;
+      letter-spacing: 0.1px;
+      vertical-align: middle;
+    }
+    table.fleet-matrix-table tbody td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.055);
+      color: var(--text-dark);
+      vertical-align: middle;
+      font-variant-numeric: tabular-nums;
+    }
+    table.fleet-matrix-table tbody tr {
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+    table.fleet-matrix-table tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.45);
+    }
+    table.fleet-matrix-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Bottom 2-Column Grid: Priority Actions & Timeline */
+    .fleet-bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    @media (max-width: 860px) {
+      .fleet-bottom-grid { grid-template-columns: 1fr; }
+    }
+
+    .fleet-act-list, .fleet-cal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .fleet-act-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .fleet-act-item:last-child { border-bottom: none; }
+    .fleet-act-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .fleet-cal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .fleet-cal-item:last-child { border-bottom: none; }
+    .fleet-cal-date {
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      min-width: 76px;
+      margin-top: 1px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ============================================================
+       APPLICATION-LEVEL SLIDE-OVER DRAWER & BACKDROP OVERLAY
+    ============================================================ */
+    .fleet-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      backdrop-filter: blur(2px);
+    }
+    .fleet-drawer-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    .fleet-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      height: 100vh;
+      width: 640px;
+      max-width: 90vw;
+      background: var(--bg-modal-inner);
+      z-index: 2010;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .fleet-drawer.open {
+      transform: translateX(0);
+    }
+
+    .fleet-drawer-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-canvas);
+      background: var(--bg-modal-outer);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .fleet-drawer-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.1px;
+    }
+    .fleet-drawer-meta {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+    .fleet-drawer-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: background-color 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
+    }
+    .fleet-drawer-close:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+      color: var(--text-dark);
+    }
+
+    .fleet-drawer-sec-bar {
+      padding: 8px 20px;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--border-canvas);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .fleet-drawer-nav-btn {
+      height: 32px;
+      width: 32px;
+      padding: 0;
+      font-size: 13px;
+      border: 1px solid var(--border-canvas);
+      background: var(--bg-modal-inner);
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-dark);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease;
+      font-family: inherit;
+    }
+    .fleet-drawer-nav-btn:hover:not(:disabled) {
+      background: #E8D5A3;
+    }
+    .fleet-drawer-nav-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+    .fleet-drawer-sec-select {
+      flex: 1;
+      height: 32px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--border-field);
+      border-radius: 4px;
+      background: #FFFFFF;
+      color: var(--text-dark);
+      cursor: pointer;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.15s ease;
+    }
+    .fleet-drawer-sec-select:focus {
+      border-color: var(--green-btn);
+      box-shadow: 0 0 0 1px var(--green-btn);
+    }
+
+    .fleet-drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
+    }
+
+    .fleet-drawer-footer {
+      padding: 12px 20px;
+      background: var(--bg-modal-outer);
+      border-top: 1px solid var(--border-canvas);
+      display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .stat {
+      background: #ffffff;
+      border: 1px solid var(--border-canvas);
+      border-radius: 4px;
+      padding: 8px 10px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .stat:hover {
+      border-color: rgba(201, 168, 76, 0.6);
+    }
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gold-brand);
+    }
+
+    .note {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      line-height: 1.4;
+    }
+
+    /* Modal Popup Dialog (Breakdowns / AI Reports) */
+    .fleet-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.94);
+      background: var(--bg-modal-inner);
+      z-index: 2020;
+      border-radius: 6px;
+      border: 1px solid var(--border-canvas);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+      max-width: 560px;
+      width: 92vw;
+      max-height: 85vh;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      padding: 22px 24px;
+    }
+    .fleet-modal.open {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+    }
+
+    /* Progress bar */
+    .fleet-prog-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.08);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .fleet-prog-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold-brand), #b88b2a);
+      border-radius: 3px;
+      transition: width 0.1s ease;
+    }
+
+    @keyframes ndSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
   </style>
+
+
 </head>
 
 <body>
@@ -3479,13 +4135,19 @@
     <!-- ================= CII READINESS CHECK PAGE ================= -->
     <div class="page-view" id="ciiReadinessPage">
 
-      <!-- Page Header -->
-      <div class="cii-page-header">
-        <div>
-          <div class="page-title">CII VERIFICATION — ACTUAL PERFORMANCE</div>
-          <div class="cii-page-subtitle">Calculated using actual voyage history and fuel consumption data.</div>
+      <!-- Section Header Row with Segmented Tabs -->
+      <div class="cii-tab-nav-wrapper">
+        <div class="cii-tab-nav" role="tablist" aria-label="CII Verification Navigation">
+          <button type="button" class="cii-tab-btn active" id="tabBtnCiiVerification" role="tab" aria-selected="true" aria-controls="tabContentCiiVerification">CII VERIFICATION</button>
+          <button type="button" class="cii-tab-btn" id="tabBtnFleetOverview" role="tab" aria-selected="false" aria-controls="tabContentFleetOverview">Fleet Overview</button>
         </div>
       </div>
+
+      <!-- Tab 1: CII VERIFICATION Panel (active by default) -->
+      <div class="cii-tab-panel active" id="tabContentCiiVerification" role="tabpanel" aria-labelledby="tabBtnCiiVerification">
+
+        <!-- Description below the tab -->
+        <div class="cii-page-subtitle">Calculated using actual voyage history and fuel consumption data.</div>
 
       <!-- Calculation Configuration Bar -->
       <div class="cii-config-bar">
@@ -3729,6 +4391,127 @@
 
         </div>
       </div>
+      </div><!-- /#tabContentCiiVerification -->
+
+      <!-- Tab 2: Fleet Overview Panel -->
+      <div class="cii-tab-panel" id="tabContentFleetOverview" role="tabpanel" aria-labelledby="tabBtnFleetOverview" style="display: none;">
+
+        <!-- Header row with description and report generation button, vertically and horizontally aligned with CII Verification page -->
+        <div class="fleet-overview-header">
+          <div class="cii-page-subtitle" style="margin-bottom: 0;">Comprehensive CII performance, emissions metrics, EU ETS exposure, and compliance forecasting across your fleet.</div>
+          <button class="btn-fleet-report" id="ndBtnGenFleetReport" type="button" aria-label="Generate Fleet Report">
+            Generate Fleet Report
+          </button>
+        </div>
+
+        <!-- Scrollable Page Body reusing the exact cii-page-body layout and scrollbar -->
+        <div class="cii-page-body" id="fleetOverviewBody">
+
+          <!-- 4 Top KPI Cards -->
+          <div class="fleet-kpi-grid" id="ndKpiCardsGrid">
+            <div class="fleet-kpi-card" id="ndKpiCardCo2" title="Click for CO₂ emissions breakdown">
+              <div class="fleet-kpi-label">Fleet Total CO₂</div>
+              <div class="fleet-kpi-val" id="ndKpiTotCo2">289,320 <span class="fleet-kpi-unit">t/yr</span></div>
+              <div class="fleet-kpi-sub">Across 12 Active Vessels</div>
+            </div>
+            <div class="fleet-kpi-card" id="ndKpiCardEts" title="Click for EU ETS cost breakdown">
+              <div class="fleet-kpi-label">EU ETS Exposure (2026)</div>
+              <div class="fleet-kpi-val val-danger" id="ndKpiTotEts">€6,367K</div>
+              <div class="fleet-kpi-sub">3-Yr Total: €20.4M</div>
+            </div>
+            <div class="fleet-kpi-card" id="ndKpiCardFue" title="Click for FuelEU Maritime penalty details">
+              <div class="fleet-kpi-label">FuelEU Maritime Penalty</div>
+              <div class="fleet-kpi-val val-warning" id="ndKpiTotFue">€1,859K</div>
+              <div class="fleet-kpi-sub">10 Non-Compliant Vessels</div>
+            </div>
+            <div class="fleet-kpi-card" id="ndKpiCardRisk" title="Click for D/E and CAP vessel details">
+              <div class="fleet-kpi-label">High-Risk / CAP Due</div>
+              <div class="fleet-kpi-val val-danger" id="ndKpiTotDe">4 <span class="fleet-kpi-unit">Vessels</span></div>
+              <div class="fleet-kpi-sub">Rated D or E in 2026</div>
+            </div>
+          </div>
+
+          <!-- Grade Distribution Cards (2026 Actual vs 2030 Trajectory) -->
+          <div class="fleet-dist-grid">
+            <div class="fleet-card fleet-card-clickable" id="ndDistCardNow" title="Click to view vessels by 2026 grade">
+              <div class="fleet-card-header">
+                <span class="fleet-card-title">2026 Fleet Grade Distribution</span>
+                <span class="fleet-card-hint">Click to inspect</span>
+              </div>
+              <div id="ndDistCurrentBars" class="fleet-dist-bars"></div>
+            </div>
+            <div class="fleet-card fleet-card-clickable" id="ndDistCard30" title="Click to view vessels by 2030 projected grade">
+              <div class="fleet-card-header">
+                <span class="fleet-card-title">2030 Projected Trajectory (No Action)</span>
+                <span class="cii-status-badge non-compliant">Degrading</span>
+              </div>
+              <div id="ndDist2030Bars" class="fleet-dist-bars"></div>
+            </div>
+          </div>
+
+          <!-- Fleet Performance Table Container -->
+          <div class="fleet-table-card">
+            <div class="fleet-table-header">
+              <div class="fleet-table-header-text">
+                <span class="fleet-table-title">Vessel Performance & Compliance Matrix</span>
+                <span class="fleet-table-desc">Click any vessel row to view full operational profile, mitigation scenarios, and AI analysis.</span>
+              </div>
+              <div class="fleet-filter-pills" id="ndFleetFilterPills">
+                <button type="button" class="fleet-pill active" data-filter="all">All (12)</button>
+                <button type="button" class="fleet-pill" data-filter="E">Grade E (1)</button>
+                <button type="button" class="fleet-pill" data-filter="D">Grade D (3)</button>
+                <button type="button" class="fleet-pill" data-filter="C">Grade C (4)</button>
+                <button type="button" class="fleet-pill" data-filter="B">Grade B (3)</button>
+                <button type="button" class="fleet-pill" data-filter="A">Grade A (1)</button>
+              </div>
+            </div>
+            <div class="fleet-table-wrap">
+              <table class="fleet-matrix-table" aria-label="Fleet Performance & Compliance Matrix">
+                <thead>
+                  <tr>
+                    <th style="width: 190px;">Vessel Name</th>
+                    <th>Type / Subtype</th>
+                    <th style="text-align: right;">DWT</th>
+                    <th style="text-align: center;">CII Score</th>
+                    <th style="text-align: center;">2026</th>
+                    <th style="text-align: center;">2030</th>
+                    <th style="text-align: right;">ETS 2026</th>
+                    <th style="text-align: right;">FuelEU</th>
+                    <th style="text-align: center;">Risk Level</th>
+                    <th style="text-align: center;">CAP Due</th>
+                    <th style="text-align: center; width: 60px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="ndFleetTableBody">
+                  <!-- Dynamic rows injected by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Priority Mitigation Actions & Regulatory Calendar -->
+          <div class="fleet-bottom-grid">
+            <div class="fleet-card">
+              <div class="fleet-card-header">
+                <span class="fleet-card-title">Priority Mitigation Actions</span>
+                <span class="cii-status-badge non-compliant">Action Required</span>
+              </div>
+              <div id="ndPriorityActionsList" class="fleet-act-list"></div>
+            </div>
+
+            <div class="fleet-card">
+              <div class="fleet-card-header">
+                <span class="fleet-card-title">Regulatory & Compliance Timeline</span>
+                <span class="fleet-card-hint">2025–2030</span>
+              </div>
+              <div id="ndComplianceCalendarList" class="fleet-cal-list"></div>
+            </div>
+          </div>
+
+        </div><!-- /.cii-page-body -->
+
+      </div><!-- /#tabContentFleetOverview -->
+
     </div>
 
 
@@ -4434,6 +5217,64 @@
     </div>
   </div>
   <!-- END UPLOAD VOYAGE HISTORY FILE MODAL -->
+
+  <!-- ================= APPLICATION-LEVEL VESSEL DETAIL SLIDE-OVER DRAWER ================= -->
+  <div class="fleet-drawer-overlay" id="ndDrawerOverlay" role="presentation"></div>
+  <div class="fleet-drawer" id="ndVesselDrawer" role="dialog" aria-modal="true" aria-labelledby="ndDrawerVesselName">
+    <!-- Drawer Header -->
+    <div class="fleet-drawer-header">
+      <div>
+        <div class="fleet-drawer-title" id="ndDrawerVesselName">—</div>
+        <div class="fleet-drawer-meta" id="ndDrawerVesselMeta">—</div>
+        <div id="ndDrawerVesselSubMeta" style="font-size: 11.5px; color: var(--gold-text); margin-top: 2px; font-weight: 600;">—</div>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span id="ndDrawerGradeBadge" class="cii-grade-badge" style="min-width: 28px; height: 22px; font-size: 13px;">—</span>
+        <span id="ndDrawerRiskBadge"></span>
+        <span id="ndDrawerCapBadge" class="cii-status-badge non-compliant" style="display: none; font-size: 11px;"></span>
+        <button type="button" class="fleet-drawer-close" id="ndCloseDrawerBtn" aria-label="Close vessel details">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Section Selector Bar (Dropdown + Prev/Next Controls) -->
+    <div class="fleet-drawer-sec-bar" id="ndDrawerSecBar">
+      <button type="button" class="fleet-drawer-nav-btn" id="ndDrawerPrevBtn" aria-label="Previous Section" title="Previous Section">←</button>
+      <select class="fleet-drawer-sec-select" id="ndDrawerSecSelect" aria-label="Select Section">
+        <option value="0">01 — Operational Baseline</option>
+        <option value="1">02 — Voyage Efficiency</option>
+        <option value="2">03 — EEXI Compliance</option>
+        <option value="3">04 — CII Trajectory</option>
+        <option value="4">05 — EU ETS Cost</option>
+        <option value="5">06 — FuelEU Maritime</option>
+        <option value="6">07 — Mitigation Scenarios</option>
+        <option value="7">08 — Poseidon Principles</option>
+        <option value="8">09 — Carbon Cost</option>
+        <option value="9">10 — PSC & Commercial Risk</option>
+        <option value="10">11 — Compliance Timeline</option>
+        <option value="11">12 — AI Risk Assessment</option>
+      </select>
+      <button type="button" class="fleet-drawer-nav-btn" id="ndDrawerNextBtn" aria-label="Next Section" title="Next Section">→</button>
+    </div>
+
+    <!-- Drawer Dynamic Body -->
+    <div class="fleet-drawer-body" id="ndDrawerBody">
+      <!-- Section Content rendered dynamically by ndSecHTML -->
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="fleet-drawer-footer">
+      <button type="button" class="btn-fleet-report" id="ndBtnVesselReport">
+        <span class="material-symbols-outlined">description</span> Generate Full Report
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= APPLICATION-LEVEL REPORT / DRILLDOWN MODAL ================= -->
+  <div class="fleet-modal" id="ndReportModal" role="dialog" aria-modal="true">
+    <div id="ndReportModalContent"></div>
+  </div>
 
   <!-- Global Toast Notification Container -->
   <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
@@ -5224,6 +6065,7 @@
       } else if (page === 'cii') {
         if (navCiiReadiness)   navCiiReadiness.classList.add('active');
         if (ciiReadinessPage)  ciiReadinessPage.style.display = 'flex';
+        if (typeof switchCiiTab === 'function') switchCiiTab('verification');
       } else if (page === 'voyageHistory') {
         if (navVoyageHistoryEl) navVoyageHistoryEl.classList.add('active');
         if (voyageHistoryPage)  voyageHistoryPage.style.display = 'flex';
@@ -6113,6 +6955,33 @@
         if (resError)   resError.style.display   = 'none';
         if (resTable)   resTable.style.display   = 'none';
 
+        // Record calculation & report data in global registry for future Fleet Overview
+        window.ciiGeneratedReports = window.ciiGeneratedReports || [];
+        const existingIdx = window.ciiGeneratedReports.findIndex(r => r.vessel === vessel && r.year === year);
+        const reportEntry = {
+          vessel,
+          year,
+          calcType: document.querySelector('input[name="ciiCalcType"]:checked')?.value || 'base',
+          calculatedAt: new Date().toISOString(),
+          attainedCII: result.attainedCII,
+          requiredCII: result.requiredCII,
+          rating: result.rating,
+          ratingYear: result.ratingYear,
+          voyages: result.voyages,
+          period: result.period,
+          distance: result.distance,
+          cargo: result.cargo,
+          fuelTypes: result.fuelTypes,
+          fuelConsumed: result.fuelConsumed,
+          baseFuelMT: result.baseFuelMT,
+          yearlyData: yearlyData
+        };
+        if (existingIdx >= 0) {
+          window.ciiGeneratedReports[existingIdx] = reportEntry;
+        } else {
+          window.ciiGeneratedReports.push(reportEntry);
+        }
+
         // Restore calculate button
         if (btn) {
           btn.disabled = false;
@@ -6308,6 +7177,57 @@
 
       if (lblBase)   lblBase.addEventListener('click',   () => setCiiRadioVisual('base'));
       if (lblActual) lblActual.addEventListener('click', () => setCiiRadioVisual('actual'));
+
+      // --- Tab Switching Logic (CII VERIFICATION vs Fleet Overview) ---
+      const tabBtnCiiVerification = document.getElementById('tabBtnCiiVerification');
+      const tabBtnFleetOverview   = document.getElementById('tabBtnFleetOverview');
+      const tabContentCiiVerification = document.getElementById('tabContentCiiVerification');
+      const tabContentFleetOverview   = document.getElementById('tabContentFleetOverview');
+
+      window.switchCiiTab = function(tab) {
+        if (tab === 'verification') {
+          if (tabBtnCiiVerification) {
+            tabBtnCiiVerification.classList.add('active');
+            tabBtnCiiVerification.setAttribute('aria-selected', 'true');
+          }
+          if (tabBtnFleetOverview) {
+            tabBtnFleetOverview.classList.remove('active');
+            tabBtnFleetOverview.setAttribute('aria-selected', 'false');
+          }
+          if (tabContentCiiVerification) {
+            tabContentCiiVerification.style.display = 'flex';
+            tabContentCiiVerification.classList.add('active');
+          }
+          if (tabContentFleetOverview) {
+            tabContentFleetOverview.style.display = 'none';
+            tabContentFleetOverview.classList.remove('active');
+          }
+        } else if (tab === 'fleet') {
+          if (tabBtnFleetOverview) {
+            tabBtnFleetOverview.classList.add('active');
+            tabBtnFleetOverview.setAttribute('aria-selected', 'true');
+          }
+          if (tabBtnCiiVerification) {
+            tabBtnCiiVerification.classList.remove('active');
+            tabBtnCiiVerification.setAttribute('aria-selected', 'false');
+          }
+          if (tabContentFleetOverview) {
+            tabContentFleetOverview.style.display = 'flex';
+            tabContentFleetOverview.classList.add('active');
+          }
+          if (tabContentCiiVerification) {
+            tabContentCiiVerification.style.display = 'none';
+            tabContentCiiVerification.classList.remove('active');
+          }
+        }
+      };
+
+      if (tabBtnCiiVerification) {
+        tabBtnCiiVerification.addEventListener('click', () => window.switchCiiTab('verification'));
+      }
+      if (tabBtnFleetOverview) {
+        tabBtnFleetOverview.addEventListener('click', () => window.switchCiiTab('fleet'));
+      }
     })();
 
     // ================= VOYAGE HISTORY MODULE =================
@@ -6988,6 +7908,1248 @@
       });
     }
 
+    /* ============================================================
+       FLEET OVERVIEW DASHBOARD — ENCAPSULATED JAVASCRIPT MODULE
+       Operates on the Fleet Overview tab (#tabContentFleetOverview)
+       without polluting the global namespace.
+    ============================================================ */
+    (function initFleetOverviewDashboard() {
+      'use strict';
+
+      // --- Color Palette ---
+      const ND_C = {
+        paper: "#FAF6ED", dk: "#EDE4D0", w: "#FFFFFF", bk: "#0D0D0D",
+        ch: "#1A1A1A", ch2: "#252525", gold: "#C9A84C", gm: "#B8962E",
+        gl: "#E8D5A3", gp: "#F5EDDA", ink: "#1A1A1A", sl: "#3D3D3D",
+        gr: "#555555", sv: "#777777", gn: "#2D6A4F", gnB: "#E8F5E9",
+        gnD: "#1B5E20", gnDB: "#C8E6C9", am: "#C77700", amB: "#FFF8E1",
+        og: "#E65100", ogB: "#FFF3E0", rd: "#B71C1C", rdB: "#FFEBEE", bl: "#1565C0"
+      };
+
+      const ND_RT = {
+        A: { c: ND_C.gn,  b: ND_C.gnB },
+        B: { c: ND_C.gnD, b: ND_C.gnDB },
+        C: { c: ND_C.am,  b: ND_C.amB },
+        D: { c: ND_C.og,  b: ND_C.ogB },
+        E: { c: ND_C.rd,  b: ND_C.rdB }
+      };
+
+      const ND_RR = {
+        Low: ND_RT.A, Medium: ND_RT.C, High: ND_RT.D, Critical: ND_RT.E,
+        Aligned: ND_RT.A, Marginal: ND_RT.C, Misaligned: ND_RT.E,
+        Compliant: ND_RT.A, "Non-compliant": ND_RT.E,
+        COMPLIANT: ND_RT.A, "NON-COMPLIANT": ND_RT.E
+      };
+
+      // --- Fleet Dataset (12 Source of Truth Vessels) ---
+      const ND_VL = [
+        { nm: "MT Pacific Dawn", imo: "9878901", tp: "Tanker", sub: "Chemical Tanker", dwt: 55600, ds: "55,600", yr: "2015", fl: "Panama", cl: "Lloyd's", cii: 8.74, rt: "E", r30: "E", ets: 920, fue: 248, rk: "Critical", cap: "2026", fuel: 12800, dist: 82000, dy: 260, spd: "13.8 kn", co2: 39859, me: "MAN B&W 6S50ME", mcr: "9,200 kW", ft: "VLSFO", eA: 6.88, eR: 6.12, eS: "NON-COMPLIANT", ghg: 94.2, ghgL: 89.34, ghgD: "+4.86", ghgP: "€248K", pp: "Misaligned" },
+        { nm: "MT Nordic Spirit", imo: "9856789", tp: "Tanker", sub: "MR1 Product Tanker", dwt: 47800, ds: "47,800", yr: "2016", fl: "Liberia", cl: "BV", cii: 7.73, rt: "D", r30: "E", ets: 780, fue: 215, rk: "High", cap: "2027", fuel: 8900, dist: 75000, dy: 245, spd: "13.5 kn", co2: 27715, me: "MAN B&W 6S46ME", mcr: "8,100 kW", ft: "VLSFO", eA: 5.65, eR: 5.98, eS: "COMPLIANT", ghg: 92.1, ghgL: 89.34, ghgD: "+2.76", ghgP: "€215K", pp: "Misaligned" },
+        { nm: "MV Southern Cross", imo: "9878345", tp: "Tanker", sub: "Handysize Tanker", dwt: 31800, ds: "31,800", yr: "2014", fl: "Marshall Is.", cl: "DNV", cii: 9.79, rt: "D", r30: "E", ets: 350, fue: 168, rk: "High", cap: "2027", fuel: 5200, dist: 52000, dy: 230, spd: "12.8 kn", co2: 16193, me: "MAN B&W 5S50ME", mcr: "7,400 kW", ft: "HFO", eA: 5.90, eR: 6.45, eS: "COMPLIANT", ghg: 93.8, ghgL: 89.34, ghgD: "+4.46", ghgP: "€168K", pp: "Misaligned" },
+        { nm: "MV Eastern Wave", imo: "9801234", tp: "Tanker", sub: "Handysize Tanker", dwt: 38900, ds: "38,900", yr: "2016", fl: "Bahamas", cl: "NK", cii: 8.79, rt: "D", r30: "E", ets: 410, fue: 156, rk: "High", cap: "2028", fuel: 6700, dist: 61000, dy: 240, spd: "13.0 kn", co2: 20864, me: "MAN B&W 6S42ME", mcr: "7,800 kW", ft: "VLSFO", eA: 5.41, eR: 5.78, eS: "COMPLIANT", ghg: 92.5, ghgL: 89.34, ghgD: "+3.16", ghgP: "€156K", pp: "Misaligned" },
+        { nm: "MT Caspian Voyager", imo: "9841036", tp: "Tanker", sub: "MR2 Product Tanker", dwt: 51200, ds: "51,200", yr: "2018", fl: "Marshall Is.", cl: "DNV", cii: 6.31, rt: "C", r30: "D", ets: 832, fue: 227, rk: "Medium", cap: "2029", fuel: 8200, dist: 79000, dy: 250, spd: "13.2 kn", co2: 25535, me: "MAN B&W 6S50ME", mcr: "8,900 kW", ft: "VLSFO", eA: 5.28, eR: 5.92, eS: "COMPLIANT", ghg: 91.74, ghgL: 89.34, ghgD: "+2.40", ghgP: "€227K", pp: "Marginal" },
+        { nm: "MT Coral Bay", imo: "9845678", tp: "Tanker", sub: "MR2 Product Tanker", dwt: 49200, ds: "49,200", yr: "2019", fl: "Singapore", cl: "ABS", cii: 6.42, rt: "C", r30: "D", ets: 510, fue: 198, rk: "Medium", cap: "2030", fuel: 7300, dist: 72000, dy: 248, spd: "12.9 kn", co2: 22732, me: "MAN B&W 6S50ME", mcr: "8,900 kW", ft: "VLSFO", eA: 5.15, eR: 5.92, eS: "COMPLIANT", ghg: 91.2, ghgL: 89.34, ghgD: "+1.86", ghgP: "€198K", pp: "Marginal" },
+        { nm: "MV Nordic Harmony", imo: "9867890", tp: "Bulk", sub: "Supramax Bulker", dwt: 68500, ds: "68,500", yr: "2020", fl: "Hong Kong", cl: "DNV", cii: 4.13, rt: "C", r30: "D", ets: 620, fue: 175, rk: "Medium", cap: "2030", fuel: 8000, dist: 88000, dy: 255, spd: "12.4 kn", co2: 24912, me: "MAN B&W 6S60ME", mcr: "11,200 kW", ft: "VLSFO", eA: 4.22, eR: 4.88, eS: "COMPLIANT", ghg: 91.5, ghgL: 89.34, ghgD: "+2.16", ghgP: "€175K", pp: "Marginal" },
+        { nm: "MV Baltic Trader", imo: "9823456", tp: "General", sub: "MPP / Heavy Lift", dwt: 28700, ds: "28,700", yr: "2021", fl: "Netherlands", cl: "Lloyd's", cii: 10.62, rt: "C", r30: "D", ets: 280, fue: 92, rk: "Medium", cap: "---", fuel: 4700, dist: 48000, dy: 220, spd: "11.5 kn", co2: 14636, me: "Wartsila 6RT-flex50", mcr: "7,600 kW", ft: "VLSFO", eA: 3.88, eR: 4.55, eS: "COMPLIANT", ghg: 90.8, ghgL: 89.34, ghgD: "+1.46", ghgP: "€92K", pp: "Aligned" },
+        { nm: "MV Atlantic Star", imo: "9812345", tp: "Bulk", sub: "Panamax Bulker", dwt: 82000, ds: "82,000", yr: "2020", fl: "Marshall Is.", cl: "ABS", cii: 3.36, rt: "B", r30: "C", ets: 445, fue: 118, rk: "Low", cap: "---", fuel: 8400, dist: 95000, dy: 268, spd: "12.0 kn", co2: 26158, me: "MAN B&W 6S60ME", mcr: "11,800 kW", ft: "VLSFO", eA: 3.95, eR: 4.42, eS: "COMPLIANT", ghg: 90.2, ghgL: 89.34, ghgD: "+0.86", ghgP: "€118K", pp: "Aligned" },
+        { nm: "MT River Pearl", imo: "9834567", tp: "Tanker", sub: "MR1 Product Tanker", dwt: 42100, ds: "42,100", yr: "2019", fl: "Liberia", cl: "BV", cii: 6.14, rt: "B", r30: "C", ets: 390, fue: 142, rk: "Low", cap: "---", fuel: 5400, dist: 65000, dy: 242, spd: "12.6 kn", co2: 16816, me: "MAN B&W 5S50ME", mcr: "7,400 kW", ft: "VLSFO", eA: 5.10, eR: 6.08, eS: "COMPLIANT", ghg: 90.5, ghgL: 89.34, ghgD: "+1.16", ghgP: "€142K", pp: "Aligned" },
+        { nm: "MV Jade Fortune", imo: "9856012", tp: "Bulk", sub: "Capesize Bulker", dwt: 92300, ds: "92,300", yr: "2021", fl: "Hong Kong", cl: "NK", cii: 3.11, rt: "B", r30: "C", ets: 510, fue: 120, rk: "Low", cap: "---", fuel: 9400, dist: 102000, dy: 275, spd: "12.2 kn", co2: 29272, me: "MAN B&W 7S60ME", mcr: "14,200 kW", ft: "VLSFO", eA: 3.45, eR: 3.92, eS: "COMPLIANT", ghg: 90.0, ghgL: 89.34, ghgD: "+0.66", ghgP: "€120K", pp: "Aligned" },
+        { nm: "MV Green Pioneer", imo: "9890123", tp: "Bulk", sub: "Panamax Bulker", dwt: 76400, ds: "76,400", yr: "2022", fl: "Singapore", cl: "DNV", cii: 2.81, rt: "A", r30: "B", ets: 320, fue: 0, rk: "Low", cap: "---", fuel: 6200, dist: 90000, dy: 270, spd: "11.8 kn", co2: 19307, me: "MAN B&W 6S60ME-C10.5", mcr: "12,400 kW", ft: "VLSFO", eA: 3.22, eR: 4.55, eS: "COMPLIANT", ghg: 88.9, ghgL: 89.34, ghgD: "-0.44", ghgP: "€0", pp: "Aligned" }
+      ];
+
+      const ND_SEC = [
+        { n: "01", t: "Operational Baseline" },
+        { n: "02", t: "Voyage Efficiency" },
+        { n: "03", t: "EEXI Compliance" },
+        { n: "04", t: "CII Trajectory" },
+        { n: "05", t: "EU ETS Cost" },
+        { n: "06", t: "FuelEU Maritime" },
+        { n: "07", t: "Mitigation Scenarios" },
+        { n: "08", t: "Poseidon Principles" },
+        { n: "09", t: "Carbon Cost" },
+        { n: "10", t: "PSC & Commercial Risk" },
+        { n: "11", t: "Compliance Timeline" },
+        { n: "12", t: "AI Risk Assessment" }
+      ];
+
+      const ND_DN = {
+        A: { c: 1, v: ["MV Green Pioneer"] },
+        B: { c: 3, v: ["MV Atlantic Star", "MT River Pearl", "MV Jade Fortune"] },
+        C: { c: 4, v: ["MT Caspian Voyager", "MT Coral Bay", "MV Nordic Harmony", "MV Baltic Trader"] },
+        D: { c: 3, v: ["MT Nordic Spirit", "MV Southern Cross", "MV Eastern Wave"] },
+        E: { c: 1, v: ["MT Pacific Dawn"] }
+      };
+
+      const ND_D30 = {
+        A: { c: 0, v: [] },
+        B: { c: 1, v: ["MV Green Pioneer"] },
+        C: { c: 2, v: ["MV Atlantic Star", "MT River Pearl"] },
+        D: { c: 5, v: ["MT Caspian Voyager", "MT Coral Bay", "MV Nordic Harmony", "MV Baltic Trader", "MV Jade Fortune"] },
+        E: { c: 4, v: ["MT Pacific Dawn", "MT Nordic Spirit", "MV Southern Cross", "MV Eastern Wave"] }
+      };
+
+      const ND_ACT = [
+        { v: "MT Pacific Dawn", a: "Submit CAP immediately (E-rated)", d: "Immediate", rk: "Critical", im: "Regulatory", sec: 11 },
+        { v: "MT Nordic Spirit", a: "Begin CAP development", d: "Q2 2026", rk: "High", im: "Regulatory", sec: 11 },
+        { v: "MV Southern Cross", a: "Begin CAP development", d: "Q2 2026", rk: "High", im: "Regulatory", sec: 11 },
+        { v: "MV Eastern Wave", a: "Speed reduction + hull clean", d: "Q3 2026", rk: "High", im: "€150K/yr", sec: 6 },
+        { v: "MT Caspian Voyager", a: "Evaluate biofuel blending", d: "Q4 2026", rk: "Medium", im: "€227K/yr", sec: 5 },
+        { v: "Fleet-wide", a: "FuelEU fleet pooling", d: "Q1 2026", rk: "Medium", im: "€400K+/yr", sec: -1 },
+        { v: "MV Nordic Harmony", a: "Hull cleaning + weather routing", d: "2026", rk: "Medium", im: "Defer D 1yr", sec: 6 },
+        { v: "Fleet-wide", a: "Review Poseidon with lenders", d: "Annual", rk: "Low", im: "Financing", sec: -1 }
+      ];
+
+      const ND_CAL = [
+        { d: "31 Aug 2025", t: "Submit revised SEEMP Part III", v: "All 12 vessels", u: 1 },
+        { d: "31 Dec 2025", t: "SEEMP Part III CoC on board", v: "All 12 vessels", u: 1 },
+        { d: "1 Jan 2026", t: "Begin enhanced DCS collection", v: "All 12 vessels", u: 0 },
+        { d: "31 Jan 2026", t: "Submit FuelEU report to verifier", v: "10 vessels (EU-calling)", u: 0 },
+        { d: "31 Mar 2026", t: "Submit EU ETS via THETIS-MRV", v: "10 vessels", u: 0 },
+        { d: "30 Jun 2026", t: "FuelEU DoC on board + penalty", v: "10 vessels", u: 0 },
+        { d: "2026", t: "CAP submission (E-rated)", v: "MT Pacific Dawn", u: 1 },
+        { d: "2027", t: "CAP (3rd consecutive D)", v: "Nordic Spirit, Southern Cross", u: 1 },
+        { d: "2028", t: "CAP (3rd consecutive D)", v: "MV Eastern Wave", u: 1 },
+        { d: "2029", t: "CAP (3rd consecutive D)", v: "MT Caspian Voyager", u: 1 }
+      ];
+
+      const ND_CEXP = [
+        { yr: 2026, ets: 6367, fue: 1859 },
+        { yr: 2027, ets: 6810, fue: 1859 },
+        { yr: 2028, ets: 7254, fue: 1859 }
+      ];
+
+      // Aggregates
+      const totE = ND_VL.reduce((s, x) => s + x.ets, 0);
+      const totF = ND_VL.reduce((s, x) => s + x.fue, 0);
+      const totC = ND_VL.reduce((s, x) => s + x.co2, 0);
+      const deCount = ND_VL.filter(x => x.rt === "D" || x.rt === "E").length;
+      const rats = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+      ND_VL.forEach(x => rats[x.rt]++);
+
+      // --- Helper Functions ---
+      function ndTag(v) {
+        if (v === 'Compliant' || v === 'Aligned' || v === 'Low') {
+          return `<span class="cii-status-badge compliant">${v}</span>`;
+        }
+        return `<span class="cii-status-badge non-compliant">${v}</span>`;
+      }
+
+      function ndRg(v) {
+        return `<span class="cii-grade-badge grade-${v}">${v}</span>`;
+      }
+
+      function ndEsc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      }
+
+      // --- State ---
+      let ndSelectedVessel = null;
+      let ndCurrentFilter = 'all';
+
+      // --- Render KPI Bars ---
+      function ndRenderDistBars(containerId, distObj) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        el.innerHTML = '';
+        const grades = ['A', 'B', 'C', 'D', 'E'];
+        grades.forEach(g => {
+          const count = distObj[g] ? distObj[g].c : 0;
+          const pct = Math.round((count / ND_VL.length) * 100);
+          const div = document.createElement('div');
+          div.className = 'fleet-dist-col';
+          div.innerHTML = `
+            ${ndRg(g)}
+            <span class="fleet-mono" style="font-size:12.5px;font-weight:700;color:var(--text-dark);">${count}</span>
+            <span style="font-size:10px;color:var(--text-muted);">${pct}%</span>
+          `;
+          el.appendChild(div);
+        });
+      }
+
+      // --- Render Fleet Table ---
+      function ndRenderFleetTable(filter = 'all') {
+        const tbody = document.getElementById('ndFleetTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        let list = [...ND_VL];
+        if (filter !== 'all') {
+          list = list.filter(v => v.rt === filter);
+        }
+
+        list.forEach((v, idx) => {
+          const origIdx = ND_VL.findIndex(x => x.imo === v.imo);
+          const tr = document.createElement('tr');
+          tr.dataset.vesselIdx = origIdx;
+          tr.innerHTML = `
+            <td>
+              <div style="font-weight:600;color:var(--text-dark);">${v.nm}</div>
+              <div style="font-size:11px;color:var(--text-muted);" class="fleet-mono">IMO ${v.imo} • ${v.fl}</div>
+            </td>
+            <td>
+              <div style="font-size:12px;color:var(--text-dark);">${v.sub}</div>
+              <div style="font-size:11px;color:var(--text-muted);">${v.cl} • ${v.yr}</div>
+            </td>
+            <td style="text-align:right;" class="fleet-mono">${v.ds}</td>
+            <td style="text-align:center;" class="fleet-mono"><strong>${v.cii.toFixed(2)}</strong></td>
+            <td style="text-align:center;">${ndRg(v.rt)}</td>
+            <td style="text-align:center;">${ndRg(v.r30)}</td>
+            <td style="text-align:right;color:#b71c1c;font-weight:600;" class="fleet-mono">€${v.ets}K</td>
+            <td style="text-align:right;color:${v.fue > 0 ? '#b71c1c' : '#2e7d32'};font-weight:600;" class="fleet-mono">${v.fue > 0 ? '€' + v.fue + 'K' : '€0'}</td>
+            <td style="text-align:center;">${ndTag(v.rk)}</td>
+            <td style="text-align:center;font-weight:600;color:${v.cap !== '---' ? '#b71c1c' : 'var(--text-muted)'};" class="fleet-mono">${v.cap}</td>
+            <td style="text-align:center;">
+              <button type="button" class="action-edit-btn" data-vessel-idx="${origIdx}" title="View ${v.nm} details" aria-label="View vessel details" style="background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">
+                <span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span>
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // --- Render Priority Actions ---
+      function ndRenderPriorityActions() {
+        const container = document.getElementById('ndPriorityActionsList');
+        if (!container) return;
+        container.innerHTML = '';
+        ND_ACT.forEach(act => {
+          const item = document.createElement('div');
+          item.className = 'fleet-act-item';
+          const rkColor = act.rk === 'Critical' ? '#b71c1c' : (act.rk === 'High' ? '#c77700' : (act.rk === 'Medium' ? '#d5a443' : '#2e7d32'));
+          item.innerHTML = `
+            <div class="fleet-act-dot" style="background:${rkColor};"></div>
+            <div style="flex:1;">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+                <span style="font-size:12.5px;font-weight:600;color:var(--text-dark);">${act.v}</span>
+                <span class="fleet-mono" style="font-size:11px;font-weight:700;color:${rkColor};">${act.d}</span>
+              </div>
+              <div style="font-size:12px;color:#555555;margin-top:2px;">${act.a}</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px;">
+                <span class="cii-status-badge non-compliant" style="font-size:10px;">${act.rk} • ${act.im}</span>
+                ${act.sec >= 0 ? `<button type="button" class="btn-cii-retry nd-act-inspect" data-vessel="${act.v}" data-sec="${act.sec}" style="height:22px;padding:0 8px;font-size:10px;margin-top:0;">Inspect</button>` : ''}
+              </div>
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      // --- Render Compliance Timeline ---
+      function ndRenderComplianceCalendar() {
+        const container = document.getElementById('ndComplianceCalendarList');
+        if (!container) return;
+        container.innerHTML = '';
+        ND_CAL.forEach(cal => {
+          const item = document.createElement('div');
+          item.className = 'fleet-cal-item';
+          item.innerHTML = `
+            <div class="fleet-cal-date" style="color:${cal.u ? '#b71c1c' : 'var(--gold-text)'};">${cal.d}</div>
+            <div style="flex:1;">
+              <div style="font-size:12.5px;font-weight:600;color:var(--text-dark);">${cal.t}</div>
+              <div style="font-size:11.5px;color:var(--text-muted);">${cal.v}</div>
+            </div>
+            ${cal.u ? `<span class="cii-status-badge non-compliant" style="font-size:10px;">URGENT</span>` : ''}
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      // --- Dynamic Section HTML Renderer (Exact 1:1 with NautiluxCII_WorkingDemo.html, matched to CII Verification design system) ---
+      function ndSecHTML(idx, v) {
+        const s = ND_SEC[idx] || ND_SEC[0];
+        const hdr = `
+          <div style="margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid rgba(0, 0, 0, 0.08);">
+            <div style="font-size: 10px; font-weight: 700; color: var(--gold-text); letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 2px;">Section ${s.n}</div>
+            <div style="font-size: 13.5px; font-weight: 700; color: var(--text-dark);">${s.t}</div>
+          </div>
+        `;
+
+        if (idx === 0) {
+          return hdr + `
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+              ${[
+                ["Fuel", (v.fuel ? v.fuel.toLocaleString() : "0") + " MT"],
+                ["Distance", (v.dist ? v.dist.toLocaleString() : "0") + " NM"],
+                ["Sea Days", String(v.dy || "250")],
+                ["Speed", String(v.spd || "13.0 kn")],
+                ["CO₂", (v.co2 ? v.co2.toLocaleString() : "0") + " t"],
+                ["CII (AER)", (v.cii ? v.cii.toFixed(2) : "0.00")]
+              ].map(([l, val], i) => `
+                <div class="stat">
+                  <div style="font-size:9.5px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-bottom:3px">${l}</div>
+                  <div class="fleet-mono" style="font-size:15px;font-weight:700;color:${i === 5 ? (v.rt === 'E' ? '#881e1e' : v.rt === 'D' ? '#8c4c03' : v.rt === 'C' ? '#1b4d29' : '#1c5e26') : 'var(--text-dark)'}">${val}</div>
+                </div>
+              `).join("")}
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <tbody>
+                <tr><td style="font-weight:600;color:var(--text-muted);width:35%;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">Vessel</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">${v.nm} (IMO ${v.imo})</td></tr>
+                <tr><td style="font-weight:600;color:var(--text-muted);padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">Type</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">${v.sub} / ${v.ds} DWT</td></tr>
+                <tr><td style="font-weight:600;color:var(--text-muted);padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">Fuel</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">${v.ft} (CF 3.114)</td></tr>
+              </tbody>
+            </table>
+            <div class="note">Emission factor 3.114 t CO₂/t VLSFO per MEPC.364(79).</div>
+          `;
+        }
+
+        if (idx === 1) {
+          return hdr + `
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Segment</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">%</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Distance</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Speed</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">FC/Day</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">Laden</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">55%</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">43,450 NM</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">12.5 kn</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">27.5 MT</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">3,988 MT</td></tr>
+                <tr><td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">Ballast</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">45%</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">35,550 NM</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">14.0 kn</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">22.0 MT</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">2,321 MT</td></tr>
+                <tr><td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">Port/Idle</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">---</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">---</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">---</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">4.2 MT</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">483 MT</td></tr>
+              </tbody>
+            </table>
+            <div class="note">Laden: Med/NW Europe CPP trade. Ballast: return positioning.</div>
+          `;
+        }
+
+        if (idx === 2) {
+          return hdr + `
+            <div style="display:flex;gap:10px;margin-bottom:12px">
+              <div class="stat" style="flex:1;text-align:center;">
+                <div style="font-size:9.5px;color:var(--text-muted);text-transform:uppercase;margin-bottom:3px">Attained</div>
+                <div class="fleet-mono" style="font-size:24px;font-weight:700;color:${v.eA <= v.eR ? '#1c5e26' : '#881e1e'}">${v.eA}</div>
+              </div>
+              <div class="stat" style="flex:1;text-align:center;">
+                <div style="font-size:9.5px;color:var(--text-muted);text-transform:uppercase;margin-bottom:3px">Required</div>
+                <div class="fleet-mono" style="font-size:24px;font-weight:700;color:var(--text-dark);">${v.eR}</div>
+              </div>
+              <div style="flex:1;background:${v.eS === 'COMPLIANT' ? 'rgba(46,125,50,0.1)' : 'rgba(198,40,40,0.08)'};border-radius:4px;display:flex;align-items:center;justify-content:center;border:1px solid ${v.eS === 'COMPLIANT' ? 'rgba(46,125,50,0.25)' : 'rgba(198,40,40,0.2)'};">
+                ${ndTag(v.eS)}
+              </div>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <tbody>
+                <tr><td style="font-weight:600;color:var(--text-muted);width:35%;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">EPL Status</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">ACTIVE</td></tr>
+                <tr><td style="font-weight:600;color:var(--text-muted);padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">MCR Limited</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">75% (6,675 kW)</td></tr>
+                <tr><td style="font-weight:600;color:var(--text-muted);padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">IEE Certificate</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">JUN 2023</td></tr>
+              </tbody>
+            </table>
+            <div class="note">EEXI per MEPC.333(76). EPL overridable per MEPC.335(76).</div>
+          `;
+        }
+
+        if (idx === 3) {
+          return hdr + `
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Year</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Z%</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Req</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Att</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">C/D</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">D/E</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Rating</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Risk</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${[
+                  {yr:2026, z:"11%", req:4.71, att:4.99, cd:5.09, de:6.03, r:"C", rk:"Medium"},
+                  {yr:2027, z:"13%", req:4.60, att:4.99, cd:4.97, de:5.89, r:"D", rk:"High"},
+                  {yr:2028, z:"15%", req:4.50, att:4.99, cd:4.86, de:5.76, r:"D", rk:"High"},
+                  {yr:2029, z:"17%", req:4.39, att:4.99, cd:4.74, de:5.62, r:"D", rk:"Critical"},
+                  {yr:2030, z:"19%", req:4.28, att:4.99, cd:4.62, de:5.48, r:"D", rk:"Critical"}
+                ].map(r => `
+                  <tr>
+                    <td class="fleet-mono" style="font-weight:700;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.yr}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.z}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.req}</td>
+                    <td class="fleet-mono" style="font-weight:700;color:var(--gold-text);padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.att}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.cd}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.de}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndRg(r.r)}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndTag(r.rk)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+            <div style="background:rgba(198,40,40,0.08);border-left:3px solid #c62828;border-radius:4px;padding:8px 12px;margin-top:10px;font-size:12px;color:var(--text-dark);">
+              <strong>CAP Trigger 2029:</strong> Three consecutive D years mandate CAP.
+            </div>
+          `;
+        }
+
+        if (idx === 4) {
+          return hdr + `
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Year</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">CO₂</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">EU Appl.</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Phase-in</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Surrender</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">EUA</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${[
+                  {yr:2026, c2:"20,179T", eu:"11,098T", ph:"100%", su:"11,098T", eua:"€75", co:"€832,350"},
+                  {yr:2027, c2:"20,179T", eu:"11,098T", ph:"100%", su:"11,098T", eua:"€80", co:"€887,840"},
+                  {yr:2028, c2:"20,179T", eu:"11,098T", ph:"100%", su:"11,098T", eua:"€85", co:"€943,330"}
+                ].map(r => `
+                  <tr>
+                    <td class="fleet-mono" style="font-weight:700;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.yr}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.c2}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.eu}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.ph}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.su}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.eua}</td>
+                    <td class="fleet-mono" style="font-weight:700;color:#c62828;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.co}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+            <div style="background:rgba(198,40,40,0.08);border-left:3px solid #c62828;border-radius:4px;padding:8px 12px;text-align:center;margin-top:10px">
+              <span class="fleet-mono" style="font-size:12px;font-weight:700;color:#c62828">3-Year Exposure: €2,663,520</span>
+            </div>
+          `;
+        }
+
+        if (idx === 5) {
+          return hdr + `
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+              ${[
+                ["Baseline", "91.16"],
+                ["Reduction", "2% (25-29)"],
+                ["GHG Limit", v.ghgL],
+                ["Vessel GHG", v.ghg],
+                ["Deficit", v.ghgD],
+                ["Penalty/yr", v.ghgP]
+              ].map(([l, val], i) => `
+                <div class="stat" style="text-align:center;">
+                  <div style="font-size:9.5px;color:var(--text-muted);text-transform:uppercase;margin-bottom:3px">${l}</div>
+                  <div class="fleet-mono" style="font-size:15px;font-weight:700;color:${i === 4 ? (String(v.ghgD).startsWith('+') ? '#881e1e' : '#1c5e26') : i === 5 ? (v.fue > 0 ? '#881e1e' : '#1c5e26') : 'var(--text-dark)'}">${val}</div>
+                </div>
+              `).join("")}
+            </div>
+            <div style="text-align:center;margin-top:8px;">${ndTag(v.fue > 0 ? "Non-compliant" : "Compliant")}</div>
+          `;
+        }
+
+        if (idx === 6) {
+          return hdr + `
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Measure</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Δ</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">CII</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">2027</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">2030</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">EU ETS Δ</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">FuelEU</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${[
+                  {m:"No action", d:"0%", cii:4.99, r27:"D", r30:"D", sv:"€0", fe:"Non-compliant"},
+                  {m:"Speed 12 kn", d:"-6%", cii:4.69, r27:"C", r30:"D", sv:"-€50K", fe:"Non-compliant"},
+                  {m:"Speed + hull", d:"-10%", cii:4.49, r27:"C", r30:"C", sv:"-€83K", fe:"Non-compliant"},
+                  {m:"+ B20 biofuel", d:"-10%", cii:4.49, r27:"C", r30:"C", sv:"-€83K", fe:"Compliant"},
+                  {m:"LNG retrofit", d:"-23%", cii:3.84, r27:"B", r30:"B", sv:"-€191K", fe:"Compliant"}
+                ].map((r, i) => `
+                  <tr style="background:${i === 0 ? 'rgba(198,40,40,0.05)' : i === 4 ? 'rgba(46,125,50,0.06)' : 'transparent'}">
+                    <td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">${r.m}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.d}</td>
+                    <td class="fleet-mono" style="font-weight:700;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.cii}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndRg(r.r27)}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndRg(r.r30)}</td>
+                    <td class="fleet-mono" style="color:${r.sv !== '€0' ? '#2e7d32' : 'var(--text-muted)'};font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.sv}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndTag(r.fe)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        }
+
+        if (idx === 7) {
+          return hdr + `
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Year</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">AER</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">PP Traj</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Δ</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">PP Status</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">SCC</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${[
+                  {yr:2026, pp:"~5.15", dl:"-0.16", s:"Aligned", scc:"Aligned"},
+                  {yr:2027, pp:"~5.00", dl:"-0.01", s:"Marginal", scc:"Marginal"},
+                  {yr:2028, pp:"~4.85", dl:"+0.14", s:"Misaligned", scc:"Misaligned"},
+                  {yr:2029, pp:"~4.70", dl:"+0.29", s:"Misaligned", scc:"Misaligned"},
+                  {yr:2030, pp:"~4.55", dl:"+0.44", s:"Misaligned", scc:"Misaligned"}
+                ].map(r => `
+                  <tr>
+                    <td class="fleet-mono" style="font-weight:700;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.yr}</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">4.99</td>
+                    <td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.pp}</td>
+                    <td class="fleet-mono" style="color:${r.dl.startsWith('+') ? '#881e1e' : '#1c5e26'};font-weight:700;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${r.dl}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndTag(r.s)}</td>
+                    <td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">${ndTag(r.scc)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+            <div class="note">PP v5.0. Misalignment triggers 5–15 bps margin adjustment.</div>
+          `;
+        }
+
+        if (idx === 8) {
+          return hdr + `
+            <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+              <thead>
+                <tr>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Mechanism</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Price/t</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Annual Cost</th>
+                  <th style="font-size:10px;font-weight:600;color:var(--gold-text);text-transform:uppercase;letter-spacing:0.5px;padding:5px 8px;border-bottom:1.5px solid rgba(0,0,0,0.1);text-align:left;">Coverage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">EU ETS (mandatory)</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);font-weight:700;color:#c62828;">€75–85</td><td class="fleet-mono" style="font-weight:700;color:#c62828;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">€832K–943K</td><td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">55% emissions</td></tr>
+                <tr><td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">FuelEU Penalty</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);font-weight:700;color:#c62828;">~€11.25/t</td><td class="fleet-mono" style="font-weight:700;color:#c62828;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">~€227K</td><td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">55% energy</td></tr>
+                <tr><td style="font-weight:600;padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-dark);">VCM Offset (Verra)</td><td class="fleet-mono" style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);color:var(--text-muted);">$10–15</td><td class="fleet-mono" style="color:var(--text-muted);padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">$202K–303K</td><td style="padding:7px 8px;border-bottom:1px solid rgba(0,0,0,0.055);">100% (voluntary)</td></tr>
+              </tbody>
+            </table>
+          `;
+        }
+
+        if (idx === 9) {
+          return hdr + `
+            <div style="background:rgba(230,81,0,0.08);border-left:3px solid #e65100;border-radius:4px;padding:8px 12px;margin-bottom:12px;font-size:12px;font-weight:600;color:#c77700">
+              ELEVATED RISK | CII D/E ratings increase PSC targeting & reduce chartering eligibility
+            </div>
+            ${[
+              {t:"Oil Major Vetting", d:"Min C for SIRE/CDI. D-rated vessels excluded."},
+              {t:"P&I Insurance", d:"D/E face higher premiums and surveys."},
+              {t:"Green Corridors", d:"D/E excluded from preferential access."},
+              {t:"Poseidon Finance", d:"5–15 bps adverse margin adjustment."},
+              {t:"PSC Targeting", d:"Increased inspection frequency."}
+            ].map((r, i) => `
+              <div style="padding:8px 0;border-bottom:${i < 4 ? "1px solid rgba(0,0,0,0.06)" : "none"}">
+                <div style="font-size:12.5px;font-weight:700;margin-bottom:2px;color:var(--text-dark);">${r.t}</div>
+                <div style="font-size:12px;color:var(--text-muted);line-height:1.4">${r.d}</div>
+              </div>
+            `).join("")}
+          `;
+        }
+
+        if (idx === 10) {
+          return hdr + `
+            <div style="position:relative;padding-left:24px">
+              <div style="position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--gold-brand),#c62828)"></div>
+              ${[
+                {d:"31 Aug 2025", t:"Submit revised SEEMP Part III", u:1},
+                {d:"31 Dec 2025", t:"CoC for SEEMP Part III on board", u:1},
+                {d:"1 Jan 2026", t:"Begin enhanced DCS collection", u:0},
+                {d:"31 Jan 2026", t:"Submit FuelEU Maritime Report for 2025", u:0},
+                {d:"31 Mar 2026", t:"Submit EU ETS via THETIS-MRV", u:0},
+                {d:"30 Apr 2026", t:"FuelEU pooling/banking deadline", u:0},
+                {d:"30 Jun 2026", t:"FuelEU DoC on board; penalty deadline", u:0},
+                {d:"2027", t:"First projected D — begin CAP", u:1},
+                {d:"2029", t:"Third consecutive D — CAP mandatory", u:1}
+              ].map(t => `
+                <div style="position:relative;margin-bottom:12px;padding-left:14px">
+                  <div style="position:absolute;left:-20px;top:4px;width:8px;height:8px;border-radius:50%;background:${t.u ? '#c62828' : 'var(--gold-brand)'};"></div>
+                  <div class="fleet-mono" style="font-size:11px;font-weight:700;color:${t.u ? '#c62828' : 'var(--gold-text)'};margin-bottom:1px">${t.d}</div>
+                  <div style="font-size:12px;color:var(--text-dark);">${t.t}</div>
+                </div>
+              `).join("")}
+            </div>
+            <div class="note">Three consecutive D → mandatory CAP. Single E → immediate CAP.</div>
+          `;
+        }
+
+        if (idx === 11) {
+          return hdr + `
+            <div style="background:rgba(230,81,0,0.08);border-radius:6px;padding:12px 14px;margin-bottom:12px;border-left:3px solid #e65100">
+              <div style="font-size:13px;font-weight:700;color:#c77700;margin-bottom:4px">Overall Risk: HIGH</div>
+              <div style="font-size:12px;font-weight:600;color:var(--text-dark);margin-bottom:4px">Marginal C 2026 → D from 2027 → CAP trigger by 2029</div>
+              <div style="font-size:11.5px;line-height:1.5;color:var(--text-muted)">2% headroom to C/D. D-rated 2027–2030. CAP mandatory after 3 consecutive D. FuelEU €227K/yr. Combined ~€3.34M over 2026–2028.</div>
+            </div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--text-dark);">Priority Actions</div>
+            ${[
+              {a:"Speed reduction 12 kn", im:"-6% CII · ~€50K/yr", u:"Immediate"},
+              {a:"Hull clean Q2 2026", im:"-4% CII", u:"Q2 2026"},
+              {a:"B20 biofuel trial", im:"Clears FuelEU", u:"Q3 2026"},
+              {a:"Fleet pooling", im:"€400K+/yr", u:"Q1 2026"},
+              {a:"CAP documentation", im:"Regulatory", u:"H2 2026"},
+              {a:"LNG feasibility", im:"-23% CII", u:"2026–27"}
+            ].map((r, i) => `
+              <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.06);font-size:12px">
+                <span class="fleet-mono" style="color:var(--gold-text);font-weight:700;min-width:18px">${i + 1}.</span>
+                <div style="flex:1">
+                  <span style="font-weight:600;color:var(--text-dark);">${r.a}</span>
+                  <div style="color:var(--text-muted);margin-top:1px;font-size:11px">${r.im}</div>
+                </div>
+                <span style="font-size:10px;font-weight:700;color:#c77700;align-self:center">${r.u}</span>
+              </div>
+            `).join("")}
+            <div class="note">CII per MEPC.352(78). EU ETS per Directive 2023/959. FuelEU per Reg. (EU) 2023/1805.</div>
+          `;
+        }
+
+        return '';
+      }
+
+      // --- Drawer State and Controls ---
+      let ndSelectedVesselIdx = 0;
+      let ndCurrentTab = 0;
+
+      function ndUpdateDrawerSection() {
+        const v = ND_VL[ndSelectedVesselIdx];
+        if (!v) return;
+        const bodyEl = document.getElementById('ndDrawerBody');
+        const secSelect = document.getElementById('ndDrawerSecSelect');
+        const prevBtn = document.getElementById('ndDrawerPrevBtn');
+        const nextBtn = document.getElementById('ndDrawerNextBtn');
+
+        if (secSelect) secSelect.value = String(ndCurrentTab);
+        if (prevBtn) prevBtn.disabled = (ndCurrentTab === 0);
+        if (nextBtn) nextBtn.disabled = (ndCurrentTab === 11);
+
+        if (bodyEl) {
+          bodyEl.innerHTML = ndSecHTML(ndCurrentTab, v);
+          bodyEl.scrollTop = 0;
+        }
+      }
+
+      function ndOpenDrawer(vesselIdx, tabIdx = 0) {
+        const v = ND_VL[vesselIdx];
+        if (!v) return;
+        ndSelectedVesselIdx = vesselIdx;
+        ndCurrentTab = (tabIdx >= 0 && tabIdx <= 11) ? tabIdx : 0;
+
+        const nameEl = document.getElementById('ndDrawerVesselName');
+        const metaEl = document.getElementById('ndDrawerVesselMeta');
+        const subMetaEl = document.getElementById('ndDrawerVesselSubMeta');
+        const gradeBadgeEl = document.getElementById('ndDrawerGradeBadge');
+        const riskBadgeEl = document.getElementById('ndDrawerRiskBadge');
+        const capBadgeEl = document.getElementById('ndDrawerCapBadge');
+        const overlay = document.getElementById('ndDrawerOverlay');
+        const drawer = document.getElementById('ndVesselDrawer');
+
+        if (nameEl) nameEl.textContent = v.nm;
+        if (metaEl) metaEl.textContent = `IMO ${v.imo} • ${v.sub} • ${v.ds} DWT`;
+        if (subMetaEl) subMetaEl.textContent = `AI Risk: ${v.rk} — CII ${v.cii.toFixed(2)}`;
+
+        if (gradeBadgeEl) {
+          gradeBadgeEl.className = `cii-grade-badge grade-${v.rt}`;
+          gradeBadgeEl.textContent = v.rt;
+          gradeBadgeEl.style.minWidth = '28px';
+          gradeBadgeEl.style.height = '22px';
+          gradeBadgeEl.style.fontSize = '13px';
+        }
+
+        if (riskBadgeEl) {
+          riskBadgeEl.innerHTML = ndTag(v.rk);
+        }
+
+        if (capBadgeEl) {
+          if (v.cap && v.cap !== '---') {
+            capBadgeEl.style.display = 'inline-block';
+            capBadgeEl.textContent = `CAP ${v.cap}`;
+          } else {
+            capBadgeEl.style.display = 'none';
+          }
+        }
+
+        ndUpdateDrawerSection();
+
+        if (overlay) overlay.classList.add('open');
+        if (drawer) drawer.classList.add('open');
+      }
+
+      function ndCloseDrawer() {
+        const overlay = document.getElementById('ndDrawerOverlay');
+        const drawer = document.getElementById('ndVesselDrawer');
+        if (overlay) overlay.classList.remove('open');
+        if (drawer) drawer.classList.remove('open');
+      }
+
+      function ndOpenVesselByName(name, secIdx) {
+        const idx = ND_VL.findIndex(x => x.nm === name);
+        if (idx >= 0) ndOpenDrawer(idx, secIdx !== undefined && secIdx >= 0 ? secIdx : 0);
+      }
+
+      function ndCloseDrawer() {
+        const overlay = document.getElementById('ndDrawerOverlay');
+        const drawer = document.getElementById('ndVesselDrawer');
+        if (overlay) overlay.classList.remove('open');
+        if (drawer) drawer.classList.remove('open');
+      }
+
+      function ndOpenVesselByName(name, secIdx) {
+        const idx = ND_VL.findIndex(x => x.nm === name);
+        if (idx >= 0) ndOpenDrawer(idx, secIdx !== undefined && secIdx >= 0 ? secIdx : 0);
+      }
+
+      // --- Modal Open / Close ---
+      function ndOpenModal(htmlContent) {
+        const modal = document.getElementById('ndReportModal');
+        const content = document.getElementById('ndReportModalContent');
+        const overlay = document.getElementById('ndDrawerOverlay');
+        if (!modal || !content) return;
+        content.innerHTML = htmlContent;
+        if (overlay) overlay.classList.add('open');
+        modal.classList.add('open');
+      }
+
+      function ndCloseModal() {
+        const modal = document.getElementById('ndReportModal');
+        const overlay = document.getElementById('ndDrawerOverlay');
+        if (modal) modal.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
+      }
+
+      // --- Excel Export Helper using SheetJS ---
+      function ndExportFleetExcel() {
+        if (typeof XLSX === 'undefined') {
+          showToast('XLSX library not loaded. Generating PDF report instead...');
+          return;
+        }
+
+        const rows = ND_VL.map((v, idx) => ({
+          "SLNO": idx + 1,
+          "Vessel Name": v.nm,
+          "IMO Number": v.imo,
+          "Type": v.tp,
+          "Subtype": v.sub,
+          "DWT": v.dwt,
+          "Built Year": v.yr,
+          "Flag": v.fl,
+          "Class Society": v.cl,
+          "2026 Attained CII": v.cii,
+          "2026 Grade": v.rt,
+          "2030 Grade Trajectory": v.r30,
+          "Annual CO2 (MT)": v.co2,
+          "EU ETS 2026 (€k)": v.ets,
+          "FuelEU 2026 (€k)": v.fue,
+          "Risk Level": v.rk,
+          "CAP Due Year": v.cap,
+          "Poseidon Principles": v.pp,
+          "Attained EEXI": v.eA,
+          "Required EEXI": v.eR,
+          "EEXI Status": v.eS
+        }));
+
+        const ws = XLSX.utils.json_to_sheet(rows);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Fleet CII Summary");
+        XLSX.writeFile(wb, "Fleet_CII_Risk_Summary_2026.xlsx");
+        showToast("Fleet data exported to Excel successfully!");
+      }
+
+      // --- Fleet Report AI Generation Engine ---
+      function ndStartFleetGeneration() {
+        const animHTML = `
+          <div style="text-align:center;padding:10px 0;">
+            <div style="width:48px;height:48px;border:3px solid #EDE4D0;border-top-color:var(--gold-brand);border-radius:50%;margin:0 auto 16px;animation:ndSpin 1s linear infinite;"></div>
+            <div class="fleet-mono" style="font-size:22px;font-weight:700;color:var(--gold-text);margin-bottom:6px;" id="ndGenPct">0%</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:8px;">Generating Fleet CII Risk Summary with AI</div>
+            <div id="ndGenStep" style="font-size:12px;color:var(--text-muted);margin-bottom:20px;min-height:18px;">Initializing analysis…</div>
+            <div class="fleet-prog-track">
+              <div class="fleet-prog-bar" id="ndGenBar" style="width:0%;"></div>
+            </div>
+            <div class="fleet-mono" style="font-size:10.5px;color:var(--text-muted);">Powered by Nautilux AI Intelligence Engine</div>
+          </div>
+        `;
+        ndOpenModal(animHTML);
+
+        const steps = [
+          "Aggregating 12 vessels voyage and emissions data…",
+          "Computing CII trajectories through 2030…",
+          "Modeling EU ETS allowances at €75/tCO₂…",
+          "Auditing FuelEU Maritime GHG deficit & pooling…",
+          "Synthesizing CAP remediation timeline…",
+          "Compiling executive intelligence report…"
+        ];
+
+        let pct = 0;
+        const interval = setInterval(() => {
+          pct += 4;
+          const bar = document.getElementById('ndGenBar');
+          const pctEl = document.getElementById('ndGenPct');
+          const stepEl = document.getElementById('ndGenStep');
+
+          if (bar) bar.style.width = `${pct}%`;
+          if (pctEl) pctEl.textContent = `${pct}%`;
+
+          const stepIdx = Math.min(Math.floor((pct / 100) * steps.length), steps.length - 1);
+          if (stepEl) stepEl.textContent = steps[stepIdx];
+
+          if (pct >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              const doneHTML = `
+                <div style="text-align:center;padding:10px 0;">
+                  <div style="width:44px;height:44px;background:rgba(46,125,50,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#2e7d32;">
+                    <span class="material-symbols-outlined" style="font-size:26px;">check_circle</span>
+                  </div>
+                  <div style="font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:4px;">Fleet CII Risk Summary Ready</div>
+                  <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;">12 Vessels • 2026–2030 Forecast • EU ETS €6.37M • FuelEU €1.86M</div>
+                  
+                  <div style="display:flex;flex-direction:column;gap:8px;max-width:320px;margin:0 auto 16px;">
+                    <button type="button" class="btn-fleet-report" id="ndBtnDownloadPdf" style="width:100%;justify-content:center;">
+                      <span class="material-symbols-outlined">download</span> Download Summary Report (PDF)
+                    </button>
+                    <button type="button" class="btn-modal-close-outlined" id="ndBtnExportExcel" style="width:100%;justify-content:center;display:flex;align-items:center;gap:6px;">
+                      <span class="material-symbols-outlined" style="font-size:17px;">table_view</span> Export Fleet Data (Excel)
+                    </button>
+                  </div>
+                  <button type="button" class="btn-modal-close-outlined" id="ndBtnCloseModalDone" style="height:30px;padding:0 18px;font-size:11px;">Done</button>
+                </div>
+              `;
+              ndOpenModal(doneHTML);
+
+              const btnPdf = document.getElementById('ndBtnDownloadPdf');
+              if (btnPdf) {
+                btnPdf.addEventListener('click', () => {
+                  const reportPath = 'assets/CII_Risk_Forecast_Report_Filled_1.pdf';
+                  const fileName   = 'CII_Fleet_Risk_Forecast_Summary_2026.pdf';
+                  fetch(reportPath)
+                    .then(res => res.blob())
+                    .then(blob => {
+                      const url = window.URL.createObjectURL(blob);
+                      const a = document.createElement('a');
+                      a.href = url;
+                      a.download = fileName;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                      window.URL.revokeObjectURL(url);
+                    })
+                    .catch(() => {
+                      const a = document.createElement('a');
+                      a.href = reportPath;
+                      a.download = fileName;
+                      document.body.appendChild(a);
+                      a.click();
+                      document.body.removeChild(a);
+                    });
+                  showToast('Downloading Fleet CII Risk Forecast Report (PDF)…');
+                });
+              }
+
+              const btnXlsx = document.getElementById('ndBtnExportExcel');
+              if (btnXlsx) {
+                btnXlsx.addEventListener('click', ndExportFleetExcel);
+              }
+
+              const btnDone = document.getElementById('ndBtnCloseModalDone');
+              if (btnDone) {
+                btnDone.addEventListener('click', ndCloseModal);
+              }
+            }, 300);
+          }
+        }, 50);
+      }
+
+      // --- Vessel Report AI Generation Engine ---
+      function ndStartVesselReportGeneration(vessel) {
+        const animHTML = `
+          <div style="text-align:center;padding:10px 0;">
+            <div style="width:48px;height:48px;border:3px solid #EDE4D0;border-top-color:var(--gold-brand);border-radius:50%;margin:0 auto 16px;animation:ndSpin 1s linear infinite;"></div>
+            <div class="fleet-mono" style="font-size:22px;font-weight:700;color:var(--gold-text);margin-bottom:6px;" id="ndGenPct">0%</div>
+            <div style="font-size:15px;font-weight:700;color:var(--text-dark);margin-bottom:8px;">Generating CII Report for ${vessel.nm}</div>
+            <div id="ndGenStep" style="font-size:12px;color:var(--text-muted);margin-bottom:20px;min-height:18px;">Calculating voyage performance…</div>
+            <div class="fleet-prog-track">
+              <div class="fleet-prog-bar" id="ndGenBar" style="width:0%;"></div>
+            </div>
+            <div class="fleet-mono" style="font-size:10.5px;color:var(--text-muted);">Powered by Nautilux AI Intelligence Engine</div>
+          </div>
+        `;
+        ndOpenModal(animHTML);
+
+        let pct = 0;
+        const interval = setInterval(() => {
+          pct += 5;
+          const bar = document.getElementById('ndGenBar');
+          const pctEl = document.getElementById('ndGenPct');
+          if (bar) bar.style.width = `${pct}%`;
+          if (pctEl) pctEl.textContent = `${pct}%`;
+
+          if (pct >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              const doneHTML = `
+                <div style="text-align:center;padding:10px 0;">
+                  <div style="width:44px;height:44px;background:rgba(46,125,50,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#2e7d32;">
+                    <span class="material-symbols-outlined" style="font-size:26px;">check_circle</span>
+                  </div>
+                  <div style="font-size:16px;font-weight:700;color:var(--text-dark);margin-bottom:4px;">CII Report for ${vessel.nm} Ready</div>
+                  <div style="font-size:12px;color:var(--text-muted);margin-bottom:20px;">Grade: ${vessel.rt} • CII ${vessel.cii.toFixed(2)} • ETS €${vessel.ets}K</div>
+                  
+                  <div style="display:flex;flex-direction:column;gap:8px;max-width:320px;margin:0 auto 16px;">
+                    <button type="button" class="btn-fleet-report" id="ndBtnDownloadVesselPdf" style="width:100%;justify-content:center;">
+                      <span class="material-symbols-outlined">download</span> Download Vessel CII Report (PDF)
+                    </button>
+                  </div>
+                  <button type="button" class="btn-modal-close-outlined" id="ndBtnCloseModalVesselDone" style="height:30px;padding:0 18px;font-size:11px;">Done</button>
+                </div>
+              `;
+              ndOpenModal(doneHTML);
+
+              const btnPdf = document.getElementById('ndBtnDownloadVesselPdf');
+              if (btnPdf) {
+                btnPdf.addEventListener('click', () => {
+                  const reportPath = 'assets/CII_Risk_Forecast_Report_Filled_1.pdf';
+                  const fileName   = `${vessel.nm.replace(/\s+/g, '_')}_CII_Risk_Report.pdf`;
+                  const a = document.createElement('a');
+                  a.href = reportPath;
+                  a.download = fileName;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  showToast(`Downloading CII Report for ${vessel.nm}…`);
+                });
+              }
+
+              const btnDone = document.getElementById('ndBtnCloseModalVesselDone');
+              if (btnDone) {
+                btnDone.addEventListener('click', ndCloseModal);
+              }
+            }, 300);
+          }
+        }, 50);
+      }
+
+      // --- Modal Breakdowns for KPI Card Clicks ---
+      function ndShowCo2Modal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">Fleet CO₂ Emissions Breakdown</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <table class="fleet-matrix-table">
+            <thead>
+              <tr>
+                <th>Vessel</th>
+                <th style="text-align:right;">CO₂ (t/yr)</th>
+                <th style="text-align:right;">% of Fleet</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        [...ND_VL].sort((a, b) => b.co2 - a.co2).forEach(x => {
+          h += `
+            <tr>
+              <td style="font-weight:600;">${x.nm}</td>
+              <td class="fleet-mono" style="text-align:right;">${x.co2.toLocaleString()}</td>
+              <td class="fleet-mono" style="text-align:right;color:var(--gold-text);">${(x.co2 / totC * 100).toFixed(1)}%</td>
+            </tr>
+          `;
+        });
+        h += `</tbody></table>`;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
+      function ndShowEtsModal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">EU ETS Exposure (2026 Cost)</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <table class="fleet-matrix-table">
+            <thead>
+              <tr>
+                <th>Vessel</th>
+                <th style="text-align:center;">Grade</th>
+                <th style="text-align:right;">ETS Cost / yr</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        [...ND_VL].sort((a, b) => b.ets - a.ets).forEach(x => {
+          h += `
+            <tr>
+              <td style="font-weight:600;">${x.nm}</td>
+              <td style="text-align:center;">${ndRg(x.rt)}</td>
+              <td class="fleet-mono" style="text-align:right;font-weight:700;color:#b71c1c;">€${x.ets}K</td>
+            </tr>
+          `;
+        });
+        h += `</tbody></table>`;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
+      function ndShowFueModal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">FuelEU Maritime Compliance Status</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <table class="fleet-matrix-table">
+            <thead>
+              <tr>
+                <th>Vessel</th>
+                <th style="text-align:right;">GHG Intensity</th>
+                <th style="text-align:right;">Deficit</th>
+                <th style="text-align:right;">Penalty / yr</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        ND_VL.filter(x => x.fue > 0).forEach(x => {
+          h += `
+            <tr>
+              <td style="font-weight:600;">${x.nm}</td>
+              <td class="fleet-mono" style="text-align:right;">${x.ghg}</td>
+              <td class="fleet-mono" style="text-align:right;color:#b71c1c;">${x.ghgD}</td>
+              <td class="fleet-mono" style="text-align:right;font-weight:700;color:#b71c1c;">${x.ghgP}</td>
+            </tr>
+          `;
+        });
+        h += `</tbody></table>`;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
+      function ndShowRiskModal() {
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">D & E Vessels & Corrective Action Plan (CAP)</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+          <table class="fleet-matrix-table">
+            <thead>
+              <tr>
+                <th>Vessel</th>
+                <th style="text-align:center;">2026</th>
+                <th style="text-align:center;">2030</th>
+                <th style="text-align:center;">CAP Due</th>
+                <th style="text-align:center;">Risk Level</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+        ND_VL.filter(x => x.rt === "D" || x.rt === "E").forEach(x => {
+          h += `
+            <tr>
+              <td style="font-weight:600;">${x.nm}</td>
+              <td style="text-align:center;">${ndRg(x.rt)}</td>
+              <td style="text-align:center;">${ndRg(x.r30)}</td>
+              <td class="fleet-mono" style="text-align:center;font-weight:700;color:#b71c1c;">${x.cap}</td>
+              <td style="text-align:center;">${ndTag(x.rk)}</td>
+            </tr>
+          `;
+        });
+        h += `</tbody></table>`;
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
+      function ndShowDistributionModal(isCurrent) {
+        const dist = isCurrent ? ND_DN : ND_D30;
+        const title = isCurrent ? "2026 Fleet Grade Distribution" : "2030 Projected Trajectory";
+        let h = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border-canvas);">
+            <div class="fleet-card-title">${title}</div>
+            <button type="button" class="fleet-drawer-close" id="ndModalCloseBtn"><span class="material-symbols-outlined">close</span></button>
+          </div>
+        `;
+        ['A', 'B', 'C', 'D', 'E'].forEach(r => {
+          h += `
+            <div style="margin-bottom:12px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                ${ndRg(r)}
+                <span style="font-size:12.5px;font-weight:700;color:var(--text-dark);">${dist[r].c} vessel${dist[r].c !== 1 ? 's' : ''}</span>
+                <span style="color:var(--text-muted);font-size:11.5px;">(${Math.round(dist[r].c / 12 * 100)}%)</span>
+              </div>
+          `;
+          if (dist[r].v.length) {
+            dist[r].v.forEach(nm => {
+              const vv = ND_VL.find(x => x.nm === nm);
+              if (vv) {
+                h += `
+                  <div style="display:flex;align-items:center;gap:8px;padding:4px 0 4px 32px;border-bottom:1px solid rgba(0,0,0,0.06);">
+                    <span style="font-size:12px;font-weight:600;flex:1;color:var(--text-dark);">${vv.nm}</span>
+                    <span class="fleet-mono" style="font-size:11.5px;font-weight:700;">${vv.cii.toFixed(2)}</span>
+                    <span class="fleet-mono" style="font-size:11.5px;color:#b71c1c;">€${vv.ets}K</span>
+                  </div>
+                `;
+              }
+            });
+          } else {
+            h += `<div style="color:var(--text-muted);padding-left:32px;font-size:11.5px;font-style:italic;">No vessels</div>`;
+          }
+          h += `</div>`;
+        });
+        ndOpenModal(h);
+        document.getElementById('ndModalCloseBtn')?.addEventListener('click', ndCloseModal);
+      }
+
+      // --- Initialize Dashboard ---
+      let ndDashboardInitialized = false;
+      function ndInit() {
+        if (ndDashboardInitialized) return;
+        ndDashboardInitialized = true;
+
+        // Render KPI distribution bars
+        ndRenderDistBars('ndDistCurrentBars', ND_DN);
+        ndRenderDistBars('ndDist2030Bars', ND_D30);
+
+        // Render Matrix table
+        ndRenderFleetTable('all');
+
+        // Render Priority Actions & Calendar
+        ndRenderPriorityActions();
+        ndRenderComplianceCalendar();
+
+        // Wire filter pills
+        const pillWrap = document.getElementById('ndFleetFilterPills');
+        if (pillWrap) {
+          pillWrap.addEventListener('click', e => {
+            const btn = e.target.closest('.fleet-pill');
+            if (!btn) return;
+            pillWrap.querySelectorAll('.fleet-pill').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            ndCurrentFilter = btn.dataset.filter || 'all';
+            ndRenderFleetTable(ndCurrentFilter);
+          });
+        }
+
+        // Wire Table row clicks & view button clicks
+        const tbody = document.getElementById('ndFleetTableBody');
+        if (tbody) {
+          tbody.addEventListener('click', e => {
+            const tr = e.target.closest('tr');
+            if (tr && tr.dataset.vesselIdx !== undefined) {
+              const idx = parseInt(tr.dataset.vesselIdx, 10);
+              ndOpenDrawer(idx);
+            }
+          });
+        }
+
+        // Wire Drawer close buttons
+        const closeDrawerBtn = document.getElementById('ndCloseDrawerBtn');
+        if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', ndCloseDrawer);
+
+        const overlay = document.getElementById('ndDrawerOverlay');
+        if (overlay) {
+          overlay.addEventListener('click', () => {
+            ndCloseDrawer();
+            ndCloseModal();
+          });
+        }
+
+        // Wire Drawer section selector and navigation controls
+        const secSelect = document.getElementById('ndDrawerSecSelect');
+        if (secSelect) {
+          secSelect.addEventListener('change', e => {
+            ndCurrentTab = parseInt(e.target.value, 10);
+            ndUpdateDrawerSection();
+          });
+        }
+
+        const prevBtn = document.getElementById('ndDrawerPrevBtn');
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            if (ndCurrentTab > 0) {
+              ndCurrentTab--;
+              ndUpdateDrawerSection();
+            }
+          });
+        }
+
+        const nextBtn = document.getElementById('ndDrawerNextBtn');
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            if (ndCurrentTab < 11) {
+              ndCurrentTab++;
+              ndUpdateDrawerSection();
+            }
+          });
+        }
+
+        // Wire Drawer report button
+        const btnVesselReport = document.getElementById('ndBtnVesselReport');
+        if (btnVesselReport) {
+          btnVesselReport.addEventListener('click', () => {
+            ndCloseDrawer();
+            ndStartVesselReportGeneration(ND_VL[ndSelectedVesselIdx]);
+          });
+        }
+
+        // Wire Fleet Report Button
+        const btnGenReport = document.getElementById('ndBtnGenFleetReport');
+        if (btnGenReport) {
+          btnGenReport.addEventListener('click', ndStartFleetGeneration);
+        }
+
+        // Wire KPI Card click events
+        document.getElementById('ndKpiCardCo2')?.addEventListener('click', ndShowCo2Modal);
+        document.getElementById('ndKpiCardEts')?.addEventListener('click', ndShowEtsModal);
+        document.getElementById('ndKpiCardFue')?.addEventListener('click', ndShowFueModal);
+        document.getElementById('ndKpiCardRisk')?.addEventListener('click', ndShowRiskModal);
+        document.getElementById('ndDistCardNow')?.addEventListener('click', () => ndShowDistributionModal(true));
+        document.getElementById('ndDistCard30')?.addEventListener('click', () => ndShowDistributionModal(false));
+
+        // Wire Priority Action "Inspect" buttons
+        const actList = document.getElementById('ndPriorityActionsList');
+        if (actList) {
+          actList.addEventListener('click', e => {
+            const btn = e.target.closest('.nd-act-inspect');
+            if (!btn) return;
+            const vesselName = btn.dataset.vessel;
+            const secIdx = parseInt(btn.dataset.sec, 10);
+            const idx = ND_VL.findIndex(x => x.nm === vesselName);
+            if (idx >= 0) ndOpenDrawer(idx, !isNaN(secIdx) && secIdx >= 0 ? secIdx : 0);
+          });
+        }
+
+        // Close drawer / modal on Escape key
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') {
+            const drawer = document.getElementById('ndVesselDrawer');
+            const modal = document.getElementById('ndReportModal');
+            if (modal && modal.classList.contains('open')) {
+              ndCloseModal();
+            } else if (drawer && drawer.classList.contains('open')) {
+              ndCloseDrawer();
+            }
+          }
+        });
+      }
+
+      // --- Hook into Tab Switch Event ---
+      const tabBtnFleetOverview = document.getElementById('tabBtnFleetOverview');
+      if (tabBtnFleetOverview) {
+        tabBtnFleetOverview.addEventListener('click', () => {
+          setTimeout(ndInit, 50);
+        });
+      }
+
+      // Initialize on load if Fleet Overview is active
+      const panel = document.getElementById('tabContentFleetOverview');
+      if (panel && panel.classList.contains('active')) {
+        ndInit();
+      }
+    })();
   </script>
 </body>
 
