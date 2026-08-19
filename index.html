@@ -2522,6 +2522,7 @@
       font-size: 10px; font-weight: 600; white-space: nowrap;
     }
     .cii-status-badge.compliant { background-color: rgba(46,125,50,0.1); color: #2e7d32; border: 1px solid rgba(46,125,50,0.25); }
+    .cii-status-badge.marginal { background-color: rgba(255,193,7,0.15); color: #f57f17; border: 1px solid rgba(255,193,7,0.4); }
     .cii-status-badge.non-compliant { background-color: rgba(198,40,40,0.08); color: #c62828; border: 1px solid rgba(198,40,40,0.2); }
     .cii-results-note {
       font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; margin-top: 6px;
@@ -3498,104 +3499,87 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    /* Donut Chart Layout */
+    /* Grade Distribution Bar Chart Layout */
     .fleet-dist-content {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
       flex: 1;
-      gap: 12px;
-      padding-top: 4px;
+      gap: 0;
+      padding-top: 6px;
     }
-    .fleet-donut-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 4px 0;
-      flex: 1;
-      width: 100%;
-    }
-    .fleet-donut-chart-container {
-      position: relative;
-      width: 135px;
-      height: 135px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .fleet-donut-svg {
-      width: 100%;
-      height: 100%;
-      transform: rotate(-90deg);
-      overflow: visible;
-    }
-    .fleet-donut-slice {
-      transition: stroke-dasharray 0.4s ease, stroke-dashoffset 0.4s ease, opacity 0.2s ease;
-      cursor: pointer;
-    }
-    .fleet-donut-slice:hover {
-      opacity: 0.85;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
-    }
-    .fleet-donut-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    .fleet-grade-bars {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      pointer-events: none;
+      justify-content: space-between;
+      flex: 1;
     }
-    .fleet-donut-number {
-      font-size: 24px;
+    .fleet-grade-row {
+      display: grid;
+      grid-template-columns: 18px 1fr 90px;
+      align-items: center;
+      gap: 10px;
+      min-height: 28px;
+    }
+    .fleet-grade-label {
+      font-size: 11.5px;
       font-weight: 800;
-      color: var(--text-dark, #1e293b);
+      text-align: center;
       line-height: 1;
-      font-family: inherit;
+      flex-shrink: 0;
+    }
+    .fleet-grade-track {
+      height: 10px;
+      background: rgba(0, 0, 0, 0.055);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+    .fleet-grade-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.35s ease;
+    }
+    .fleet-grade-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .fleet-grade-count {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-dark);
+      min-width: 52px;
+      text-align: right;
       font-variant-numeric: tabular-nums;
     }
-    .fleet-donut-label {
+    .fleet-grade-pct {
       font-size: 10.5px;
       font-weight: 600;
-      color: var(--text-muted, #64748b);
-      margin-top: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      min-width: 28px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
     }
-
-    /* Donut Legend Row (A 1   B 3   C 4   D 3   E 1) */
-    .fleet-donut-legend {
+    .fleet-grade-total-row {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      padding-top: 8px;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      justify-content: flex-end;
+      padding-top: 9px;
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+      margin-top: 4px;
+      gap: 4px;
     }
-    .fleet-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 4px 8px;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-      cursor: pointer;
-      transition: background 0.15s ease;
+    .fleet-grade-total-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-muted);
     }
-    .fleet-legend-item:hover {
-      background: rgba(255, 255, 255, 0.95);
-      border-color: rgba(0, 0, 0, 0.15);
-    }
-    .fleet-legend-count {
-      font-size: 12.5px;
+    .fleet-grade-total-val {
+      font-size: 11px;
       font-weight: 700;
-      color: var(--text-dark, #1e293b);
+      color: var(--text-dark);
       font-variant-numeric: tabular-nums;
     }
 
@@ -3633,78 +3617,103 @@
     .fleet-cost-dot.dot-fue {
       background-color: #ffb74d;
     }
+    /* 3-Year Cost Exposure — Vertical Column Chart */
     .fleet-cost-body {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       flex: 1;
-      gap: 12px;
-      padding-top: 4px;
+      gap: 10px;
+      padding-top: 6px;
     }
-    .fleet-cost-bars {
+    .fleet-cost-column-chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      gap: 12px;
+      flex: 1;
+      padding: 0 4px;
+      min-height: 140px;
+    }
+    .fleet-cost-col-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      justify-content: center;
-      flex: 1;
-    }
-    .fleet-cost-row {
-      display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 5px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      gap: 4px;
+      flex: 1;
+      max-width: 100px;
+      position: relative;
     }
-    .fleet-cost-year {
-      font-size: 12px;
+    .fleet-cost-col-total {
+      font-size: 11px;
       font-weight: 700;
       color: var(--text-dark);
-      min-width: 36px;
-      flex-shrink: 0;
       font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      line-height: 1;
+      margin-bottom: 3px;
     }
-    .fleet-cost-track {
-      flex: 1;
+    .fleet-cost-col-stack {
       display: flex;
-      height: 22px;
-      background: rgba(0, 0, 0, 0.06);
-      border-radius: 4px;
+      flex-direction: column-reverse;
+      width: 52px;
+      border-radius: 3px 3px 0 0;
       overflow: hidden;
       position: relative;
     }
-    .fleet-cost-bar {
-      height: 100%;
+    .fleet-cost-col-seg {
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 10px;
       font-weight: 700;
-      line-height: 1;
-      white-space: nowrap;
+      color: #fff;
       overflow: hidden;
-      text-overflow: clip;
-      padding: 0 4px;
-      transition: width 0.4s ease;
+      white-space: nowrap;
+      transition: height 0.4s ease;
       font-variant-numeric: tabular-nums;
     }
-    .fleet-cost-bar.bar-ets {
+    .fleet-cost-col-seg.seg-ets {
       background-color: #e57373;
-      color: #ffffff;
     }
-    .fleet-cost-bar.bar-fue {
+    .fleet-cost-col-seg.seg-fue {
       background-color: #ffb74d;
       color: #1a1a1a;
     }
-    .fleet-cost-total {
-      font-size: 12px;
+    .fleet-cost-col-axis-label {
+      font-size: 11.5px;
       font-weight: 700;
       color: var(--text-dark);
-      min-width: 58px;
-      text-align: right;
-      flex-shrink: 0;
+      margin-top: 5px;
       font-variant-numeric: tabular-nums;
+    }
+    .fleet-cost-col-axis-line {
+      height: 1px;
+      background: rgba(0, 0, 0, 0.12);
+      width: 100%;
+      margin: 0;
+    }
+    .fleet-cost-tooltip {
+      position: absolute;
+      bottom: calc(100% + 6px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text-dark, #1e293b);
+      color: #fff;
+      border-radius: 5px;
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      line-height: 1.6;
+    }
+    .fleet-cost-col-group:hover .fleet-cost-tooltip {
+      opacity: 1;
     }
     .fleet-cost-summary-footer {
       display: flex;
@@ -3714,7 +3723,7 @@
       background: rgba(183, 28, 28, 0.06);
       border-left: 3px solid #b71c1c;
       border-radius: 4px;
-      margin-top: auto;
+      flex-shrink: 0;
     }
     .fleet-cost-summary-label {
       font-size: 11px;
@@ -4658,10 +4667,10 @@
         <div class="cii-page-body" id="fleetOverviewBody">
 
           <!-- Top D/E Alert Banner (Source of Truth: NautiluxCII_WorkingDemo.html) -->
-          <div id="ndAlertBanner" style="background:var(--rdB);border-left:3px solid var(--rd);border-radius:6px;padding:12px 18px;margin-bottom:20px;display:none;">
+          <!-- <div id="ndAlertBanner" style="background:var(--rdB);border-left:3px solid var(--rd);border-radius:6px;padding:12px 18px;margin-bottom:20px;display:none;">
             <div style="font-size:12px;font-weight:700;color:var(--rd);margin-bottom:2px;" id="ndAlertTitle">4 Vessels Rated D or E</div>
             <div style="font-size:13px;color:var(--text-dark);" id="ndAlertDesc">MT Pacific Dawn requires immediate CAP. 3 D-rated with CAP triggers approaching.</div>
-          </div>
+          </div> -->
 
           <!-- 6 Top KPI Cards (Source of Truth: NautiluxCII_WorkingDemo.html) -->
           <div class="fleet-kpi-grid" id="ndKpiCardsGrid" style="grid-template-columns: repeat(6, 1fr);">
@@ -4709,19 +4718,12 @@
                 </div>
               </div>
               <div class="fleet-dist-content">
-                <div class="fleet-donut-wrapper">
-                  <div class="fleet-donut-chart-container" id="ndDonutContainer" style="cursor:pointer;" title="Click to view detailed vessel distribution modal">
-                    <svg class="fleet-donut-svg" viewBox="0 0 160 160" aria-label="Fleet Grade Donut Chart" id="ndDonutSvg">
-                      <!-- Donut arcs dynamically rendered -->
-                    </svg>
-                    <div class="fleet-donut-center">
-                      <span class="fleet-donut-number" id="ndDonutCount">12</span>
-                      <span class="fleet-donut-label">Vessels</span>
-                    </div>
-                  </div>
+                <div class="fleet-grade-bars" id="ndGradeBarsContainer">
+                  <!-- Grade bars dynamically rendered -->
                 </div>
-                <div class="fleet-donut-legend" id="ndDonutLegend">
-                  <!-- Grade items (A 1, B 3, C 4, D 3, E 1) dynamically rendered -->
+                <div class="fleet-grade-total-row">
+                  <span class="fleet-grade-total-label">Total</span>
+                  <span class="fleet-grade-total-val" id="ndGradeTotalVal">12 Vessels</span>
                 </div>
               </div>
             </div>
@@ -4729,7 +4731,7 @@
             <!-- Card 2: 3-Year Cost Exposure -->
             <div class="fleet-card fleet-card-clickable" id="ndCostExposureCard" title="Click to view 3-Year Cost Exposure breakdown">
               <div class="fleet-card-header">
-                <span class="fleet-card-title">3-Year Cost Exposure</span>
+                <span class="fleet-card-title">3-Year Fleet Exposure</span>
                 <div class="fleet-cost-header-right" style="display:flex;align-items:center;gap:12px;">
                   <div class="fleet-cost-legend">
                     <span class="fleet-cost-legend-item"><span class="fleet-cost-dot dot-ets"></span>EU ETS</span>
@@ -4741,7 +4743,8 @@
                 </div>
               </div>
               <div class="fleet-cost-body">
-                <div id="ndCostExposureBars" class="fleet-cost-bars"></div>
+                <div id="ndCostExposureBars" class="fleet-cost-column-chart"></div>
+                <div class="fleet-cost-col-axis-line"></div>
                 <div class="fleet-cost-summary-footer">
                   <span class="fleet-cost-summary-label">Total 3-Year Exposure</span>
                   <span class="fleet-cost-summary-val">€26.0M</span>
@@ -8336,8 +8339,11 @@
 
       // --- Helper Functions ---
       function ndTag(v) {
-        if (v === 'Compliant' || v === 'Aligned' || v === 'Low') {
+        if (v === 'Aligned' || v === 'Compliant' || v === 'Low') {
           return `<span class="cii-status-badge compliant">${v}</span>`;
+        }
+        if (v === 'Marginal') {
+          return `<span class="cii-status-badge marginal">${v}</span>`;
         }
         return `<span class="cii-status-badge non-compliant">${v}</span>`;
       }
@@ -8359,66 +8365,60 @@
       // State for Fleet Grade Distribution Tab
       let ndDistActiveYear = '2026';
 
-      // --- Render SVG Donut Chart ---
-      function ndRenderDonutChart(distObj, year) {
-        const svg = document.getElementById('ndDonutSvg');
-        const legend = document.getElementById('ndDonutLegend');
-        if (!svg || !legend) return;
+      // --- Render Horizontal Grade Distribution Bars ---
+      function ndRenderGradeBars(distObj, year) {
+        const container = document.getElementById('ndGradeBarsContainer');
+        if (!container) return;
 
         const grades = ['A', 'B', 'C', 'D', 'E'];
         const gradeColors = {
           A: '#2e7d32',
           B: '#4caf50',
-          C: '#fbc02d',
+          C: '#c9a800',
+          D: '#ef6c00',
+          E: '#c62828'
+        };
+        const gradeLabelColors = {
+          A: '#2e7d32',
+          B: '#4caf50',
+          C: '#8a7200',
           D: '#ef6c00',
           E: '#c62828'
         };
 
         const total = ND_VL.length; // 12
-        const countEl = document.getElementById('ndDonutCount');
-        if (countEl) countEl.textContent = total;
+        // For 2030, total active is still 12 but A is 0
+        const dist2030Total = Object.values(ND_D30).reduce((s, x) => s + x.c, 0);
+        const displayTotal = year === '2030' ? dist2030Total : total;
 
-        const R = 55;
-        const cx = 80;
-        const cy = 80;
-        const C = 2 * Math.PI * R;
-        let strokeDashoffset = 0;
+        const totalEl = document.getElementById('ndGradeTotalVal');
+        if (totalEl) totalEl.textContent = `${displayTotal} Vessel${displayTotal !== 1 ? 's' : ''}`;
 
-        let svgHtml = `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="16" />`;
-        let legendHtml = '';
+        // Max count across all grades (for proportional bars)
+        const maxCount = Math.max(...grades.map(g => distObj[g] ? distObj[g].c : 0), 1);
 
+        let html = '';
         grades.forEach(g => {
-          const count = distObj[g] ? (typeof distObj[g] === 'number' ? distObj[g] : distObj[g].c) : 0;
-          const pct = count / total;
-          const strokeDasharray = `${pct * C} ${C}`;
+          const count = distObj[g] ? distObj[g].c : 0;
+          const pct = displayTotal > 0 ? Math.round((count / displayTotal) * 100) : 0;
+          const barWidth = displayTotal > 0 ? ((count / maxCount) * 100).toFixed(1) : 0;
+          const vesselLabel = count === 1 ? '1 vessel' : `${count} vessels`;
 
-          if (count > 0) {
-            svgHtml += `
-              <circle class="fleet-donut-slice"
-                      cx="${cx}" cy="${cy}" r="${R}"
-                      fill="none"
-                      stroke="${gradeColors[g]}"
-                      stroke-width="16"
-                      stroke-dasharray="${strokeDasharray}"
-                      stroke-dashoffset="-${strokeDashoffset}"
-                      data-grade="${g}"
-                      data-count="${count}">
-                <title>Grade ${g}: ${count} vessel${count > 1 ? 's' : ''} (${Math.round(pct * 100)}%)</title>
-              </circle>
-            `;
-            strokeDashoffset += pct * C;
-          }
-
-          legendHtml += `
-            <div class="fleet-legend-item" data-grade="${g}" title="Filter by Grade ${g}">
-              ${ndRg(g)}
-              <span class="fleet-legend-count">${count}</span>
+          html += `
+            <div class="fleet-grade-row">
+              <span class="fleet-grade-label" style="color: ${gradeLabelColors[g]};">${g}</span>
+              <div class="fleet-grade-track">
+                <div class="fleet-grade-fill" style="width: ${barWidth}%; background-color: ${gradeColors[g]};"></div>
+              </div>
+              <div class="fleet-grade-meta">
+                <span class="fleet-grade-count">${vesselLabel}</span>
+                <span class="fleet-grade-pct">${pct}%</span>
+              </div>
             </div>
           `;
         });
 
-        svg.innerHTML = svgHtml;
-        legend.innerHTML = legendHtml;
+        container.innerHTML = html;
       }
 
       function ndSwitchDistTab(year) {
@@ -8431,45 +8431,55 @@
             tab2026.setAttribute('aria-selected', 'true');
             tab2030.classList.remove('active');
             tab2030.setAttribute('aria-selected', 'false');
-            ndRenderDonutChart(ND_DN, '2026');
+            ndRenderGradeBars(ND_DN, '2026');
           } else {
             tab2030.classList.add('active');
             tab2030.setAttribute('aria-selected', 'true');
             tab2026.classList.remove('active');
             tab2026.setAttribute('aria-selected', 'false');
-            ndRenderDonutChart(ND_D30, '2030');
+            ndRenderGradeBars(ND_D30, '2030');
           }
         }
       }
 
-      // --- Render 3-Year Cost Exposure Horizontal Bars ---
+      // --- Render 3-Year Cost Exposure Vertical Column Chart ---
       function ndRenderCostExposureBars() {
         const el = document.getElementById('ndCostExposureBars');
         if (!el) return;
         el.innerHTML = '';
-        const maxVal = 9500; // Reference max scale from NautiluxCII demo
+
+        // Max total for proportional column heights
+        const maxTotal = Math.max(...ND_CEXP.map(r => r.ets + r.fue));
+        const chartHeight = 130; // px — visual height of tallest column
+
         ND_CEXP.forEach(r => {
-          const etsPct = ((r.ets / maxVal) * 100).toFixed(1);
-          const fuePct = ((r.fue / maxVal) * 100).toFixed(1);
+          const total = r.ets + r.fue;
+          const totalM = (total / 1000).toFixed(2);
           const etsM = (r.ets / 1000).toFixed(1);
           const fueM = (r.fue / 1000).toFixed(1);
-          const totK = r.ets + r.fue;
 
-          const row = document.createElement('div');
-          row.className = 'fleet-cost-row';
-          row.innerHTML = `
-            <span class="fleet-cost-year">${r.yr}</span>
-            <div class="fleet-cost-track">
-              <div class="fleet-cost-bar bar-ets" style="width: ${etsPct}%;" title="${r.yr} EU ETS Exposure: €${r.ets.toLocaleString()}K (€${etsM}M)">
-                €${etsM}M
-              </div>
-              <div class="fleet-cost-bar bar-fue" style="width: ${fuePct}%;" title="${r.yr} FuelEU Penalty: €${r.fue.toLocaleString()}K (€${fueM}M)">
-                €${fueM}M
-              </div>
+          // Proportional column heights
+          const colH = Math.round((total / maxTotal) * chartHeight);
+          const etsH = Math.round((r.ets / total) * colH);
+          const fueH = colH - etsH;
+
+          const group = document.createElement('div');
+          group.className = 'fleet-cost-col-group';
+          group.innerHTML = `
+            <div class="fleet-cost-col-total">€${totalM}M</div>
+            <div class="fleet-cost-col-stack" style="height: ${colH}px;">
+              <div class="fleet-cost-col-seg seg-ets" style="height: ${etsH}px;" title="EU ETS: €${etsM}M"></div>
+              <div class="fleet-cost-col-seg seg-fue" style="height: ${fueH}px;" title="FuelEU: €${fueM}M"></div>
             </div>
-            <span class="fleet-cost-total">€${totK.toLocaleString()}K</span>
+            <div class="fleet-cost-tooltip">
+              <div><b>${r.yr}</b></div>
+              <div>EU ETS &nbsp;€${etsM}M</div>
+              <div>FuelEU &nbsp;€${fueM}M</div>
+              <div style="border-top:1px solid rgba(255,255,255,0.2);margin-top:3px;padding-top:3px;">Total &nbsp;&nbsp;&nbsp;€${totalM}M</div>
+            </div>
+            <span class="fleet-cost-col-axis-label">${r.yr}</span>
           `;
-          el.appendChild(row);
+          el.appendChild(group);
         });
       }
 
@@ -9655,21 +9665,8 @@
         document.getElementById('ndKpiCardFue')?.addEventListener('click', ndShowFueModal);
         document.getElementById('ndKpiCardRisk')?.addEventListener('click', ndShowRiskModal);
         document.getElementById('ndKpiCardEexi')?.addEventListener('click', ndShowEexiModal);
-        document.getElementById('ndDonutContainer')?.addEventListener('click', () => ndShowDistributionModal(ndDistActiveYear === '2026'));
         document.getElementById('ndDistTab2026')?.addEventListener('click', () => ndSwitchDistTab('2026'));
         document.getElementById('ndDistTab2030')?.addEventListener('click', () => ndSwitchDistTab('2030'));
-        document.getElementById('ndDonutLegend')?.addEventListener('click', e => {
-          const item = e.target.closest('.fleet-legend-item');
-          if (!item) return;
-          const grade = item.dataset.grade;
-          if (grade) {
-            const pillWrap = document.getElementById('ndFleetFilterPills');
-            if (pillWrap) {
-              const targetPill = Array.from(pillWrap.querySelectorAll('.fleet-pill')).find(p => p.dataset.filter === grade);
-              if (targetPill) targetPill.click();
-            }
-          }
-        });
         document.getElementById('ndCostExposureCard')?.addEventListener('click', ndShowCostModal);
         document.getElementById('ndBtnViewRiskMatrix')?.addEventListener('click', (e) => {
           e.stopPropagation();
