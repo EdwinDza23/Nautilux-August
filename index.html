@@ -7568,7 +7568,7 @@
               <textarea id="pscDefActionDescInput" rows="2" readonly></textarea>
             </div>
 
-            <!-- 8. Corrective Action (Manually entered by user) -->
+            <!-- 8. Corrective Action (Optional, manually entered by user) -->
             <div class="mui-field-box empty-unfocused is-textarea has-expand box-corrective" id="pscDefBoxCorrective">
               <label for="pscDefCorrectiveInput">Corrective Action</label>
               <textarea id="pscDefCorrectiveInput" rows="2"></textarea>
@@ -7580,7 +7580,6 @@
                   <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
-              <span class="error-text">Please enter Corrective Action</span>
             </div>
 
             <!-- Generate Recommendation Section (Below Corrective Action) -->
@@ -13137,8 +13136,7 @@
       return {
         description: codeData?.description || 'Deficiency identified during Port State Control inspection.',
         riskAssessment: recData.riskAssessment,
-        solaristechCap: recData.solaristechCap,
-        suggested: recData.suggested || ''
+        solaristechCap: recData.solaristechCap
       };
     }
 
@@ -13199,7 +13197,7 @@
         pscDefActionDescInp.value = d.actionDesc || PSC_ACTION_CODE_MASTER[d.actionCode] || '';
       }
 
-      // 8. Corrective Action (Editable)
+      // 8. Corrective Action (Optional, Editable)
       if (pscDefCorrectiveInp) {
         pscDefCorrectiveInp.value = d.corrective || '';
         pscDefCorrectiveInp.readOnly = false;
@@ -13288,7 +13286,7 @@
       document.getElementById('pscDefBoxTraining')?.classList.add('disabled', 'readonly-box');
 
       // Clear error states
-      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode', 'pscDefBoxDesc', 'pscDefBoxCorrective', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode', 'pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
         document.getElementById(id)?.classList.remove('error');
       });
 
@@ -13346,19 +13344,18 @@
     // 2. Action Code selected
     // 3. Deficiency Area populated
     // 4. Deficiency Description generated (and non-empty)
-    // 5. Corrective Action manually entered (and non-empty)
-    // 6. Risk Assessment generated (and non-empty)
-    // 7. Solaristech Corrective Action Plan generated (and non-empty)
+    // 5. Risk Assessment generated (and non-empty)
+    // 6. Solaristech Corrective Action Plan generated (and non-empty)
+    // Note: Corrective Action and Suggested are optional.
     function pscValidateDefForm() {
       const code       = pscDefCodeSel?.value?.trim();
       const area       = pscDefAreaInp?.value?.trim();
       const action     = pscDefActionSel?.value?.trim();
       const desc       = pscDefDescInp?.value?.trim();
-      const corrective = pscDefCorrectiveInp?.value?.trim();
       const risk       = pscDefRiskInp?.value?.trim();
       const solarisCap = pscDefSolarisCapInp?.value?.trim();
 
-      const isSaveable = !!(code && action && area && desc && corrective && risk && solarisCap);
+      const isSaveable = !!(code && action && area && desc && risk && solarisCap);
 
       if (pscDefSaveBtn) {
         pscDefSaveBtn.disabled = !isSaveable;
@@ -13380,7 +13377,7 @@
         if (!selectedCode) {
           // Cleared -> reset dependent fields
           if (pscCodeLoader) pscCodeLoader.classList.remove('active');
-          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
           });
           if (pscDefAreaInp) pscDefAreaInp.value = '';
@@ -13389,7 +13386,6 @@
           if (pscDefDescInp) pscDefDescInp.value = '';
           if (pscDefRiskInp) pscDefRiskInp.value = '';
           if (pscDefSolarisCapInp) pscDefSolarisCapInp.value = '';
-          if (pscDefSuggestedInp) pscDefSuggestedInp.value = '';
           document.getElementById('pscDefBoxCode')?.classList.remove('error');
           updateFieldStates();
           pscValidateDefForm();
@@ -13400,8 +13396,7 @@
         if (pscDefDescInp) pscDefDescInp.value = '';
         if (pscDefRiskInp) pscDefRiskInp.value = '';
         if (pscDefSolarisCapInp) pscDefSolarisCapInp.value = '';
-        if (pscDefSuggestedInp) pscDefSuggestedInp.value = '';
-        ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+        ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
           document.getElementById(id)?.classList.remove('error');
         });
 
@@ -13498,7 +13493,7 @@
         if (pscGenSpinner) pscGenSpinner.style.display = 'inline-block';
         if (pscGenRecText) pscGenRecText.textContent = 'Generating Recommendations...';
 
-        ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+        ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
           document.getElementById(id)?.classList.add('field-auto-loading');
         });
 
@@ -13510,12 +13505,12 @@
           if (pscGenSpinner) pscGenSpinner.style.display = 'none';
           if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
 
-          ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+          ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
             document.getElementById(id)?.classList.remove('error');
           });
 
-          // Populate ONLY the 3 target recommendation fields (+ Suggested)
+          // Populate ONLY the 3 target recommendation fields (Suggested is NOT generated)
           // 1. Deficiency Description (remains editable)
           if (pscDefDescInp) {
             pscDefDescInp.value = aiData.description;
@@ -13534,13 +13529,7 @@
             pscDefSolarisCapInp.readOnly = false;
           }
 
-          // Suggested (editable)
-          if (pscDefSuggestedInp) {
-            pscDefSuggestedInp.value = aiData.suggested;
-            pscDefSuggestedInp.readOnly = false;
-          }
-
-          // Note: Corrective Action, Summary, Deficiency Area, Training Courses, Action Code, Action Code Desc are NOT touched!
+          // Note: Corrective Action, Suggested, Summary, Deficiency Area, Training Courses, Action Code, Action Code Desc are NOT generated/touched!
 
           updateFieldStates();
           pscValidateDefForm();
@@ -13549,7 +13538,7 @@
           pscBtnGenRec.disabled = false;
           if (pscGenSpinner) pscGenSpinner.style.display = 'none';
           if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
-          ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+          ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
           });
           showToast('Failed to generate recommendations. Please try again.');
@@ -13564,7 +13553,6 @@
         el.addEventListener('input', () => {
           if (id === 'pscDefRiskInput') document.getElementById('pscDefBoxRisk')?.classList.remove('error');
           if (id === 'pscDefSolarisCapInput') document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
-          if (id === 'pscDefCorrectiveInput') document.getElementById('pscDefBoxCorrective')?.classList.remove('error');
           if (id === 'pscDefDescInput') document.getElementById('pscDefBoxDesc')?.classList.remove('error');
           updateFieldStates();
           pscValidateDefForm();
@@ -13612,13 +13600,6 @@
           document.getElementById('pscDefBoxDesc')?.classList.remove('error');
         }
 
-        if (!corrective) {
-          document.getElementById('pscDefBoxCorrective')?.classList.add('error');
-          valid = false;
-        } else {
-          document.getElementById('pscDefBoxCorrective')?.classList.remove('error');
-        }
-
         if (!risk) {
           document.getElementById('pscDefBoxRisk')?.classList.add('error');
           valid = false;
@@ -13634,7 +13615,7 @@
         }
 
         if (!valid) {
-          showToast('Please select Deficiency Code, Action Code, generate recommendations, and enter Corrective Action.');
+          showToast('Please select Deficiency Code, Action Code, and generate recommendations.');
           return;
         }
 
@@ -13648,7 +13629,7 @@
           description:    desc,
           actionCode:     action,
           actionDesc:     actionDesc,
-          corrective:     corrective,
+          corrective:     corrective                         || '',
           suggested:      pscDefSuggestedInp?.value?.trim()  || '',
           riskAssessment: risk,
           solaristechCap: solarisCap
