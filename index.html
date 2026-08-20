@@ -7432,7 +7432,6 @@
               <input type="text" class="custom-select-display-input" id="pscDefCodeInput" readonly placeholder="" autocomplete="off" aria-label="Deficiency Code" aria-haspopup="listbox">
               <select id="pscDefCodeSelect" class="custom-select-hidden-native" aria-required="true" tabindex="-1">
                 <option value=""></option>
-                <option value="01101">01101</option>
                 <option value="01102">01102</option>
                 <option value="01103">01103</option>
                 <option value="01104">01104</option>
@@ -7453,7 +7452,6 @@
               <span class="psc-code-loader" id="pscCodeLoader" aria-hidden="true"></span>
               <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
               <div class="custom-dropdown-panel" id="pscDefCodeDropdown" role="listbox" aria-label="Deficiency Code Options">
-                <div class="custom-dropdown-option" role="option" data-value="01101">01101</div>
                 <div class="custom-dropdown-option" role="option" data-value="01102">01102</div>
                 <div class="custom-dropdown-option" role="option" data-value="01103">01103</div>
                 <div class="custom-dropdown-option" role="option" data-value="01104">01104</div>
@@ -12801,13 +12799,6 @@
 
     // ================= PSC DEFICIENCY MOCK DATA ARCHITECTURE =================
     const PSC_DEFICIENCY_CODE_MASTER = {
-      '01101': {
-        area: 'Certificates & Documents',
-        summary: 'Cargo Ship Safety Equipment Certificate validation & compliance audit',
-        training: 'Cargo Ship Safety Equipment Certificate',
-        trainingUrl: 'https://academy.swiftaction.ai/courses/01101',
-        description: 'The Cargo Ship Safety Equipment Certificate (CSSE) endorsement past annual survey window. Statutory certificates presented during inspection require verification against Flag State register and classification society endorsement records.'
-      },
       '01102': {
         area: 'Structure',
         summary: 'Hull plating corrosion and structural integrity check',
@@ -12948,11 +12939,6 @@
     };
 
     const PSC_RECOMMENDATION_MASTER = {
-      '01101': {
-        suggested: 'Conduct thorough review and validation of all statutory certificates, including the Cargo Ship Safety Equipment Certificate (CSSE), against Flag State and class endorsement records.',
-        riskAssessment: 'Expired or Invalid CSSE: If the Safety Equipment Certificate expires or is not properly endorsed after required surveys, the vessel becomes non-compliant, increasing the risk of port state control detention, voyage delays, financial penalties, and reputational harm. The likelihood is moderate, especially without a robust tracking system, and the impact is high due to operational and legal consequences. Implementing a certificate tracking system with automated reminders and conducting regular audits significantly mitigates these risks, ensuring continuous compliance and uninterrupted operations.',
-        solaristechCap: '1. Collate endorsed statutory certificates and upload to digital compliance portal.\n2. Establish automated 60-day certificate expiry alerts.\n3. Re-audit document locker on next voyage.'
-      },
       '01107': {
         suggested: 'Conduct immediate onboard inventory and maintenance check of all safety-critical fire appliances in accordance with SMS procedure FP-02.',
         riskAssessment: 'Medium Risk — Potential for repeat observation and intensified inspection during subsequent Paris/Tokyo MoU port calls if root-cause servicing schedule is not updated in PMS.',
