@@ -92,7 +92,7 @@
     }
 
     body {
-      font-family: 'Roboto', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       background-color: var(--bg-canvas);
       color: var(--text-dark);
       font-size: 13px;
@@ -380,31 +380,43 @@
 
     .search-field-box {
       flex: 1;
+      position: relative;
     }
 
     .search-input {
       width: 100%;
-      height: 36px;
+      height: 38px;
       padding: 0 14px;
-      font-size: 12.5px;
+      font-size: 13px;
+      font-weight: 500;
       border: 1px solid var(--border-field);
       border-radius: 4px;
-      background-color: #ffffff;
+      background-color: transparent;
       color: var(--text-dark);
       font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, border-width 0.15s ease;
     }
 
     .search-input::placeholder {
-      color: var(--text-muted);
+      color: #777777;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .search-input:hover:not(:focus) {
+      border-color: #888888;
     }
 
     .search-input:focus {
       outline: none;
-      border-color: var(--green-btn);
+      border: 1.5px solid #1a1a1a;
     }
 
     .btn-search {
-      height: 36px;
+      height: 38px;
       padding: 0 20px;
       background-color: var(--green-btn);
       color: #ffffff;
@@ -483,43 +495,74 @@
     .company-select-box {
       position: relative;
       width: 170px;
+      height: 38px;
+      border: 1px solid var(--border-field);
+      border-radius: 4px;
+      background-color: transparent;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, border-width 0.15s ease;
+    }
+
+    .company-select-box:hover:not(:focus-within) {
+      border-color: #888888;
+    }
+
+    .company-select-box:focus-within {
+      border: 1.5px solid #1a1a1a;
     }
 
     .company-select-box label {
       position: absolute;
       top: -7px;
       left: 10px;
-      background: var(--bg-canvas);
+      background: var(--field-label-bg, var(--bg-canvas));
       padding: 0 4px;
-      font-size: 10px;
-      color: var(--text-muted);
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: #222222;
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
+      border-radius: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .company-select-box:focus-within label {
+      color: #111111;
+      font-weight: 600;
     }
 
     .company-select-box select {
       width: 100%;
-      height: 36px;
-      padding: 0 24px 0 10px;
-      font-size: 12.5px;
+      height: 100%;
+      padding: 0 32px 0 12px;
+      font-size: 13px;
       font-weight: 500;
-      border: 1px solid var(--border-field);
+      border: none;
       border-radius: 4px;
-      background-color: #ffffff;
+      background-color: transparent;
       color: var(--text-dark);
       appearance: none;
+      -webkit-appearance: none;
       cursor: pointer;
       font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
     }
 
     .company-select-box .material-symbols-outlined {
       position: absolute;
-      right: 6px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: #666666;
-      font-size: 18px;
+      color: #555555;
+      font-size: 20px;
+      z-index: 1;
     }
 
     .btn-create {
@@ -1165,125 +1208,221 @@
     }
 
 
-    /* ================= INPUT FIELD STYLING (EXACT REFERENCE MATCH) ================= */
+    /* ================= UNIFIED NAUTILUX INPUT FIELD SYSTEM (EXACT REFERENCE MATCH) ================= */
+    :root {
+      --field-label-bg: var(--bg-canvas);
+      --field-border: #b8b19e;
+      --field-border-focus: #1a1a1a;
+      --field-border-hover: #777777;
+      --field-text: #111111;
+      --field-label-color: #555555;
+      --field-label-active: #222222;
+    }
+
+    .inner-form-box {
+      --field-label-bg: var(--bg-modal-inner);
+    }
+
+    .inner-fuel-form-box {
+      --field-label-bg: #ede7d5;
+    }
+
+    .vh-inner-form-box {
+      --field-label-bg: var(--bg-modal-inner);
+    }
+
+    .psc-modal-inner-box {
+      --field-label-bg: #fbf8f2;
+    }
+
+    .cf-inner-box {
+      --field-label-bg: var(--bg-modal-inner);
+    }
+
+    /* Core Field Box Container */
     .mui-field-box {
       position: relative;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      height: 38px;
+      min-height: 38px;
+      border: 1px solid var(--field-border);
+      border-radius: 4px;
+      background-color: transparent;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease, border-width 0.15s ease, box-shadow 0.15s ease;
     }
 
+    .mui-field-box:hover:not(.disabled):not(:focus-within) {
+      border-color: var(--field-border-hover);
+    }
+
+    .mui-field-box:focus-within {
+      border: 1.5px solid var(--field-border-focus);
+    }
+
+    .mui-field-box.error {
+      border: 1.5px solid var(--error-color, #d32f2f) !important;
+    }
+
+    .mui-field-box.disabled,
+    .mui-field-box.readonly-box {
+      border-color: #c4bcac;
+      cursor: default;
+    }
+
+    /* Field inputs and selects */
     .mui-field-box input[type="text"],
     .mui-field-box input[type="number"],
     .mui-field-box input[type="email"],
-    .mui-field-box select,
-    .mui-field-box textarea {
+    .mui-field-box input[type="search"],
+    .mui-field-box select {
       width: 100%;
-      height: 40px;
+      height: 100%;
+      min-height: 34px;
       padding: 0 12px;
       font-size: 13px;
-      border: 1px solid var(--border-field);
-      border-radius: 6px;
-      background-color: #ffffff;
-      color: var(--text-dark);
+      font-weight: 500;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--field-text);
       font-family: inherit;
-      transition: border-color 0.15s ease;
-    }
-
-    .mui-field-box input:has(+ .date-icon) {
-      padding-right: 36px;
-    }
-
-    .mui-field-box textarea {
-      height: 68px;
-      padding: 8px 12px;
-      resize: vertical;
+      box-sizing: border-box;
     }
 
     .mui-field-box select {
       appearance: none;
+      -webkit-appearance: none;
       cursor: pointer;
-      padding-right: 28px;
+      padding-right: 32px;
     }
 
-    .mui-field-box .select-arrow {
+    .mui-field-box textarea {
+      width: 100%;
+      height: auto;
+      min-height: 64px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--field-text);
+      font-family: inherit;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+
+    .mui-field-box:has(textarea) {
+      height: auto;
+      min-height: 68px;
+      justify-content: flex-start;
+    }
+
+    /* Icons inside field boxes */
+    .mui-field-box .select-arrow,
+    .mui-field-box .material-symbols-outlined.select-arrow {
       position: absolute;
-      right: 10px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: #666666;
+      color: #555555;
       font-size: 20px;
+      z-index: 1;
     }
 
-    .mui-field-box .date-icon {
+    .mui-field-box .date-icon,
+    .mui-field-box .material-symbols-outlined.date-icon {
       position: absolute;
-      right: 10px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
       pointer-events: none;
-      color: #666666;
-      font-size: 20px;
+      color: #555555;
+      font-size: 18px;
+      z-index: 1;
     }
 
-    /* Floating label behavior matching MUI shrink / notch */
+    /* Floating Labels */
     .mui-field-box label {
       position: absolute;
       top: -7px;
       left: 10px;
-      background-color: var(--bg-modal-inner);
+      background-color: var(--field-label-bg, var(--bg-canvas));
       padding: 0 4px;
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 400;
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      color: var(--field-label-active);
       pointer-events: none;
       z-index: 2;
-      transition: all 0.15s ease;
+      border-radius: 2px;
+      white-space: nowrap;
+      max-width: calc(100% - 16px);
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: top 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), font-size 0.15s cubic-bezier(0.4, 0, 0.2, 1), color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .mui-field-box:focus-within label {
+      color: #111111;
+      font-weight: 600;
+      top: -7px;
+      font-size: 9.5px;
+      background-color: var(--field-label-bg, var(--bg-canvas));
+      padding: 0 4px;
+      transform: translateY(0);
+    }
+
+    .mui-field-box.empty-unfocused:not(:focus-within) label {
+      top: 50%;
+      transform: translateY(-50%);
+      left: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--field-label-color);
+      background-color: transparent;
+      padding: 0;
+      z-index: 1;
+    }
+
+    .mui-field-box.error label {
+      color: var(--error-color, #d32f2f) !important;
     }
 
     .mui-field-box label .req-star {
-      color: #000000;
-      margin-left: 1px;
-    }
-
-    /* Inline label when field is empty and un-focused */
-    .mui-field-box.empty-unfocused label {
-      top: 10px;
-      left: 12px;
-      font-size: 13px;
-      color: var(--text-muted);
-      background-color: transparent;
-      padding: 0;
-    }
-
-    .mui-field-box input:focus,
-    .mui-field-box select:focus,
-    .mui-field-box textarea:focus {
-      outline: none;
-      border-color: var(--green-btn);
-    }
-
-    .mui-field-box.disabled input,
-    .mui-field-box.disabled select {
-      background-color: #ffffff;
-      color: #666666;
-      cursor: not-allowed;
-    }
-
-    .mui-field-box.error input,
-    .mui-field-box.error select,
-    .mui-field-box.error textarea {
-      border-color: var(--error-color);
+      color: #111111;
+      font-weight: 600;
+      margin-left: 2px;
     }
 
     .mui-field-box .error-text {
       display: none;
+      position: absolute;
+      bottom: -15px;
+      left: 4px;
       font-size: 9.5px;
-      color: var(--error-color);
-      margin-top: 2px;
+      color: var(--error-color, #d32f2f);
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .mui-field-box.error .error-text {
       display: block;
+    }
+
+    /* Native Option styling */
+    select option {
+      background-color: #fbf8f2;
+      color: #222222;
+      font-size: 13px;
+      padding: 6px 10px;
     }
 
     /* ================= MODAL FOOTER BUTTONS (RIGHT ALIGNED MATCHING REFERENCE) ================= */
@@ -1382,7 +1521,7 @@
       padding: 10px 20px;
       border-radius: 4px;
       font-size: 12px;
-      font-family: 'Roboto', Arial, sans-serif;
+      font-family: Arial, sans-serif;
       line-height: 1.4;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
       pointer-events: auto;
@@ -4197,6 +4336,1040 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+
+    /* ================= PSC MODULE STYLES (MATCHING ASSETS/PSC LIST) ================= */
+    .psc-page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+    .psc-back-arrow {
+      font-size: 24px;
+      cursor: pointer;
+      color: #222222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      user-select: none;
+    }
+    .psc-back-arrow:hover {
+      opacity: 0.65;
+    }
+    .psc-page-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #111111;
+      letter-spacing: 0.3px;
+    }
+
+    .psc-section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111111;
+      margin-top: 14px;
+      margin-bottom: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    /* 4-column layout for Vessel Details and PSC Details matching vessel detail.png */
+    .psc-grid-4col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px 20px;
+      margin-bottom: 20px;
+      margin-top: 12px;
+    }
+    .psc-grid-4col .mui-field-box {
+      height: 38px;
+      position: relative;
+    }
+    .psc-grid-4col .mui-field-box label {
+      background-color: var(--bg-canvas);
+      padding: 0 4px;
+    }
+    .psc-grid-4col .mui-field-box.empty-unfocused label {
+      background-color: transparent;
+    }
+    .psc-grid-4col .mui-field-box.readonly-box input {
+      cursor: default;
+      background: transparent;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .psc-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+      margin-bottom: 16px;
+      flex-shrink: 0;
+    }
+    .btn-add-psc {
+      height: 36px;
+      padding: 0 24px;
+      background-color: var(--green-btn);
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s ease, opacity 0.15s ease;
+      font-family: inherit;
+      letter-spacing: 0.2px;
+    }
+    .btn-add-psc:hover {
+      background-color: var(--green-btn-hover);
+    }
+    .btn-add-psc.is-disabled,
+    .btn-add-psc[aria-disabled="true"] {
+      background-color: #cfc6b6;
+      color: #9c9485;
+      cursor: pointer;
+      opacity: 1;
+    }
+    .btn-add-psc.is-disabled:hover,
+    .btn-add-psc[aria-disabled="true"]:hover {
+      background-color: #beb4a2;
+      color: #222222;
+    }
+
+    .psc-deficiencies-section {
+      margin-top: 20px;
+      flex-shrink: 0;
+    }
+    .psc-deficiencies-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .psc-deficiencies-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111111;
+      letter-spacing: 0.2px;
+    }
+    .btn-add-deficiency {
+      height: 32px;
+      padding: 0 14px;
+      background-color: var(--green-btn);
+      color: #ffffff;
+      font-size: 11.5px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s ease;
+      font-family: inherit;
+    }
+    .btn-add-deficiency:hover {
+      background-color: var(--green-btn-hover);
+    }
+    .btn-add-deficiency .material-symbols-outlined {
+      font-size: 16px;
+    }
+    .psc-deficiency-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .psc-deficiency-item {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--border-canvas);
+      border-radius: 6px;
+      padding: 10px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .psc-deficiency-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+    .psc-deficiency-code {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .psc-deficiency-area {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+    .psc-deficiency-action-code {
+      font-size: 11px;
+      color: var(--gold-text);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .psc-def-item-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    /* Table styles matching psc list.png */
+    table.psc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      text-align: left;
+    }
+    table.psc-table thead th {
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-canvas);
+      color: var(--gold-text);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.2px;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--border-canvas);
+      white-space: nowrap;
+      z-index: 10;
+    }
+    table.psc-table tbody td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      color: var(--text-dark);
+      white-space: nowrap;
+    }
+    table.psc-table tbody tr:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
+    table.psc-table tbody tr.filtered-out {
+      display: none;
+    }
+
+    /* Pill Badges matching psc list.png */
+    .psc-status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 18px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      position: relative;
+      user-select: none;
+      min-width: 96px;
+    }
+    .psc-status-pill.completed {
+      border: 1px solid #6b9d7a;
+      color: #2d6a4f;
+      background-color: transparent;
+    }
+    .psc-status-pill.pending {
+      border: 1px solid #d96b6b;
+      color: #b71c1c;
+      background-color: transparent;
+    }
+    .psc-status-badge-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: #d32f2f;
+      color: #ffffff;
+      font-size: 9.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    }
+
+    .psc-expand-row td {
+      padding: 0 !important;
+      border-bottom: none !important;
+    }
+    .psc-expand-content {
+      display: none;
+      padding: 12px 18px 16px;
+      background: rgba(255, 255, 255, 0.25);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+    .psc-expand-content.open {
+      display: block;
+    }
+    .psc-expand-inner {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .psc-expand-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--text-dark);
+    }
+    .psc-expand-meta-item strong {
+      color: var(--gold-text);
+    }
+    .psc-def-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .psc-def-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border-canvas);
+      font-size: 11px;
+      color: var(--text-dark);
+      font-weight: 500;
+    }
+
+    .psc-create-body {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 24px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
+    }
+    .psc-create-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    .psc-create-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .psc-create-body::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
+    }
+
+    /* PSC Date Picker — fixed-position calendar */
+    .psc-datepicker-popover {
+      position: fixed;
+      width: 244px;
+      background-color: var(--bg-canvas);
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+      z-index: 3000;
+      overflow: hidden;
+    }
+    .psc-dp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px 8px;
+      background: #d4a34b;
+      color: #1a1a1a;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .psc-dp-month-year {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    .psc-dp-nav-btn {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 17px;
+      color: #1a1a1a;
+      line-height: 1;
+      transition: background 0.15s ease;
+      font-family: inherit;
+    }
+    .psc-dp-nav-btn:hover {
+      background: rgba(0, 0, 0, 0.08);
+    }
+    .psc-dp-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      padding: 8px 10px 4px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .psc-dp-days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      padding: 4px 10px 10px;
+      gap: 2px;
+    }
+    .psc-dp-day {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--text-dark);
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+    .psc-dp-day:hover:not(.other-month):not(.selected) {
+      background: rgba(0, 0, 0, 0.07);
+    }
+    .psc-dp-day.other-month {
+      color: #cccccc;
+      cursor: default;
+    }
+    .psc-dp-day.selected {
+      background: var(--green-btn);
+      color: #ffffff;
+      font-weight: 600;
+    }
+    .psc-dp-day.today:not(.selected) {
+      font-weight: 700;
+      color: var(--gold-text);
+    }
+
+    /* PSC Toolbar date fields */
+    .psc-toolbar-date-wrap {
+      position: relative;
+    }
+    .psc-toolbar-date-wrap .mui-field-box {
+      width: 140px;
+      height: 36px;
+    }
+    .psc-toolbar-date-wrap .mui-field-box label {
+      background-color: var(--bg-canvas);
+      padding: 0 4px;
+    }
+
+    /* PSC Deficiency Modal matching popup1.png, popup2.png */
+    .psc-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      padding: 20px;
+    }
+    .psc-modal-overlay.open {
+      display: flex;
+    }
+    .psc-modal-card {
+      width: 560px;
+      max-width: 95vw;
+      max-height: 88vh;
+      background-color: var(--bg-canvas);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      animation: fadeIn 0.15s ease-out;
+      overflow: hidden;
+    }
+    .psc-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      padding: 0 18px;
+      flex-shrink: 0;
+      background-color: #d5a443;
+      color: #222222;
+    }
+    .psc-modal-title {
+      font-size: 16.5px;
+      font-weight: 700;
+      color: #222222;
+      letter-spacing: 0.1px;
+    }
+    .psc-modal-close-btn {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #222222;
+      border-radius: 4px;
+      transition: background-color 0.15s ease;
+    }
+    .psc-modal-close-btn:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    .psc-modal-close-btn .material-symbols-outlined {
+      font-size: 22px;
+      font-weight: 500;
+    }
+    .psc-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 20px 20px 20px;
+      background-color: var(--bg-canvas);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.35) transparent;
+    }
+    .psc-modal-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    .psc-modal-body::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 4px;
+    }
+    .psc-modal-body::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.35);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+    }
+    .psc-modal-body::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(30, 36, 45, 0.55);
+    }
+    .psc-modal-fields-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .psc-modal-fields-stack .mui-field-box {
+      background-color: #ece5d2;
+      border: 1px solid #beb59c;
+      border-radius: 4px;
+    }
+    .psc-modal-fields-stack .mui-field-box label {
+      background-color: var(--bg-canvas);
+      padding: 0 5px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #333333;
+    }
+    .psc-modal-fields-stack .mui-field-box.empty-unfocused label {
+      background-color: transparent;
+    }
+    .psc-modal-fields-stack .mui-field-box.readonly-box {
+      background-color: #ece5d2;
+      border-color: #beb59c;
+    }
+    .psc-modal-fields-stack .mui-field-box.readonly-box input,
+    .psc-modal-fields-stack .mui-field-box.readonly-box textarea {
+      cursor: default;
+      color: #222222;
+      user-select: text;
+    }
+    .psc-modal-fields-stack .mui-field-box.disabled {
+      background-color: #ece5d2;
+      border-color: #beb59c;
+      cursor: not-allowed;
+    }
+    .psc-modal-fields-stack .mui-field-box.disabled select {
+      cursor: not-allowed;
+      color: #222222;
+      pointer-events: none;
+    }
+
+    /* Textarea Field Boxes inside modal */
+    .psc-modal-fields-stack .mui-field-box.is-textarea {
+      height: auto;
+      min-height: 60px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .psc-modal-fields-stack .mui-field-box.is-textarea textarea {
+      width: 100%;
+      height: 100%;
+      min-height: 52px;
+      padding: 10px 12px;
+      padding-right: 32px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--text-dark);
+      resize: none;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .psc-modal-fields-stack .mui-field-box.is-textarea.has-expand textarea {
+      padding-right: 42px;
+    }
+    .psc-modal-fields-stack .mui-field-box.is-textarea.box-desc textarea,
+    .psc-modal-fields-stack .mui-field-box.is-textarea.box-corrective textarea {
+      min-height: 68px;
+    }
+
+    /* Expand button in bottom-right corner of textareas matching reference screenshots */
+    .btn-field-expand {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.07);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      color: #4a4a4a;
+      padding: 0;
+      transition: color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+      z-index: 2;
+    }
+    .btn-field-expand:hover {
+      color: #111111;
+      background-color: rgba(0, 0, 0, 0.14);
+      transform: scale(1.06);
+    }
+    .btn-field-expand:active {
+      transform: scale(0.95);
+    }
+    .btn-field-expand svg {
+      width: 14px;
+      height: 14px;
+      display: block;
+      color: inherit;
+    }
+
+    /* Custom Dropdown System for Modal and Forms matching screenshots */
+    .mui-field-box.custom-select-box {
+      cursor: pointer;
+      position: relative;
+    }
+    .mui-field-box.custom-select-box input.custom-select-display-input {
+      cursor: pointer;
+      user-select: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      padding: 0 32px 0 12px;
+      font-size: 13px;
+      color: #222222;
+      font-family: inherit;
+      outline: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .custom-select-hidden-native {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
+      border: none;
+    }
+    .custom-dropdown-panel {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: -1px;
+      right: -1px;
+      background-color: #ece5d2;
+      border: 1px solid #c5bda5;
+      border-radius: 4px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1250;
+      display: none;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.35) transparent;
+    }
+    .custom-dropdown-panel.open {
+      display: block;
+    }
+    .custom-dropdown-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-dropdown-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-dropdown-panel::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.35);
+      border-radius: 9999px;
+    }
+    .custom-dropdown-panel::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(30, 36, 45, 0.55);
+    }
+    .custom-dropdown-option {
+      padding: 7px 12px;
+      font-size: 13px;
+      color: #222222;
+      cursor: pointer;
+      line-height: 1.35;
+      user-select: none;
+      transition: background-color 0.1s ease;
+    }
+    .custom-dropdown-option:hover {
+      background-color: #ded5bc;
+      color: #111111;
+    }
+    .custom-dropdown-option.selected {
+      background-color: #ded5bc;
+      font-weight: 500;
+    }
+    .mui-field-box.custom-select-box.is-open {
+      border: 1.5px solid #1a1a1a;
+      z-index: 1200;
+    }
+    .mui-field-box.custom-select-box.is-open .select-arrow {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* Light loading shimmer / pulse for auto-populating fields */
+    .psc-modal-fields-stack .mui-field-box.field-auto-loading {
+      position: relative;
+      overflow: hidden;
+    }
+    .psc-modal-fields-stack .mui-field-box.field-auto-loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(213, 164, 67, 0.22) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: defShimmer 0.75s infinite linear;
+      pointer-events: none;
+      border-radius: 4px;
+    }
+    @keyframes defShimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Inline Loading indicator for Deficiency Code select */
+    .psc-code-loader {
+      position: absolute;
+      right: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(19, 36, 25, 0.2);
+      border-top-color: var(--green-btn);
+      border-radius: 50%;
+      animation: defSpin 0.6s linear infinite;
+      display: none;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .psc-code-loader.active {
+      display: block;
+    }
+    @keyframes defSpin {
+      to { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    /* Action Code Row with Eye Button */
+    .psc-action-code-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .psc-action-code-row .mui-field-box {
+      flex: 1;
+    }
+    .btn-eye-icon {
+      width: 36px;
+      height: 38px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: #666666;
+      border-radius: 4px;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+    .btn-eye-icon:hover {
+      color: #111111;
+      background-color: rgba(0, 0, 0, 0.06);
+    }
+    .btn-eye-icon .material-symbols-outlined {
+      font-size: 21px;
+    }
+
+    /* Generate Recommendation Section */
+    .psc-gen-rec-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+    .psc-gen-rec-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-generate-rec {
+      height: 32px;
+      padding: 0 16px;
+      background-color: var(--green-btn);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+      font-family: inherit;
+      letter-spacing: 0.2px;
+      user-select: none;
+    }
+    .btn-generate-rec:hover:not(:disabled) {
+      background-color: var(--green-btn-hover);
+      box-shadow: 0 2px 8px rgba(19, 36, 25, 0.25);
+    }
+    .btn-generate-rec:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    .btn-generate-rec:disabled {
+      background-color: #4a5c51;
+      cursor: not-allowed;
+      opacity: 0.85;
+    }
+    .btn-generate-rec .btn-gen-icon {
+      font-size: 15px;
+      color: var(--gold-brand);
+    }
+    .btn-gen-spinner {
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: genSpin 0.6s linear infinite;
+      display: inline-block;
+      margin-left: 2px;
+    }
+    @keyframes genSpin {
+      to { transform: rotate(360deg); }
+    }
+    .psc-gen-rec-hint {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Reviewer comments / Recommendations section matching popup2.png */
+    .psc-reviewer-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 2px;
+      padding-top: 4px;
+    }
+    .psc-reviewer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .psc-reviewer-title {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #1a1a1a;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: default;
+    }
+    .psc-rec-checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: -2px;
+      margin-bottom: -2px;
+    }
+    .psc-rec-check-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: #333333;
+      cursor: pointer;
+      user-select: none;
+    }
+    .psc-rec-check-item input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--green-btn);
+      cursor: pointer;
+    }
+
+    /* Sticky Footer matching popup1.png / popup2.png */
+    .psc-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      height: 52px;
+      padding: 0 18px;
+      flex-shrink: 0;
+      background-color: #d5a443;
+    }
+    .btn-modal-black {
+      height: 32px;
+      padding: 0 18px;
+      background-color: #000000;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.15s ease, background-color 0.15s ease;
+      font-family: inherit;
+    }
+    .btn-modal-black:hover:not(:disabled) {
+      background-color: #222222;
+    }
+    .btn-modal-black:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* ================= EXPAND MODAL MATCHING ASSETS/PSC LIST/EXPAND.PNG ================= */
+    .psc-expand-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1300;
+      padding: 20px;
+    }
+    .psc-expand-modal-overlay.open {
+      display: flex;
+    }
+    .psc-expand-modal-card {
+      width: 480px;
+      max-width: 92vw;
+      max-height: 78vh;
+      background-color: #f6f1e2;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+      animation: fadeIn 0.15s ease-out;
+      overflow: hidden;
+    }
+    .psc-expand-modal-header {
+      display: flex;
+      align-items: center;
+      height: 46px;
+      padding: 0 18px;
+      flex-shrink: 0;
+      background-color: #d5a443;
+      color: #222222;
+    }
+    .psc-expand-modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222222;
+    }
+    .psc-expand-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 18px;
+      background-color: #fbf8f0;
+      display: flex;
+      flex-direction: column;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.35) transparent;
+    }
+    .psc-expand-modal-body::-webkit-scrollbar {
+      width: 6px;
+    }
+    .psc-expand-modal-body::-webkit-scrollbar-track {
+      background: transparent;
+      margin: 4px;
+    }
+    .psc-expand-modal-body::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.35);
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background-clip: padding-box;
+    }
+    .psc-expand-textarea {
+      width: 100%;
+      min-height: 180px;
+      max-height: 48vh;
+      border: 1px solid #d4cba7;
+      border-radius: 4px;
+      background-color: #ffffff;
+      padding: 12px 14px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #222222;
+      resize: vertical;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.15s ease;
+    }
+    .psc-expand-textarea:focus {
+      border-color: var(--green-btn);
+    }
+    .psc-expand-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 12px 18px;
+      background-color: #fbf8f0;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    .btn-expand-close {
+      height: 32px;
+      padding: 0 22px;
+      background-color: #132419;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      font-family: inherit;
+    }
+    .btn-expand-close:hover {
+      background-color: #1f3627;
+    }
+    /* ================= END PSC MODULE STYLES ================= */
   </style>
 
 
@@ -4269,7 +5442,7 @@
       <span class="material-symbols-outlined">ballot</span>
       <span>List of Requests</span>
     </div>
-    <div class="nav-item">
+    <div class="nav-item" id="navPscList">
       <span class="material-symbols-outlined">list</span>
       <span>PSC List</span>
     </div>
@@ -4448,6 +5621,7 @@
                 <th>VCM Price Min</th>
                 <th>VCM Price Max</th>
                 <th>EUA Price</th>
+                <th>Pool Price</th>
                 <th class="col-action" style="text-align: right; padding-right: 24px;">Action</th>
               </tr>
             </thead>
@@ -4493,11 +5667,11 @@
         <div class="cii-page-subtitle">Calculated using actual voyage history and fuel consumption data.</div>
 
       <!-- Calculation Configuration Bar -->
-      <div class="cii-config-bar">
-        <div class="cii-config-field" style="flex: 2; min-width: 190px;">
-          <label class="cii-field-label" for="ciiVesselSelect">Vessel</label>
-          <select id="ciiVesselSelect" class="cii-select" aria-label="Select vessel">
-            <option value="">Select vessel…</option>
+      <div class="cii-config-bar" style="align-items: center; gap: 14px;">
+        <div class="mui-field-box empty-unfocused" style="flex: 2; min-width: 190px; height: 38px;">
+          <label for="ciiVesselSelect">Vessel</label>
+          <select id="ciiVesselSelect" aria-label="Select vessel">
+            <option value=""></option>
             <option value="AB SERENA">AB SERENA</option>
             <option value="ACADIA">ACADIA</option>
             <option value="AMBER ECO">AMBER ECO</option>
@@ -4507,16 +5681,18 @@
             <option value="AQUA RAY">AQUA RAY</option>
             <option value="AQUS RAY">AQUS RAY</option>
           </select>
+          <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
         </div>
-        <div class="cii-config-field" style="min-width: 100px;">
-          <label class="cii-field-label" for="ciiYearSelect">Year</label>
-          <select id="ciiYearSelect" class="cii-select" aria-label="Select year">
+        <div class="mui-field-box" style="min-width: 110px; height: 38px;">
+          <label for="ciiYearSelect">Year</label>
+          <select id="ciiYearSelect" aria-label="Select year">
             <option value="2022">2022</option>
             <option value="2023">2023</option>
             <option value="2024">2024</option>
             <option value="2025">2025</option>
             <option value="2026" selected>2026</option>
           </select>
+          <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
         </div>
         <div class="cii-config-field cii-calc-type-field">
           <span class="cii-field-label">Calculation Type</span>
@@ -4940,7 +6116,9 @@
                         </span>
                       </span>
                     </th>
+                    <!-- TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
                     <th style="text-align: center; width: 50px; cursor: default;">Action</th>
+                    -->
                   </tr>
                 </thead>
                 <tbody id="ndFleetTableBody">
@@ -4998,22 +6176,23 @@
       <div class="vh-divider"></div>
 
       <!-- Search & Filter Bar -->
-      <div class="vh-filter-bar">
-        <div class="vh-search-field">
-          <input type="text" class="vh-search-input" id="vhSearchInput" placeholder="Search" aria-label="Search voyage history records">
+      <div class="vh-filter-bar" style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+        <div class="search-field-box" style="flex: 1; max-width: 380px;">
+          <input type="text" class="search-input" id="vhSearchInput" placeholder="Search" aria-label="Search voyage history records">
         </div>
-        <button class="btn-vh-search" id="vhSearchBtn">Search</button>
+        <button class="btn-search" id="vhSearchBtn">Search</button>
 
-        <div class="vh-year-field" id="vhYearFieldWrap">
-          <input type="text" class="vh-year-input" id="vhYearInput" placeholder="Year" readonly aria-label="Filter by year" aria-haspopup="listbox">
-          <span class="material-symbols-outlined vh-year-icon" id="vhYearIcon">calendar_today</span>
+        <div class="mui-field-box empty-unfocused vh-year-field" id="vhYearFieldWrap" style="width: 130px; height: 38px; position: relative;">
+          <label for="vhYearInput">Year</label>
+          <input type="text" id="vhYearInput" placeholder="" readonly aria-label="Filter by year" aria-haspopup="listbox" style="cursor: pointer; padding-right: 32px;">
+          <span class="material-symbols-outlined date-icon" id="vhYearIcon" style="cursor: pointer;">calendar_today</span>
           <!-- Year picker popover opens downward -->
           <div class="vh-year-picker-popover" id="vhYearPickerPopover" role="listbox" aria-label="Select year">
             <div class="vh-year-grid" id="vhYearPickerGrid"></div>
           </div>
         </div>
 
-        <button class="btn-vh-clear" id="vhClearFilterBtn" title="Clear filters" aria-label="Clear search and year filter">
+        <button class="filter-btn" id="vhClearFilterBtn" title="Clear filters" aria-label="Clear search and year filter">
           <!-- Filter-off SVG matching existing filter icon style -->
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19.78 22.61L1.39 4.22l1.41-1.41L21.19 21.2l-1.41 1.41zM6.83 6L10 9.87V19l4-2v-5.13l5.06-6.32H6.83z"/>
@@ -5041,6 +6220,312 @@
 
     </div>
     <!-- END VOYAGE HISTORY PAGE -->
+
+    <!-- ================= PSC LIST PAGE ================= -->
+    <div class="page-view" id="pscListPage" style="display: none;">
+      <div class="page-title">PSC LIST</div>
+      <!-- Toolbar matching psc list.png -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-field-box">
+            <input type="text" class="search-input" id="pscSearchInput" placeholder="Search" aria-label="Search PSC records">
+          </div>
+          <button class="btn-search" id="pscSearchBtn">Search</button>
+        </div>
+        <div class="toolbar-right" style="gap: 10px;">
+          <div class="company-select-box" style="width: 118px;">
+            <label>Status</label>
+            <select id="pscStatusFilter" aria-label="Filter by status">
+              <option value="">ALL</option>
+              <option value="completed">COMPLETED</option>
+              <option value="pending">PENDING</option>
+            </select>
+            <span class="material-symbols-outlined">arrow_drop_down</span>
+          </div>
+          <div class="company-select-box">
+            <label>Company Name</label>
+            <select id="pscCompanyFilter" aria-label="Filter by company">
+              <option value="DENALI" selected>DENALI</option>
+              <option value="MARLINE CO">MARLINE CO</option>
+              <option value="OCEAN TRUST">OCEAN TRUST</option>
+            </select>
+            <span class="material-symbols-outlined">arrow_drop_down</span>
+          </div>
+          <div class="psc-toolbar-date-wrap">
+            <div class="mui-field-box empty-unfocused" style="width: 140px; height: 36px;">
+              <label for="pscFromDate">From Date</label>
+              <input type="text" id="pscFromDate" placeholder="" style="cursor: pointer; padding-right: 28px;">
+              <span class="material-symbols-outlined date-icon" style="cursor: pointer;">calendar_today</span>
+            </div>
+          </div>
+          <div class="psc-toolbar-date-wrap">
+            <div class="mui-field-box empty-unfocused" style="width: 140px; height: 36px;">
+              <label for="pscToDate">To Date</label>
+              <input type="text" id="pscToDate" placeholder="">
+            </div>
+          </div>
+          <button class="btn-create" id="pscCreateBtn" aria-label="Create new PSC record">Create</button>
+          <button class="filter-btn" id="pscFilterIconBtn" title="Filter" aria-label="Toggle filters">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.78 22.61L1.39 4.22l1.41-1.41L21.19 21.2l-1.41 1.41zM6.83 6L10 9.87V19l4-2v-5.13l5.06-6.32H6.83z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <!-- Table matching psc list.png -->
+      <div class="table-container">
+        <table class="psc-table" role="grid" aria-label="PSC inspection records">
+          <thead>
+            <tr>
+              <th class="col-expand" style="width: 40px;" scope="col"></th>
+              <th scope="col">Vessel Name</th>
+              <th scope="col">IMO Number</th>
+              <th scope="col">Company</th>
+              <th scope="col">Deficiency Date</th>
+              <th class="col-status" style="text-align: center; width: 140px;" scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="pscTableBody">
+            <!-- Rows injected by JS matching psc list.png -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- END PSC LIST PAGE -->
+
+    <!-- ================= CREATE PSC PAGE (MATCHING VESSEL DETAIL.PNG) ================= -->
+    <div class="page-view" id="createPscPage" style="display: none;">
+      <!-- Page Header: Back Arrow + VESSEL DETAILS title -->
+      <div class="psc-page-header">
+        <span class="material-symbols-outlined psc-back-arrow" id="pscBackBtn" title="Back to PSC List" aria-label="Back to PSC List">arrow_back</span>
+        <span class="psc-page-title">VESSEL DETAILS</span>
+      </div>
+
+      <!-- Scrollable body -->
+      <div class="psc-create-body">
+
+        <!-- SECTION 1: Vessel Details (4-Column Grid) -->
+        <div class="psc-grid-4col">
+          <!-- Row 1, Col 1: VESSEL NAME * -->
+          <div class="mui-field-box empty-unfocused" id="pscVesselSelectBox">
+            <label for="pscVesselSelect">VESSEL NAME <span class="req-star">*</span></label>
+            <select id="pscVesselSelect" aria-required="true" aria-label="Select Vessel">
+              <option value=""></option>
+              <option value="ABCD_88">ABCD</option>
+              <option value="ABCD_5288970">ABCD</option>
+              <option value="AB SERENA">AB SERENA</option>
+              <option value="ACADIA">ACADIA</option>
+              <option value="AMBER ECO">AMBER ECO</option>
+              <option value="AMI VESSEL -1">AMI VESSEL -1</option>
+              <option value="AQUAA ECO">AQUAA ECO</option>
+              <option value="AQUAA RAYY">AQUAA RAYY</option>
+              <option value="AQUA RAY">AQUA RAY</option>
+              <option value="AQUS RAY">AQUS RAY</option>
+            </select>
+            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <span class="error-text">Please select a vessel</span>
+          </div>
+
+          <!-- Row 1, Col 2: IMO NUMBER -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxImo">
+            <label for="pscInputImo">IMO NUMBER</label>
+            <input type="text" id="pscInputImo" readonly>
+          </div>
+
+          <!-- Row 1, Col 3: DOC COMPANY -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxDoc">
+            <label for="pscInputDoc">DOC COMPANY</label>
+            <input type="text" id="pscInputDoc" readonly>
+          </div>
+
+          <!-- Row 1, Col 4: FLAG STATE -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxFlag">
+            <label for="pscInputFlag">FLAG STATE</label>
+            <input type="text" id="pscInputFlag" readonly>
+          </div>
+
+          <!-- Row 2, Col 1: CLASS SOCIETY -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxClass">
+            <label for="pscInputClass">CLASS SOCIETY</label>
+            <input type="text" id="pscInputClass" readonly>
+          </div>
+
+          <!-- Row 2, Col 2: VESSEL TYPE -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxTypeRead">
+            <label for="pscInputType">VESSEL TYPE</label>
+            <input type="text" id="pscInputType" readonly>
+          </div>
+
+          <!-- Row 2, Col 3: GROSS TONNAGE -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxGrt">
+            <label for="pscInputGrt">GROSS TONNAGE</label>
+            <input type="text" id="pscInputGrt" readonly>
+          </div>
+
+          <!-- Row 2, Col 4: PORT OF REGISTRY -->
+          <div class="mui-field-box empty-unfocused readonly-box" id="pscBoxPortReg">
+            <label for="pscInputPortReg">PORT OF REGISTRY</label>
+            <input type="text" id="pscInputPortReg" readonly>
+          </div>
+        </div>
+
+        <!-- SECTION 2: PSC DETAILS -->
+        <div class="psc-section-title">PSC DETAILS</div>
+        <div class="psc-grid-4col">
+
+          <!-- Row 1, Col 1: TYPE * -->
+          <div class="mui-field-box empty-unfocused" id="pscBoxType">
+            <label for="pscSelectType">TYPE <span class="req-star">*</span></label>
+            <select id="pscSelectType" aria-required="true">
+              <option value=""></option>
+              <option value="PSC">PSC</option>
+              <option value="SIRE">SIRE</option>
+              <option value="Flag State">Flag State</option>
+              <option value="Class">Class</option>
+            </select>
+            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <span class="error-text">Please select Type</span>
+          </div>
+
+          <!-- Row 1, Col 2: SUB TYPE * -->
+          <div class="mui-field-box empty-unfocused" id="pscBoxSubType">
+            <label for="pscSelectSubType">SUB TYPE <span class="req-star">*</span></label>
+            <select id="pscSelectSubType" aria-required="true">
+              <option value=""></option>
+              <option value="POST DETENTION">POST DETENTION</option>
+              <option value="DEFICIENCY">DEFICIENCY</option>
+              <option value="OBSERVATION">OBSERVATION</option>
+            </select>
+            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <span class="error-text">Please select Sub Type</span>
+          </div>
+
+          <!-- Row 1, Col 3: COUNTRY * -->
+          <div class="mui-field-box empty-unfocused" id="pscBoxCountry">
+            <label for="pscSelectCountry">COUNTRY <span class="req-star">*</span></label>
+            <select id="pscSelectCountry" aria-required="true">
+              <option value=""></option>
+              <option value="Albania">Albania</option>
+              <option value="Argentina">Argentina</option>
+              <option value="Australia">Australia</option>
+              <option value="Belgium">Belgium</option>
+              <option value="Brazil">Brazil</option>
+              <option value="Canada">Canada</option>
+              <option value="China">China</option>
+              <option value="France">France</option>
+              <option value="Germany">Germany</option>
+              <option value="Greece">Greece</option>
+              <option value="India">India</option>
+              <option value="Italy">Italy</option>
+              <option value="Japan">Japan</option>
+              <option value="Netherlands">Netherlands</option>
+              <option value="Norway">Norway</option>
+              <option value="Panama">Panama</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Spain">Spain</option>
+              <option value="Turkey">Turkey</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="United States">United States</option>
+            </select>
+            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <span class="error-text">Please select Country</span>
+          </div>
+
+          <!-- Row 1, Col 4: PORT OF DETECTION * -->
+          <div class="mui-field-box empty-unfocused" id="pscBoxPort">
+            <label for="pscSelectPort">PORT OF DETECTION <span class="req-star">*</span></label>
+            <select id="pscSelectPort" aria-required="true">
+              <option value=""></option>
+              <option value="Durres">Durres</option>
+              <option value="Shengjin">Shengjin</option>
+              <option value="Vlores">Vlores</option>
+              <option value="Buenos Aires">Buenos Aires</option>
+              <option value="Rotterdam">Rotterdam</option>
+              <option value="Hamburg">Hamburg</option>
+              <option value="Singapore">Singapore</option>
+              <option value="Shanghai">Shanghai</option>
+              <option value="Tokyo">Tokyo</option>
+              <option value="Yokohama">Yokohama</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Houston">Houston</option>
+              <option value="New York">New York</option>
+              <option value="Los Angeles">Los Angeles</option>
+              <option value="Sydney">Sydney</option>
+              <option value="London">London</option>
+              <option value="Marseille">Marseille</option>
+              <option value="Piraeus">Piraeus</option>
+              <option value="Istanbul">Istanbul</option>
+            </select>
+            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <span class="error-text">Please select Port of Detection</span>
+          </div>
+
+          <!-- Row 2, Col 1: DATE * -->
+          <div class="mui-field-box empty-unfocused" id="pscBoxDate" style="position: relative;">
+            <label for="pscDateInput">DATE <span class="req-star">*</span></label>
+            <input type="text" id="pscDateInput" placeholder="" maxlength="10" autocomplete="off"
+                   aria-required="true" style="cursor:pointer; padding-right:36px;" readonly>
+            <span class="material-symbols-outlined date-icon" id="pscDateIcon" style="cursor:pointer;" aria-hidden="true">calendar_today</span>
+            <span class="error-text">Please enter a valid date (dd-mm-yyyy)</span>
+          </div>
+
+          <!-- Row 2, Col 2: PSC Region * -->
+          <div class="mui-field-box empty-unfocused" id="pscBoxRegion">
+            <label for="pscSelectRegion">PSC Region <span class="req-star">*</span></label>
+            <select id="pscSelectRegion" aria-required="true">
+              <option value=""></option>
+              <option value="Paris MoU">Paris MoU</option>
+              <option value="Tokyo MoU">Tokyo MoU</option>
+              <option value="USCG">USCG</option>
+              <option value="Vina del Mar">Vina del Mar</option>
+              <option value="Caribbean MoU">Caribbean MoU</option>
+              <option value="Mediterranean MoU">Mediterranean MoU</option>
+              <option value="Indian Ocean MoU">Indian Ocean MoU</option>
+              <option value="Abuja MoU">Abuja MoU</option>
+              <option value="Black Sea MoU">Black Sea MoU</option>
+              <option value="Riyadh MoU">Riyadh MoU</option>
+            </select>
+            <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <span class="error-text">Please select PSC Region</span>
+          </div>
+
+          <!-- Row 2, Col 3 & 4: empty spacers -->
+          <div></div>
+          <div></div>
+        </div>
+
+        <!-- Add PSC Button -->
+        <div class="psc-actions-row">
+          <button class="btn-add-psc is-disabled" id="btnAddPsc" type="button" aria-disabled="true">Add PSC</button>
+        </div>
+
+        <!-- Deficiencies Section (revealed after first deficiency is saved) -->
+        <div class="psc-deficiencies-section" id="pscDeficienciesSection" style="display:none;">
+          <div class="psc-deficiencies-header">
+            <div class="psc-deficiencies-title">Deficiencies</div>
+            <button class="btn-add-deficiency" id="btnAddAnotherDeficiency" type="button" aria-label="Add another deficiency">
+              <span class="material-symbols-outlined">add</span>Add Deficiency
+            </button>
+          </div>
+          <div class="psc-deficiency-list" id="pscDeficiencyList"></div>
+        </div>
+
+        <!-- Date picker popover (positioned via JS) -->
+        <div class="psc-datepicker-popover" id="pscDatePickerPopover" style="display:none;" role="dialog" aria-label="Date picker">
+          <div class="psc-dp-header">
+            <button class="psc-dp-nav-btn" id="pscDpPrevMonth" type="button" aria-label="Previous month">&#8249;</button>
+            <span class="psc-dp-month-year" id="pscDpMonthYear"></span>
+            <button class="psc-dp-nav-btn" id="pscDpNextMonth" type="button" aria-label="Next month">&#8250;</button>
+          </div>
+          <div class="psc-dp-weekdays">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <div class="psc-dp-days-grid" id="pscDpDaysGrid"></div>
+        </div>
+
+      </div><!-- /.psc-create-body -->
+    </div>
+    <!-- END CREATE PSC PAGE -->
 
   </main>
 
@@ -5329,20 +6814,20 @@
 
             <!-- Create Custom Field Section -->
             <div class="cf-section-label">Create Custom Field</div>
-            <div class="cf-add-row">
-              <div class="cf-field-input-wrap">
+            <div class="cf-add-row" style="display: flex; align-items: center; gap: 8px;">
+              <div class="mui-field-box empty-unfocused" style="flex: 1; height: 38px;">
+                <label for="cfFieldNameInput">Custom Field Name</label>
                 <input
                   type="text"
-                  class="cf-field-input"
                   id="cfFieldNameInput"
-                  placeholder="Enter custom field"
+                  placeholder=""
                   maxlength="80"
                   aria-label="Custom field name"
                   autocomplete="off"
                 >
                 <span class="cf-input-error-msg" id="cfFieldNameError"></span>
               </div>
-              <button class="cf-btn-add" id="cfBtnAddField" aria-label="Add custom field">Add</button>
+              <button class="btn-create" id="cfBtnAddField" aria-label="Add custom field" style="height: 38px; padding: 0 16px;">Add</button>
             </div>
 
             <!-- Divider -->
@@ -5555,6 +7040,13 @@
               <input type="text" id="inputEuaPrice" placeholder="">
               <span class="error-text">Please enter a valid numeric value</span>
             </div>
+
+            <!-- Pool Price Field -->
+            <div class="mui-field-box empty-unfocused" id="boxEuaPoolPrice" data-field="euaPoolPrice">
+              <label>Pool Price<span class="req-star">*</span></label>
+              <input type="text" id="inputEuaPoolPrice" placeholder="">
+              <span class="error-text">Please enter a valid numeric value</span>
+            </div>
           </form>
         </div>
 
@@ -5687,6 +7179,8 @@
 
   <!-- ================= APPLICATION-LEVEL VESSEL DETAIL SLIDE-OVER DRAWER ================= -->
   <div class="fleet-drawer-overlay" id="ndDrawerOverlay" role="presentation"></div>
+  <!-- TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER -->
+  <!--
   <div class="fleet-drawer" id="ndVesselDrawer" role="dialog" aria-modal="true" aria-labelledby="ndDrawerVesselName">
     <!-- Drawer Header -->
     <div class="fleet-drawer-header">
@@ -5736,11 +7230,286 @@
       </button>
     </div>
   </div>
+  -->
 
   <!-- ================= APPLICATION-LEVEL REPORT / DRILLDOWN MODAL ================= -->
   <div class="fleet-modal" id="ndReportModal" role="dialog" aria-modal="true">
     <div id="ndReportModalContent"></div>
   </div>
+
+  <!-- ================= PSC ADD NEW DEFICIENCY MODAL ================= -->
+  <div class="psc-modal-overlay" id="pscDeficiencyModal" role="dialog" aria-modal="true" aria-labelledby="pscModalTitle">
+    <div class="psc-modal-card">
+
+      <!-- Sticky Header -->
+      <div class="psc-modal-header">
+        <div class="psc-modal-title" id="pscModalTitle">Add New Deficiency</div>
+        <button class="psc-modal-close-btn" id="pscModalCloseBtn" type="button" aria-label="Close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Body -->
+      <div class="psc-modal-body">
+        <div class="psc-modal-inner-box">
+          <div class="psc-modal-fields-stack">
+
+            <!-- 1. Deficiency Code * -->
+            <div class="mui-field-box empty-unfocused custom-select-box" id="pscDefBoxCode">
+              <label for="pscDefCodeInput">Deficiency Code <span class="req-star">*</span></label>
+              <input type="text" class="custom-select-display-input" id="pscDefCodeInput" readonly placeholder="" autocomplete="off" aria-label="Deficiency Code" aria-haspopup="listbox">
+              <select id="pscDefCodeSelect" class="custom-select-hidden-native" aria-required="true" tabindex="-1">
+                <option value=""></option>
+                <option value="01101">01101</option>
+                <option value="01102">01102</option>
+                <option value="01103">01103</option>
+                <option value="01104">01104</option>
+                <option value="01105">01105</option>
+                <option value="01106">01106</option>
+                <option value="01107">01107</option>
+                <option value="01108">01108</option>
+                <option value="01109">01109</option>
+                <option value="01110">01110</option>
+                <option value="01111">01111</option>
+                <option value="01112">01112</option>
+                <option value="01113">01113</option>
+                <option value="01114">01114</option>
+                <option value="01115">01115</option>
+                <option value="01116">01116</option>
+                <option value="01117">01117</option>
+              </select>
+              <span class="psc-code-loader" id="pscCodeLoader" aria-hidden="true"></span>
+              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+              <div class="custom-dropdown-panel" id="pscDefCodeDropdown" role="listbox" aria-label="Deficiency Code Options">
+                <div class="custom-dropdown-option" role="option" data-value="01101">01101</div>
+                <div class="custom-dropdown-option" role="option" data-value="01102">01102</div>
+                <div class="custom-dropdown-option" role="option" data-value="01103">01103</div>
+                <div class="custom-dropdown-option" role="option" data-value="01104">01104</div>
+                <div class="custom-dropdown-option" role="option" data-value="01105">01105</div>
+                <div class="custom-dropdown-option" role="option" data-value="01106">01106</div>
+                <div class="custom-dropdown-option" role="option" data-value="01107">01107</div>
+                <div class="custom-dropdown-option" role="option" data-value="01108">01108</div>
+                <div class="custom-dropdown-option" role="option" data-value="01109">01109</div>
+                <div class="custom-dropdown-option" role="option" data-value="01110">01110</div>
+                <div class="custom-dropdown-option" role="option" data-value="01111">01111</div>
+                <div class="custom-dropdown-option" role="option" data-value="01112">01112</div>
+                <div class="custom-dropdown-option" role="option" data-value="01113">01113</div>
+                <div class="custom-dropdown-option" role="option" data-value="01114">01114</div>
+                <div class="custom-dropdown-option" role="option" data-value="01115">01115</div>
+                <div class="custom-dropdown-option" role="option" data-value="01116">01116</div>
+                <div class="custom-dropdown-option" role="option" data-value="01117">01117</div>
+              </div>
+              <span class="error-text">Please select Deficiency Code</span>
+            </div>
+
+            <!-- 2. Deficiency Area * (Auto-populated / Non-editable) -->
+            <div class="mui-field-box empty-unfocused readonly-box" id="pscDefBoxArea">
+              <label for="pscDefAreaInput">Deficiency Area <span class="req-star">*</span></label>
+              <input type="text" id="pscDefAreaInput" autocomplete="off" aria-required="true" readonly>
+              <span class="error-text">Please enter Deficiency Area</span>
+            </div>
+
+            <!-- 3. Summary (Auto-populated / Editable) -->
+            <div class="mui-field-box empty-unfocused is-textarea" id="pscDefBoxSummary">
+              <label for="pscDefSummaryInput">Summary</label>
+              <textarea id="pscDefSummaryInput" rows="2"></textarea>
+            </div>
+
+            <!-- 4. Training Courses (Auto-populated / Non-editable) -->
+            <div class="mui-field-box empty-unfocused disabled" id="pscDefBoxTraining">
+              <label for="pscDefTrainingSelect">Training Courses</label>
+              <select id="pscDefTrainingSelect" disabled>
+                <option value=""></option>
+                <option value="-">-</option>
+                <option value="Basic Safety Training">Basic Safety Training</option>
+                <option value="STCW Refresher">STCW Refresher</option>
+                <option value="Fire Fighting">Fire Fighting</option>
+                <option value="GMDSS">GMDSS</option>
+                <option value="ECDIS">ECDIS</option>
+                <option value="Tanker Safety">Tanker Safety</option>
+                <option value="ISM Awareness">ISM Awareness</option>
+                <option value="ISPS Awareness">ISPS Awareness</option>
+              </select>
+              <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            </div>
+
+            <!-- 5. Deficiency Description (Auto-populated / Editable) -->
+            <div class="mui-field-box empty-unfocused is-textarea has-expand box-desc" id="pscDefBoxDesc">
+              <label for="pscDefDescInput">Deficiency Description</label>
+              <textarea id="pscDefDescInput" rows="2"></textarea>
+              <button class="btn-field-expand" type="button" data-expand-field="desc" title="Expand Deficiency Description" aria-label="Expand Deficiency Description">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M5.5 2H2V5.5M2 2L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.5 2H14V5.5M14 2L10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5.5 14H2V10.5M2 14L6 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- 6. Action Code * + Eye icon -->
+            <div>
+              <div class="psc-action-code-row">
+                <div class="mui-field-box empty-unfocused custom-select-box" id="pscDefBoxActionCode">
+                  <label for="pscDefActionCodeInput">Action Code <span class="req-star">*</span></label>
+                  <input type="text" class="custom-select-display-input" id="pscDefActionCodeInput" readonly placeholder="" autocomplete="off" aria-label="Action Code" aria-haspopup="listbox">
+                  <select id="pscDefActionCodeSelect" class="custom-select-hidden-native" aria-required="true" tabindex="-1">
+                    <option value=""></option>
+                    <option value="code10" data-desc="Deficiency rectified">code10</option>
+                    <option value="code15" data-desc="Rectify deficiency at next port">code15</option>
+                    <option value="code16" data-desc="Written warning">code16</option>
+                    <option value="code17" data-desc="Master cautioned">code17</option>
+                    <option value="code18" data-desc="Detention">code18</option>
+                    <option value="code19" data-desc="Safety equipment rectification">code19</option>
+                    <option value="code20" data-desc="Flag state inspection required">code20</option>
+                    <option value="code30" data-desc="Deficiency rectified">code30</option>
+                    <option value="code45" data-desc="Grounds for detention removed">code45</option>
+                    <option value="code85" data-desc="Rectified before departure">code85</option>
+                    <option value="code99" data-desc="No action taken">code99</option>
+                  </select>
+                  <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+                  <div class="custom-dropdown-panel" id="pscDefActionDropdown" role="listbox" aria-label="Action Code Options">
+                    <div class="custom-dropdown-option" role="option" data-value="code10">code10</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code15">code15</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code16">code16</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code17">code17</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code18">code18</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code19">code19</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code20">code20</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code30">code30</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code45">code45</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code85">code85</div>
+                    <div class="custom-dropdown-option" role="option" data-value="code99">code99</div>
+                  </div>
+                  <span class="error-text">Please select Action Code</span>
+                </div>
+                <button class="btn-eye-icon" id="pscDefActionEyeBtn" type="button"
+                        title="View action code description" aria-label="View action code description">
+                  <span class="material-symbols-outlined">visibility</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 7. Action Code Desc (Auto-populated) -->
+            <div class="mui-field-box empty-unfocused is-textarea readonly-box" id="pscDefBoxActionDesc">
+              <label for="pscDefActionDescInput">Action Code Desc</label>
+              <textarea id="pscDefActionDescInput" rows="2" readonly></textarea>
+            </div>
+
+            <!-- Generate Recommendation Section -->
+            <div class="psc-gen-rec-container">
+              <div class="psc-gen-rec-banner">
+                <button type="button" class="btn-generate-rec" id="pscBtnGenRec" aria-label="Generate Recommendation">
+                  <span class="material-symbols-outlined btn-gen-icon">auto_awesome</span>
+                  <span class="btn-gen-text" id="pscGenRecText">Generate Recommendation</span>
+                  <span class="btn-gen-spinner" id="pscGenSpinner" style="display:none;"></span>
+                </button>
+                <span class="psc-gen-rec-hint">AI-driven actionable insights &amp; risk evaluation</span>
+              </div>
+            </div>
+
+            <!-- 8. Corrective Action (Editable) -->
+            <div class="mui-field-box empty-unfocused is-textarea has-expand box-corrective" id="pscDefBoxCorrective">
+              <label for="pscDefCorrectiveInput">Corrective Action</label>
+              <textarea id="pscDefCorrectiveInput" rows="2"></textarea>
+              <button class="btn-field-expand" type="button" data-expand-field="corrective" title="Expand Corrective Action" aria-label="Expand Corrective Action">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M5.5 2H2V5.5M2 2L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.5 2H14V5.5M14 2L10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5.5 14H2V10.5M2 14L6 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Reviewer Comments & Generated Recommendations matching popup2.png -->
+            <div class="psc-reviewer-section">
+              <div class="psc-reviewer-header">
+                <span class="psc-reviewer-title">Below are the comments provided by the reviewer</span>
+              </div>
+              <div class="psc-rec-checkbox-row">
+                <label class="psc-rec-check-item">
+                  <input type="checkbox" id="pscChkRisk" checked disabled>
+                  <span>Risk Assessment</span>
+                </label>
+                <label class="psc-rec-check-item">
+                  <input type="checkbox" id="pscChkSolarisCap" checked disabled>
+                  <span>Solaristech Corrective Action Plan</span>
+                </label>
+              </div>
+
+              <!-- 9. Suggested (Generated / Editable) -->
+              <div class="mui-field-box empty-unfocused is-textarea has-expand" id="pscDefBoxSuggested">
+                <label for="pscDefSuggestedInput">Suggested</label>
+                <textarea id="pscDefSuggestedInput" rows="2"></textarea>
+                <button class="btn-field-expand" type="button" data-expand-field="suggested" title="Expand Suggested" aria-label="Expand Suggested">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5.5 2H2V5.5M2 2L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 2H14V5.5M14 2L10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.5 14H2V10.5M2 14L6 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- 10. Risk Assessment (Generated / Editable) -->
+              <div class="mui-field-box empty-unfocused is-textarea has-expand" id="pscDefBoxRisk">
+                <label for="pscDefRiskInput">Risk Assessment</label>
+                <textarea id="pscDefRiskInput" rows="2"></textarea>
+                <button class="btn-field-expand" type="button" data-expand-field="risk" title="Expand Risk Assessment" aria-label="Expand Risk Assessment">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5.5 2H2V5.5M2 2L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 2H14V5.5M14 2L10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.5 14H2V10.5M2 14L6 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- 11. Solaristech Corrective Action Plan (Generated / Editable) -->
+              <div class="mui-field-box empty-unfocused is-textarea has-expand" id="pscDefBoxSolarisCap">
+                <label for="pscDefSolarisCapInput">Solaristech Corrective Action Plan</label>
+                <textarea id="pscDefSolarisCapInput" rows="2"></textarea>
+                <button class="btn-field-expand" type="button" data-expand-field="solarisCap" title="Expand Solaristech Corrective Action Plan" aria-label="Expand Solaristech Corrective Action Plan">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5.5 2H2V5.5M2 2L6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 2H14V5.5M14 2L10 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.5 14H2V10.5M2 14L6 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Sticky Footer matching popup1.png / popup2.png -->
+      <div class="psc-modal-footer">
+        <button class="btn-modal-black" id="pscDefCancelBtn" type="button">Cancel</button>
+        <button class="btn-modal-black" id="pscDefSaveBtn" type="button" disabled aria-disabled="true">Save</button>
+      </div>
+
+    </div>
+  </div>
+  <!-- END PSC ADD NEW DEFICIENCY MODAL -->
+
+  <!-- ================= PSC EXPAND MODAL (MATCHING ASSETS/PSC LIST/EXPAND.PNG) ================= -->
+  <div class="psc-expand-modal-overlay" id="pscExpandModal" role="dialog" aria-modal="true" aria-labelledby="pscExpandModalTitle">
+    <div class="psc-expand-modal-card">
+      <div class="psc-expand-modal-header">
+        <div class="psc-expand-modal-title" id="pscExpandModalTitle">Risk Assessment</div>
+      </div>
+      <div class="psc-expand-modal-body">
+        <textarea class="psc-expand-textarea" id="pscExpandTextarea" placeholder=""></textarea>
+      </div>
+      <div class="psc-expand-modal-footer">
+        <button class="btn-expand-close" id="pscExpandCloseBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+  <!-- END PSC EXPAND MODAL -->
 
   <!-- Global Toast Notification Container -->
   <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
@@ -5922,17 +7691,17 @@
 
     // ---------- Field Shrink / Inline Label Logic ----------
     function updateFieldStates() {
-      document.querySelectorAll('.mui-field-box').forEach(box => {
-        if (box.classList.contains('disabled')) return;
+      document.querySelectorAll('.mui-field-box, .company-select-box').forEach(box => {
         const input = box.querySelector('input, select, textarea');
         if (!input) return;
 
         const isFocused = document.activeElement === input;
         let hasVal = false;
         if (input.tagName === 'SELECT') {
-          const selectedOpt = input.options[input.selectedIndex];
+          const selectedOpt = input.selectedIndex >= 0 ? input.options[input.selectedIndex] : null;
+          const optVal = input.value ? input.value.trim() : '';
           const optText = selectedOpt ? selectedOpt.text.trim() : '';
-          hasVal = (input.value && input.value.trim() !== '') || optText !== '';
+          hasVal = (optVal !== '') && (optText !== '');
         } else {
           hasVal = input.value && input.value.trim() !== '';
         }
@@ -5949,6 +7718,7 @@
     document.addEventListener('focusout', updateFieldStates);
     document.addEventListener('input', updateFieldStates);
     document.addEventListener('change', updateFieldStates);
+    window.updateFieldStates = updateFieldStates;
     updateFieldStates();
 
     // ---------- Create Modal Open / Close ----------
@@ -6515,6 +8285,10 @@
       if (fuelConfigPage)    fuelConfigPage.style.display    = 'none';
       if (ciiReadinessPage)  ciiReadinessPage.style.display  = 'none';
       if (voyageHistoryPage) voyageHistoryPage.style.display = 'none';
+      const _pscLP = document.getElementById('pscListPage');
+      const _pscCP = document.getElementById('createPscPage');
+      if (_pscLP) _pscLP.style.display = 'none';
+      if (_pscCP) _pscCP.style.display = 'none';
 
       if (page === 'vessel') {
         if (navVesselList)   navVesselList.classList.add('active');
@@ -6535,6 +8309,10 @@
       } else if (page === 'voyageHistory') {
         if (navVoyageHistoryEl) navVoyageHistoryEl.classList.add('active');
         if (voyageHistoryPage)  voyageHistoryPage.style.display = 'flex';
+      } else if (page === 'psc') {
+        const navPscEl = document.getElementById('navPscList');
+        if (navPscEl) navPscEl.classList.add('active');
+        if (_pscLP)  _pscLP.style.display = 'flex';
       }
     }
 
@@ -6789,9 +8567,9 @@
 
     // --- EUA Price demo data ---
     let euaData = [
-      { slno: 1, year: '2026', vcmMin: '80', vcmMax: '120', euaPrice: '75' },
-      { slno: 2, year: '2027', vcmMin: '85', vcmMax: '125', euaPrice: '80' },
-      { slno: 3, year: '2028', vcmMin: '90', vcmMax: '130', euaPrice: '85' }
+      { slno: 1, year: '2026', vcmMin: '80', vcmMax: '120', euaPrice: '75', poolPrice: '70' },
+      { slno: 2, year: '2027', vcmMin: '85', vcmMax: '125', euaPrice: '80', poolPrice: '75' },
+      { slno: 3, year: '2028', vcmMin: '90', vcmMax: '130', euaPrice: '85', poolPrice: '80' }
     ];
 
     const euaTableBody = document.getElementById('euaTableBody');
@@ -6801,13 +8579,14 @@
       euaTableBody.innerHTML = '';
       data.forEach(item => {
         const tr = document.createElement('tr');
-        tr.dataset.searchtext = `${item.slno} ${item.year} ${item.vcmMin} ${item.vcmMax} ${item.euaPrice}`.toLowerCase();
+        tr.dataset.searchtext = `${item.slno} ${item.year} ${item.vcmMin} ${item.vcmMax} ${item.euaPrice} ${item.poolPrice || ''}`.toLowerCase();
         tr.innerHTML = `
           <td>${item.slno}</td>
           <td>${item.year}</td>
           <td>${item.vcmMin}</td>
           <td>${item.vcmMax}</td>
           <td>${item.euaPrice}</td>
+          <td>${item.poolPrice || '—'}</td>
           <td class="col-action" style="text-align: right; padding-right: 24px;">
             <span class="material-symbols-outlined action-edit-btn eua-edit-btn" data-slno="${item.slno}" title="Edit">edit</span>
           </td>
@@ -6848,8 +8627,9 @@
     const inputEuaVcmMin = document.getElementById('inputEuaVcmMin');
     const inputEuaVcmMax = document.getElementById('inputEuaVcmMax');
     const inputEuaPrice = document.getElementById('inputEuaPrice');
+    const inputEuaPoolPrice = document.getElementById('inputEuaPoolPrice');
 
-    const EUA_BOXES = ['boxEuaYear', 'boxEuaVcmMin', 'boxEuaVcmMax', 'boxEuaPrice'];
+    const EUA_BOXES = ['boxEuaYear', 'boxEuaVcmMin', 'boxEuaVcmMax', 'boxEuaPrice', 'boxEuaPoolPrice'];
 
     function clearEuaErrors() {
       EUA_BOXES.forEach(id => {
@@ -6868,6 +8648,7 @@
         inputEuaVcmMin.value = item.vcmMin;
         inputEuaVcmMax.value = item.vcmMax;
         inputEuaPrice.value = item.euaPrice;
+        if (inputEuaPoolPrice) inputEuaPoolPrice.value = item.poolPrice || '';
       } else {
         editingEuaSlno = null;
         euaModalTitle.textContent = 'Add EUA Price Details';
@@ -6876,6 +8657,7 @@
         inputEuaVcmMin.value = '';
         inputEuaVcmMax.value = '';
         inputEuaPrice.value = '';
+        if (inputEuaPoolPrice) inputEuaPoolPrice.value = '';
       }
       euaModalOverlay.classList.add('open');
       updateFieldStates();
@@ -6917,6 +8699,7 @@
         const vcmMinVal = inputEuaVcmMin.value.trim();
         const vcmMaxVal = inputEuaVcmMax.value.trim();
         const euaPriceVal = inputEuaPrice.value.trim();
+        const poolPriceVal = inputEuaPoolPrice ? inputEuaPoolPrice.value.trim() : '';
 
         // Validate Year: required selection & uniqueness
         if (!yearVal) {
@@ -6960,6 +8743,13 @@
           isValid = false;
         }
 
+        // Validate Pool Price
+        if (!poolPriceVal || isNaN(poolPriceVal)) {
+          const boxPool = document.getElementById('boxEuaPoolPrice');
+          if (boxPool) boxPool.classList.add('error');
+          isValid = false;
+        }
+
         if (!isValid) {
           showToast('Please correct the highlighted errors.');
           return;
@@ -6972,11 +8762,12 @@
             item.vcmMin = vcmMinVal;
             item.vcmMax = vcmMaxVal;
             item.euaPrice = euaPriceVal;
+            item.poolPrice = poolPriceVal;
             showToast('EUA price updated successfully.');
           }
         } else {
           const nextSlno = euaData.length > 0 ? Math.max(...euaData.map(d => d.slno)) + 1 : 1;
-          euaData.push({ slno: nextSlno, year: yearVal, vcmMin: vcmMinVal, vcmMax: vcmMaxVal, euaPrice: euaPriceVal });
+          euaData.push({ slno: nextSlno, year: yearVal, vcmMin: vcmMinVal, vcmMax: vcmMaxVal, euaPrice: euaPriceVal, poolPrice: poolPriceVal });
           showToast('EUA price added successfully.');
         }
 
@@ -8878,7 +10669,7 @@
 
         if (list.length === 0) {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td colspan="12" style="text-align:center;padding:24px;color:var(--text-muted);font-style:italic;">No vessels found for this filter.</td>`;
+          tr.innerHTML = `<td colspan="11" style="text-align:center;padding:24px;color:var(--text-muted);font-style:italic;">No vessels found for this filter.</td>`;
           tbody.appendChild(tr);
           return;
         }
@@ -8905,11 +10696,13 @@
             <td style="text-align:right;color:${v.fue > 0 ? '#b71c1c' : '#2e7d32'};font-weight:600;" class="fleet-mono">${v.fue > 0 ? '€' + v.fue + 'K' : '€0'}</td>
             <td style="text-align:center;">${ndTag(v.rk)}</td>
             <td style="text-align:center;font-weight:600;color:${v.cap !== '---' ? '#b71c1c' : 'var(--text-muted)'};" class="fleet-mono">${v.cap}</td>
+            <!-- TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
             <td style="text-align:center;">
               <button type="button" class="action-edit-btn" data-vessel-idx="${origIdx}" title="View ${v.nm} details" aria-label="View vessel details" style="background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">
                 <span class="material-symbols-outlined" style="font-size:18px;">chevron_right</span>
               </button>
             </td>
+            -->
           `;
           tbody.appendChild(tr);
         });
@@ -8982,6 +10775,11 @@
         ndRenderComplianceCalendar();
       }
 
+      // =========================================================================
+      // TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
+      // Dynamic Section HTML Renderer & Drawer State / Controls
+      // =========================================================================
+      /*
       // --- Dynamic Section HTML Renderer (Exact 1:1 with NautiluxCII_WorkingDemo.html, matched to CII Verification design system) ---
       function ndSecHTML(idx, v) {
         const s = ND_SEC[idx] || ND_SEC[0];
@@ -9395,6 +11193,7 @@
         if (overlay) overlay.classList.remove('open');
         if (drawer) drawer.classList.remove('open');
       }
+      */
 
       // --- Modal Open / Close ---
       function ndOpenModal(htmlContent) {
@@ -9561,6 +11360,11 @@
         }, 50);
       }
 
+      // =========================================================================
+      // TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
+      // Vessel Report AI Generation Engine (triggered by Vessel Side Drawer report button)
+      // =========================================================================
+      /*
       // --- Vessel Report AI Generation Engine ---
       function ndStartVesselReportGeneration(vessel) {
         const animHTML = `
@@ -9629,6 +11433,7 @@
           }
         }, 50);
       }
+      */
 
       // --- Modal Breakdowns for KPI Card Clicks ---
       function ndShowCo2Modal() {
@@ -9994,6 +11799,11 @@
           });
         }
 
+        // =========================================================================
+        // TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
+        // Wire Table row clicks & view button clicks to open vessel side drawer
+        // =========================================================================
+        /*
         // Wire Table row clicks & view button clicks
         const tbody = document.getElementById('ndFleetTableBody');
         if (tbody) {
@@ -10005,19 +11815,27 @@
             }
           });
         }
+        */
 
+        // =========================================================================
+        // TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
+        // Wire Drawer close buttons & controls
+        // =========================================================================
+        /*
         // Wire Drawer close buttons
         const closeDrawerBtn = document.getElementById('ndCloseDrawerBtn');
         if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', ndCloseDrawer);
+        */
 
         const overlay = document.getElementById('ndDrawerOverlay');
         if (overlay) {
           overlay.addEventListener('click', () => {
-            ndCloseDrawer();
+            /* ndCloseDrawer(); // TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER */
             ndCloseModal();
           });
         }
 
+        /*
         // Wire Drawer section selector and navigation controls
         const secSelect = document.getElementById('ndDrawerSecSelect');
         if (secSelect) {
@@ -10055,6 +11873,7 @@
             ndStartVesselReportGeneration(ND_VL[ndSelectedVesselIdx]);
           });
         }
+        */
 
         // Wire Fleet Report Button — direct download of Fleet_CII_Risk_Summary.pdf
         const btnGenReport = document.getElementById('ndBtnGenFleetReport');
@@ -10107,6 +11926,11 @@
           ndShowRiskMatrixModal();
         });
 
+        // =========================================================================
+        // TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
+        // Wire Priority Action "Inspect" buttons
+        // =========================================================================
+        /*
         // Wire Priority Action "Inspect" buttons
         const actList = document.getElementById('ndPriorityActionsList');
         if (actList) {
@@ -10119,17 +11943,21 @@
             if (idx >= 0) ndOpenDrawer(idx, !isNaN(secIdx) && secIdx >= 0 ? secIdx : 0);
           });
         }
+        */
 
         // Close drawer / modal on Escape key
         document.addEventListener('keydown', e => {
           if (e.key === 'Escape') {
-            const drawer = document.getElementById('ndVesselDrawer');
             const modal = document.getElementById('ndReportModal');
             if (modal && modal.classList.contains('open')) {
               ndCloseModal();
-            } else if (drawer && drawer.classList.contains('open')) {
+            }
+            /* TEMPORARILY DISABLED — VESSEL ACTION & SIDE DRAWER
+            const drawer = document.getElementById('ndVesselDrawer');
+            if (drawer && drawer.classList.contains('open')) {
               ndCloseDrawer();
             }
+            */
           }
         });
       }
@@ -10148,6 +11976,1206 @@
         ndInit();
       }
     })();
+
+    // ================= PSC MODULE =================
+
+    // ---- Vessel master data (matching reference vessel details) ----
+    const pscVesselMaster = {
+      'ABCD_88':       { name:'ABCD',          imo:'88',       docCompany:'DENALI',      flag:'Argentina', classSoc:'ABS',  type:'Anchor Handling Tug Supply (AHTS) Vessel', grt:'12',      portReg:'Buenos Aires' },
+      'ABCD_5288970':  { name:'ABCD',          imo:'5288970',  docCompany:'MARLINE CO',  flag:'Belgium',   classSoc:'RINA', type:'Ferrie',                                   grt:'235553',  portReg:'Brussels' },
+      'AB SERENA':     { name:'AB SERENA',     imo:'2311432',  docCompany:'DENALI',      flag:'Argentina', classSoc:'BV',   type:'Bulk Carrier',                             grt:'1234',    portReg:'Buenos Aires' },
+      'ACADIA':        { name:'ACADIA',        imo:'6543902',  docCompany:'DENALI',      flag:'Argentina', classSoc:'CCS',  type:'LPG Carrier',                              grt:'4553',    portReg:'Buenos Aires' },
+      'AMBER ECO':     { name:'AMBER ECO',     imo:'9876473',  docCompany:'OCEAN TRUST', flag:'India',     classSoc:'CCS',  type:'Crude Oil Tanker',                         grt:'647382',  portReg:'Mumbai' },
+      'AMI VESSEL -1': { name:'AMI VESSEL -1', imo:'8823451',  docCompany:'DENALI',      flag:'India',     classSoc:'CCS',  type:'Bulk Carrier',                             grt:'897612',  portReg:'Mumbai' },
+      'AQUAA ECO':     { name:'AQUAA ECO',     imo:'9853738',  docCompany:'MARLINE CO',  flag:'India',     classSoc:'CRS',  type:'Container Ship',                           grt:'765438',  portReg:'Mumbai' },
+      'AQUAA RAYY':    { name:'AQUAA RAYY',    imo:'9874738',  docCompany:'OCEAN TRUST', flag:'India',     classSoc:'CRS',  type:'Crude Oil Tanker',                         grt:'897352',  portReg:'Mumbai' },
+      'AQUA RAY':      { name:'AQUA RAY',      imo:'7564747',  docCompany:'MARLINE CO',  flag:'India',     classSoc:'RINA', type:'LNG Carrier',                              grt:'657739',  portReg:'Mumbai' },
+      'AQUS RAY':      { name:'AQUS RAY',      imo:'9843737',  docCompany:'OCEAN TRUST', flag:'India',     classSoc:'CRS',  type:'Bulk Carrier',                             grt:'874372',  portReg:'Mumbai' }
+    };
+
+    // ---- PSC in-memory data store with demo records (Exact match to psc list.png) ----
+    let pscData = [
+      {
+        id:'psc001', _key:'', vessel:'AB SERENA', imo:'2311432', company:'DENALI', type:'PSC', subType:'DEFICIENCY',
+        country:'Argentina', port:'Buenos Aires', date:'19-Aug-2026', region:'Paris MoU', status:'completed',
+        deficiencies:[
+          { code:'01107', area:'Fire Safety', summary:'Portable fire extinguisher inspected', training:'', description:'Fire safety systems compliant', actionCode:'30', actionDesc:'Deficiency rectified', corrective:'Inspection logged' }
+        ]
+      },
+      {
+        id:'psc002', _key:'', vessel:'AB SERENA', imo:'2311432', company:'DENALI', type:'PSC', subType:'OBSERVATION',
+        country:'Argentina', port:'Buenos Aires', date:'19-Aug-2026', region:'Paris MoU', status:'completed',
+        deficiencies:[
+          { code:'01101', area:'Certificates & Documents', summary:'Certificates verified', training:'', description:'All documents valid', actionCode:'30', actionDesc:'Deficiency rectified', corrective:'Verified' }
+        ]
+      },
+      {
+        id:'psc003', _key:'', vessel:'ACADIA', imo:'6543902', company:'DENALI', type:'PSC', subType:'DEFICIENCY',
+        country:'Japan', port:'Yokohama', date:'18-Aug-2026', region:'Tokyo MoU', status:'completed',
+        deficiencies:[
+          { code:'01110', area:'Navigation Safety', summary:'ECDIS chart checked', training:'ECDIS', description:'Electronic navigation logs updated', actionCode:'30', actionDesc:'Deficiency rectified', corrective:'Charts updated' }
+        ]
+      },
+      {
+        id:'psc004', _key:'', vessel:'AQUAA RAYY', imo:'9874738', company:'DENALI', type:'PSC', subType:'DEFICIENCY',
+        country:'India', port:'Mumbai', date:'19-Aug-2026', region:'Indian Ocean MoU', status:'completed',
+        deficiencies:[
+          { code:'01111', area:'Life Saving Appliances', summary:'Lifeboat inventory verified', training:'Basic Safety Training', description:'Life saving gear verified', actionCode:'30', actionDesc:'Deficiency rectified', corrective:'Inspected' }
+        ]
+      },
+      {
+        id:'psc005', _key:'', vessel:'STI MAYFAIR', imo:'9686730', company:'DENALI', type:'PSC', subType:'DEFICIENCY',
+        country:'Singapore', port:'Singapore', date:'19-Aug-2026', region:'Tokyo MoU', status:'completed',
+        deficiencies:[
+          { code:'01114', area:'Propulsion & Machinery', summary:'Emergency generator tested', training:'', description:'Generator load tested', actionCode:'30', actionDesc:'Deficiency rectified', corrective:'Test passed' }
+        ]
+      },
+      {
+        id:'psc006', _key:'', vessel:'AQUAA RAYY', imo:'9874738', company:'DENALI', type:'PSC', subType:'POST DETENTION',
+        country:'India', port:'Mumbai', date:'18-Aug-2026', region:'Indian Ocean MoU', status:'completed',
+        deficiencies:[
+          { code:'01112', area:'ISM', summary:'SMS manual review completed', training:'ISM Awareness', description:'Safety Management audit closed', actionCode:'85', actionDesc:'Rectified before departure', corrective:'SMS audit signed off' }
+        ]
+      },
+      {
+        id:'psc007', _key:'', vessel:'ABCD', imo:'88', company:'DENALI', type:'PSC', subType:'DEFICIENCY',
+        country:'Albania', port:'Durres', date:'20-Aug-2026', region:'Paris MoU', status:'pending',
+        badgeCount: 1,
+        deficiencies:[
+          { code:'01107', area:'Fire Safety', summary:'Portable fire extinguisher missing', training:'', description:'Portable fire extinguisher not in place on bridge wing', actionCode:'30', actionDesc:'Deficiency rectified', corrective:'Replaced extinguisher immediately' }
+        ]
+      }
+    ];
+
+    // ---- PSC state ----
+    let pscCurrentDeficiencies = [];
+    let pscCurrentVesselKey = '';
+    let pscCurrentRecordId = null;
+
+    // ---- Render PSC List table matching psc list.png ----
+    function pscRenderTable(data) {
+      const tbody = document.getElementById('pscTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      data.forEach(rec => {
+        const defCount  = rec.deficiencies.length;
+        const isCompleted = rec.status === 'completed';
+        const stCls     = isCompleted ? 'completed' : 'pending';
+        const stLbl     = isCompleted ? 'COMPLETED' : 'PENDING';
+        const searchTxt = `${rec.vessel} ${rec.imo} ${rec.company || 'DENALI'} ${rec.date} ${rec.status} ${rec.type || ''} ${rec.country || ''}`.toLowerCase();
+
+        const mainRow = document.createElement('tr');
+        mainRow.dataset.searchtext = searchTxt;
+        mainRow.dataset.status     = rec.status;
+        mainRow.dataset.pscId      = rec.id;
+
+        // Badge markup with optional badge count
+        const badgeHtml = isCompleted
+          ? `<span class="psc-status-pill completed">COMPLETED</span>`
+          : `<span class="psc-status-pill pending">PENDING${rec.badgeCount ? `<span class="psc-status-badge-count">${rec.badgeCount}</span>` : ''}</span>`;
+
+        mainRow.innerHTML = `
+          <td class="col-expand"><span class="material-symbols-outlined expand-chevron" style="cursor:pointer;font-size:20px;color:#666;transition:transform 0.15s ease;">keyboard_arrow_down</span></td>
+          <td style="font-weight: 500;">${rec.vessel}</td>
+          <td>${rec.imo}</td>
+          <td>${rec.company || 'DENALI'}</td>
+          <td>${rec.date}</td>
+          <td class="col-status" style="text-align: center;">${badgeHtml}</td>
+        `;
+        tbody.appendChild(mainRow);
+
+        // Expand detail row
+        const expandRow = document.createElement('tr');
+        expandRow.className = 'psc-expand-row';
+        expandRow.dataset.pscId = rec.id;
+        const chips = rec.deficiencies.map(d =>
+          `<span class="psc-def-chip"><span style="font-weight:700;">${d.code}</span>&nbsp;${d.area} (${d.actionCode ? 'Action: ' + d.actionCode : 'Action Logged'})</span>`
+        ).join('');
+
+        expandRow.innerHTML = `
+          <td colspan="6">
+            <div class="psc-expand-content" id="pscExpand_${rec.id}">
+              <div class="psc-expand-inner">
+                <div class="psc-expand-meta-row">
+                  <div class="psc-expand-meta-item"><strong>Type:</strong> ${rec.type || 'PSC'}</div>
+                  <div class="psc-expand-meta-item"><strong>Sub Type:</strong> ${rec.subType || 'DEFICIENCY'}</div>
+                  <div class="psc-expand-meta-item"><strong>Country:</strong> ${rec.country || '—'}</div>
+                  <div class="psc-expand-meta-item"><strong>Port:</strong> ${rec.port || '—'}</div>
+                  <div class="psc-expand-meta-item"><strong>Region:</strong> ${rec.region || '—'}</div>
+                </div>
+                <div>
+                  <strong>Deficiencies (${defCount}):</strong>
+                  <div class="psc-def-chip-row">${chips || '<span style="color:#888; font-style:italic;">No deficiencies recorded</span>'}</div>
+                </div>
+              </div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(expandRow);
+      });
+
+      // Wire row expand chevrons
+      tbody.querySelectorAll('.expand-chevron').forEach(chevron => {
+        chevron.addEventListener('click', e => {
+          const tr    = e.target.closest('tr');
+          const id    = tr.dataset.pscId;
+          const panel = document.getElementById('pscExpand_' + id);
+          if (panel) {
+            const open = panel.classList.toggle('open');
+            chevron.style.transform = open ? 'rotate(180deg)' : '';
+          }
+        });
+      });
+    }
+    pscRenderTable(pscData);
+
+    // ---- PSC list search & filter ----
+    const pscSearchInput  = document.getElementById('pscSearchInput');
+    const pscSearchBtn    = document.getElementById('pscSearchBtn');
+    const pscStatusFilter = document.getElementById('pscStatusFilter');
+    const pscCompanyFilter = document.getElementById('pscCompanyFilter');
+
+    function pscApplyFilters() {
+      const q      = pscSearchInput  ? pscSearchInput.value.trim().toLowerCase() : '';
+      const status = pscStatusFilter ? pscStatusFilter.value.toLowerCase() : '';
+      const tbody  = document.getElementById('pscTableBody');
+      if (!tbody) return;
+      tbody.querySelectorAll('tr[data-psc-id]:not(.psc-expand-row)').forEach(row => {
+        const txt  = row.dataset.searchtext || '';
+        const rst  = (row.dataset.status || '').toLowerCase();
+        const hide = (q && !txt.includes(q)) || (status && rst !== status);
+        row.classList.toggle('filtered-out', hide);
+        const expandRow = tbody.querySelector(`.psc-expand-row[data-psc-id="${row.dataset.pscId}"]`);
+        if (expandRow) expandRow.classList.toggle('filtered-out', hide);
+      });
+    }
+
+    if (pscSearchBtn)    pscSearchBtn.addEventListener('click', pscApplyFilters);
+    if (pscSearchInput)  pscSearchInput.addEventListener('keyup', pscApplyFilters);
+    if (pscStatusFilter) pscStatusFilter.addEventListener('change', pscApplyFilters);
+    if (pscCompanyFilter) pscCompanyFilter.addEventListener('change', () => showToast('Company filter applied'));
+
+    const pscFilterIconBtn = document.getElementById('pscFilterIconBtn');
+    if (pscFilterIconBtn) pscFilterIconBtn.addEventListener('click', () => showToast('PSC filter action triggered'));
+
+    // ---- Nav wire-up ----
+    const navPscListEl = document.getElementById('navPscList');
+    if (navPscListEl) navPscListEl.addEventListener('click', () => switchPage('psc'));
+
+    // ---- Create button ----
+    const pscCreateBtn = document.getElementById('pscCreateBtn');
+    if (pscCreateBtn) pscCreateBtn.addEventListener('click', pscOpenCreatePage);
+
+    // ---- Open / Close create page ----
+    function pscOpenCreatePage() {
+      const listPage   = document.getElementById('pscListPage');
+      const createPage = document.getElementById('createPscPage');
+      if (listPage)   listPage.style.display   = 'none';
+      if (createPage) createPage.style.display = 'flex';
+      pscResetCreateForm();
+    }
+
+    function pscCloseCreatePage() {
+      const listPage   = document.getElementById('pscListPage');
+      const createPage = document.getElementById('createPscPage');
+      if (createPage) createPage.style.display = 'none';
+      if (listPage)   listPage.style.display   = 'flex';
+      clearActiveNav();
+      const navEl = document.getElementById('navPscList');
+      if (navEl) navEl.classList.add('active');
+    }
+
+    const pscBackBtn = document.getElementById('pscBackBtn');
+    if (pscBackBtn) pscBackBtn.addEventListener('click', pscCloseCreatePage);
+
+    // ---- Reset the Create PSC form ----
+    function pscResetCreateForm() {
+      pscCurrentDeficiencies = [];
+      pscCurrentVesselKey    = '';
+      pscCurrentRecordId     = null;
+
+      // Reset vessel select
+      const vs = document.getElementById('pscVesselSelect');
+      if (vs) vs.value = '';
+      const vb = document.getElementById('pscVesselSelectBox');
+      if (vb) { vb.classList.remove('error'); vb.classList.add('empty-unfocused'); }
+
+      // Clear read-only fields
+      const readMap = [
+        { boxId: 'pscBoxImo',     inpId: 'pscInputImo' },
+        { boxId: 'pscBoxDoc',     inpId: 'pscInputDoc' },
+        { boxId: 'pscBoxFlag',    inpId: 'pscInputFlag' },
+        { boxId: 'pscBoxClass',   inpId: 'pscInputClass' },
+        { boxId: 'pscBoxTypeRead',inpId: 'pscInputType' },
+        { boxId: 'pscBoxGrt',     inpId: 'pscInputGrt' },
+        { boxId: 'pscBoxPortReg', inpId: 'pscInputPortReg' }
+      ];
+      readMap.forEach(({ boxId, inpId }) => {
+        const inp = document.getElementById(inpId);
+        const box = document.getElementById(boxId);
+        if (inp) inp.value = '';
+        if (box) box.classList.add('empty-unfocused');
+      });
+
+      // Reset PSC detail selects
+      ['pscSelectType','pscSelectSubType','pscSelectCountry','pscSelectPort','pscSelectRegion'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      const dateInput = document.getElementById('pscDateInput');
+      if (dateInput) dateInput.value = '';
+
+      // Clear errors
+      ['pscBoxType','pscBoxSubType','pscBoxCountry','pscBoxPort','pscBoxDate','pscBoxRegion','pscVesselSelectBox'].forEach(id => {
+        const box = document.getElementById(id);
+        if (box) box.classList.remove('error');
+      });
+
+      // Reset Add PSC button
+      const btnAddPsc = document.getElementById('btnAddPsc');
+      if (btnAddPsc) {
+        btnAddPsc.classList.add('is-disabled');
+        btnAddPsc.setAttribute('aria-disabled', 'true');
+      }
+
+      // Hide deficiencies section & clear list
+      const defSec = document.getElementById('pscDeficienciesSection');
+      if (defSec) defSec.style.display = 'none';
+      const defList = document.getElementById('pscDeficiencyList');
+      if (defList) defList.innerHTML = '';
+
+      // Close datepicker if open
+      const dpPop = document.getElementById('pscDatePickerPopover');
+      if (dpPop) dpPop.style.display = 'none';
+
+      updateFieldStates();
+    }
+
+    // ---- Vessel auto-populate (matching vessel detail.png) ----
+    const pscVesselSelect = document.getElementById('pscVesselSelect');
+    if (pscVesselSelect) {
+      pscVesselSelect.addEventListener('change', () => {
+        pscCurrentVesselKey = pscVesselSelect.value;
+        const v = pscVesselMaster[pscCurrentVesselKey];
+
+        const setFieldVal = (boxId, inpId, val) => {
+          const inp = document.getElementById(inpId);
+          const box = document.getElementById(boxId);
+          if (inp) inp.value = val || '';
+          if (box) {
+            if (val) box.classList.remove('empty-unfocused');
+            else box.classList.add('empty-unfocused');
+          }
+        };
+
+        if (v) {
+          setFieldVal('pscBoxImo',     'pscInputImo',     v.imo);
+          setFieldVal('pscBoxDoc',     'pscInputDoc',     v.docCompany);
+          setFieldVal('pscBoxFlag',    'pscInputFlag',    v.flag);
+          setFieldVal('pscBoxClass',   'pscInputClass',   v.classSoc);
+          setFieldVal('pscBoxTypeRead','pscInputType',    v.type);
+          setFieldVal('pscBoxGrt',     'pscInputGrt',     v.grt);
+          setFieldVal('pscBoxPortReg', 'pscInputPortReg', v.portReg);
+          const vb = document.getElementById('pscVesselSelectBox');
+          if (vb) vb.classList.remove('error');
+        } else {
+          setFieldVal('pscBoxImo',     'pscInputImo',     '');
+          setFieldVal('pscBoxDoc',     'pscInputDoc',     '');
+          setFieldVal('pscBoxFlag',    'pscInputFlag',    '');
+          setFieldVal('pscBoxClass',   'pscInputClass',   '');
+          setFieldVal('pscBoxTypeRead','pscInputType',    '');
+          setFieldVal('pscBoxGrt',     'pscInputGrt',     '');
+          setFieldVal('pscBoxPortReg', 'pscInputPortReg', '');
+        }
+        pscValidateAddBtn();
+        updateFieldStates();
+      });
+    }
+
+    // ---- PSC details validation → enable Add PSC visual state ----
+    const pscDetailIds = ['pscSelectType','pscSelectSubType','pscSelectCountry','pscSelectPort','pscDateInput','pscSelectRegion'];
+
+    function pscValidateAddBtn() {
+      const vesselOk  = !!(pscCurrentVesselKey && pscVesselMaster[pscCurrentVesselKey]);
+      const detailsOk = pscDetailIds.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value && el.value.trim() !== '';
+      });
+      const btn = document.getElementById('btnAddPsc');
+      if (btn) {
+        const isValid = vesselOk && detailsOk;
+        btn.classList.toggle('is-disabled', !isValid);
+        btn.setAttribute('aria-disabled', isValid ? 'false' : 'true');
+      }
+    }
+
+    pscDetailIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('change', () => { pscValidateAddBtn(); updateFieldStates(); });
+        el.addEventListener('input',  () => { pscValidateAddBtn(); updateFieldStates(); });
+      }
+    });
+
+    // ---- Date Picker (fixed-position calendar) ----
+    (function() {
+      const dateInput      = document.getElementById('pscDateInput');
+      const dateIcon       = document.getElementById('pscDateIcon');
+      const popover        = document.getElementById('pscDatePickerPopover');
+      const monthYearLabel = document.getElementById('pscDpMonthYear');
+      const daysGrid       = document.getElementById('pscDpDaysGrid');
+      const prevBtn        = document.getElementById('pscDpPrevMonth');
+      const nextBtn        = document.getElementById('pscDpNextMonth');
+      if (!dateInput || !popover) return;
+
+      const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      let dpYear, dpMonth;
+      let selDay = null, selMonth = null, selYear = null;
+
+      function dpPosition() {
+        const rect = dateInput.getBoundingClientRect();
+        popover.style.top  = (rect.bottom + 4) + 'px';
+        popover.style.left = rect.left + 'px';
+      }
+
+      function dpRender() {
+        if (!monthYearLabel || !daysGrid) return;
+        monthYearLabel.textContent = MONTHS[dpMonth] + ' ' + dpYear;
+        daysGrid.innerHTML = '';
+
+        const firstDay   = new Date(dpYear, dpMonth, 1).getDay();
+        const daysInMon  = new Date(dpYear, dpMonth + 1, 0).getDate();
+        const daysInPrev = new Date(dpYear, dpMonth, 0).getDate();
+        const today      = new Date();
+
+        // Prev-month filler
+        for (let i = firstDay - 1; i >= 0; i--) {
+          const d = document.createElement('div');
+          d.className = 'psc-dp-day other-month';
+          d.textContent = daysInPrev - i;
+          daysGrid.appendChild(d);
+        }
+        // Current month
+        for (let day = 1; day <= daysInMon; day++) {
+          const d = document.createElement('div');
+          d.className = 'psc-dp-day';
+          d.textContent = day;
+          const isToday    = (day === today.getDate() && dpMonth === today.getMonth() && dpYear === today.getFullYear());
+          const isSelected = (day === selDay && dpMonth === selMonth && dpYear === selYear);
+          if (isToday)    d.classList.add('today');
+          if (isSelected) d.classList.add('selected');
+          d.addEventListener('click', () => {
+            selDay = day; selMonth = dpMonth; selYear = dpYear;
+            const dd = String(day).padStart(2,'0');
+            const mm = String(dpMonth + 1).padStart(2,'0');
+            dateInput.value = `${dd}-${mm}-${dpYear}`;
+            document.getElementById('pscBoxDate')?.classList.remove('error');
+            dpClose();
+            pscValidateAddBtn();
+            updateFieldStates();
+          });
+          daysGrid.appendChild(d);
+        }
+        // Next-month filler
+        const total = Math.ceil((firstDay + daysInMon) / 7) * 7;
+        for (let n = 1; n <= total - firstDay - daysInMon; n++) {
+          const d = document.createElement('div');
+          d.className = 'psc-dp-day other-month';
+          d.textContent = n;
+          daysGrid.appendChild(d);
+        }
+      }
+
+      function dpOpen() {
+        const now = new Date();
+        dpYear = now.getFullYear(); dpMonth = now.getMonth();
+        // Restore from existing input value
+        const val = dateInput.value.trim();
+        if (/^\d{2}-\d{2}-\d{4}$/.test(val)) {
+          const p = val.split('-');
+          selDay = parseInt(p[0],10); selMonth = parseInt(p[1],10)-1; selYear = parseInt(p[2],10);
+          dpYear = selYear; dpMonth = selMonth;
+        }
+        dpRender();
+        dpPosition();
+        popover.style.display = 'block';
+      }
+
+      function dpClose() { popover.style.display = 'none'; }
+
+      function dpToggle(e) {
+        if (e) e.stopPropagation();
+        popover.style.display === 'block' ? dpClose() : dpOpen();
+      }
+
+      if (prevBtn) prevBtn.addEventListener('click', e => { e.stopPropagation(); dpMonth--; if (dpMonth < 0) { dpMonth = 11; dpYear--; } dpRender(); });
+      if (nextBtn) nextBtn.addEventListener('click', e => { e.stopPropagation(); dpMonth++; if (dpMonth > 11) { dpMonth = 0; dpYear++; } dpRender(); });
+      if (dateInput) dateInput.addEventListener('click', dpToggle);
+      if (dateIcon)  dateIcon.addEventListener('click', dpToggle);
+
+      document.addEventListener('click', e => {
+        if (popover.style.display === 'block' &&
+            !popover.contains(e.target) &&
+            e.target !== dateInput && e.target !== dateIcon) {
+          dpClose();
+        }
+      });
+    })();
+
+    // ================= PSC DEFICIENCY MOCK DATA ARCHITECTURE =================
+    const PSC_DEFICIENCY_CODE_MASTER = {
+      '01101': {
+        area: 'Certificates & Documents',
+        summary: 'Cargo Ship Safety Equipment Certificate validation & compliance audit',
+        training: 'Basic Safety Training',
+        description: 'The Cargo Ship Safety Equipment Certificate (CSSE) endorsement past annual survey window. Statutory certificates presented during inspection require verification against Flag State register and classification society endorsement records.'
+      },
+      '01102': {
+        area: 'Structure',
+        summary: 'Hull plating corrosion and structural integrity check',
+        training: 'STCW Refresher',
+        description: 'Localized wastage observed on main deck plating in way of frame 42 exceeding permissible corrosion margin.'
+      },
+      '01103': {
+        area: 'Water/Weathertight Conditions',
+        summary: 'Hatch coaming gasket deterioration and weathertight integrity',
+        training: 'Basic Safety Training',
+        description: 'Cargo hold No. 2 hatch cover rubber packing found damaged and non-weathertight during ultrasonic sealing test.'
+      },
+      '01104': {
+        area: 'Emergency Systems',
+        summary: 'Emergency fire pump quick-start mechanism inspection',
+        training: 'Fire Fighting',
+        description: 'Emergency fire pump failed to build required operational discharge pressure within statutory timeframe during unannounced drill.'
+      },
+      '01105': {
+        area: 'Radio Communication',
+        summary: 'GMDSS reserve power battery capacity test',
+        training: 'GMDSS',
+        description: 'GMDSS radio station emergency battery bank showed low terminal voltage under load condition during power blackout test.'
+      },
+      '01106': {
+        area: 'Cargo Operations',
+        summary: 'Cargo securing manual alignment and lashings verification',
+        training: 'Tanker Safety',
+        description: 'Cargo securing arrangements on weather deck did not fully conform with approved Cargo Securing Manual (CSM) requirements.'
+      },
+      '01107': {
+        area: 'Fire Safety',
+        summary: 'Portable fire extinguisher maintenance and pressure readiness',
+        training: 'Fire Fighting',
+        description: 'Portable dry powder fire extinguisher on bridge wing past annual servicing date and pressure gauge in discharge sector.'
+      },
+      '01108': {
+        area: 'Alarms',
+        summary: 'Machinery space bilge high-level alarm testing',
+        training: 'Basic Safety Training',
+        description: 'Aft engine room bilge well high-level float switch failed to activate audio-visual alarm on main engine control console.'
+      },
+      '01109': {
+        area: 'Working & Living Conditions',
+        summary: 'MLC compliance: Galley ventilation and hygiene verification',
+        training: 'STCW Refresher',
+        description: 'Galley exhaust extraction hood grease filters saturated, creating a potential fire hazard and inadequate ventilation flow.'
+      },
+      '01110': {
+        area: 'Navigation Safety',
+        summary: 'ECDIS electronic navigational charts (ENC) update verification',
+        training: 'ECDIS',
+        description: 'Primary ECDIS unit ENC charts for current voyage transit area not updated to the latest active Notice to Mariners edition.'
+      },
+      '01111': {
+        area: 'Life Saving Appliances',
+        summary: 'Lifeboat on-load release gear inspection and falls wire check',
+        training: 'Basic Safety Training',
+        description: 'Port lifeboat falls wire showed mechanical fatigue and broken strands near lower sheaves exceeding discard criteria.'
+      },
+      '01112': {
+        area: 'ISM',
+        summary: 'Safety Management System (SMS) non-conformity tracking',
+        training: 'ISM Awareness',
+        description: 'Non-conformities identified during previous internal safety audit remained unclosed past scheduled corrective action target date.'
+      },
+      '01113': {
+        area: 'ISPS',
+        summary: 'Ship Security Plan (SSP) access control log check',
+        training: 'ISPS Awareness',
+        description: 'Gangway visitor logging procedure not strictly enforced during port stay in accordance with Security Level 1 protocol.'
+      },
+      '01114': {
+        area: 'Propulsion & Machinery',
+        summary: 'Auxiliary engine fuel leak alarm and shielding integrity',
+        training: 'STCW Refresher',
+        description: 'High-pressure fuel injection pipe protective jacket missing on Auxiliary Engine No. 2 cylinder units.'
+      },
+      '01115': {
+        area: 'Pollution Prevention',
+        summary: 'MARPOL Annex I: Oily Water Separator (OWS) 15 ppm alarm check',
+        training: 'Basic Safety Training',
+        description: '15 ppm bilge alarm unit 3-way valve response test failed to automatically recirculate effluent to bilge holding tank.'
+      },
+      '01116': {
+        area: 'Manning',
+        summary: 'Minimum Safe Manning Document compliance verification',
+        training: 'STCW Refresher',
+        description: 'Certified deck officer complement onboard during departure did not fully satisfy Minimum Safe Manning Document requirements.'
+      },
+      '01117': {
+        area: 'Hours of Work & Rest',
+        summary: 'STCW / MLC rest hours record compliance check',
+        training: 'ISM Awareness',
+        description: 'Watchkeeping officers rest hours records for preceding 72-hour period revealed non-compliance with statutory minimum rest intervals.'
+      }
+    };
+
+    const PSC_ACTION_CODE_MASTER = {
+      'code10': 'Deficiency rectified',
+      'code15': 'Rectify deficiency at next port',
+      'code16': 'Written warning',
+      'code17': 'Master cautioned',
+      'code18': 'Detention',
+      'code19': 'Safety equipment rectification',
+      'code20': 'Flag state inspection required',
+      'code30': 'Deficiency rectified',
+      'code45': 'Grounds for detention removed',
+      'code85': 'Rectified before departure',
+      'code99': 'No action taken',
+      '10': 'Deficiency rectified',
+      '15': 'Rectify deficiency at next port',
+      '16': 'Written warning',
+      '17': 'Master cautioned',
+      '18': 'Detention',
+      '19': 'Safety equipment rectification',
+      '20': 'Flag state inspection required',
+      '30': 'Deficiency rectified',
+      '45': 'Grounds for detention removed',
+      '85': 'Rectified before departure',
+      '99': 'No action taken'
+    };
+
+    const PSC_RECOMMENDATION_MASTER = {
+      '01101': {
+        suggested: 'Conduct thorough review and validation of all statutory certificates, including the Cargo Ship Safety Equipment Certificate (CSSE), against Flag State and class endorsement records.',
+        riskAssessment: 'Expired or Invalid CSSE: If the Safety Equipment Certificate expires or is not properly endorsed after required surveys, the vessel becomes non-compliant, increasing the risk of port state control detention, voyage delays, financial penalties, and reputational harm. The likelihood is moderate, especially without a robust tracking system, and the impact is high due to operational and legal consequences. Implementing a certificate tracking system with automated reminders and conducting regular audits significantly mitigates these risks, ensuring continuous compliance and uninterrupted operations.',
+        solaristechCap: '1. Collate endorsed statutory certificates and upload to digital compliance portal.\n2. Establish automated 60-day certificate expiry alerts.\n3. Re-audit document locker on next voyage.'
+      },
+      '01107': {
+        suggested: 'Conduct immediate onboard inventory and maintenance check of all safety-critical fire appliances in accordance with SMS procedure FP-02.',
+        riskAssessment: 'Medium Risk — Potential for repeat observation and intensified inspection during subsequent Paris/Tokyo MoU port calls if root-cause servicing schedule is not updated in PMS.',
+        solaristechCap: '1. Replace/service non-compliant fire extinguishers prior to departure.\n2. Re-calibrate Planned Maintenance System (PMS) recurring task intervals.\n3. Designated Safety Officer to complete weekly visual inspections and log in SMS logbook.'
+      },
+      '01110': {
+        suggested: 'Download and apply latest ENC chart permit updates and verify passage plan against Notice to Mariners Section II.',
+        riskAssessment: 'High Risk — Operating with non-updated ENCs poses navigation hazard and grounds for detention under SOLAS Chapter V Regulation 27.',
+        solaristechCap: '1. Synchronize ECDIS gateway with shore-side chart provider immediately.\n2. Master and Navigational Officer to sign off updated passage checklist.\n3. Conduct refresher briefing on ECDIS chart maintenance procedure.'
+      },
+      '01114': {
+        suggested: 'Fabricate and install certified jacketed high-pressure fuel pipe shielding on AE #2 as per SOLAS II-2 Reg 4.2.2.5.2.',
+        riskAssessment: 'Critical Risk — Fuel spray on hot exhaust manifolds is a prime source of engine room fires and automatic detention criteria.',
+        solaristechCap: '1. Fit type-approved jacketing on all high-pressure fuel lines.\n2. Test fuel leakage alarm sensor circuit.\n3. Chief Engineer to certify hot spot thermal screening report.'
+      },
+      '01104': {
+        suggested: 'Overhaul emergency fire pump suction valve and test auto-priming unit under emergency generator load.',
+        riskAssessment: 'High Risk — Non-operational emergency fire pump is a major safety deficiency often cited in Paris MoU detentions.',
+        solaristechCap: '1. Clean emergency fire pump sea chest strainer and overhaul priming pump.\n2. Perform full pressure operational test witnessed by Chief Engineer.\n3. Add bi-weekly emergency pump running test to PMS.'
+      },
+      'default': {
+        suggested: 'Execute immediate corrective maintenance and cross-verify with vessel Planned Maintenance System (PMS) standards.',
+        riskAssessment: 'Moderate Risk — Ensure documented compliance to prevent PSC observation escalation during next Port State Control inspection.',
+        solaristechCap: '1. Implement immediate physical rectification onboard.\n2. Record non-conformity report (NCR) in Company Safety Management System.\n3. Technical Superintendent to review and close out during next superintendent visit.'
+      }
+    };
+
+    // ---- Deficiency modal element references ----
+    const pscDeficiencyModal   = document.getElementById('pscDeficiencyModal');
+    const pscModalCloseBtn     = document.getElementById('pscModalCloseBtn');
+    const pscDefCancelBtn      = document.getElementById('pscDefCancelBtn');
+    const pscDefSaveBtn        = document.getElementById('pscDefSaveBtn');
+    const btnAddPscEl          = document.getElementById('btnAddPsc');
+    const btnAddAnotherDef     = document.getElementById('btnAddAnotherDeficiency');
+    const pscCodeLoader        = document.getElementById('pscCodeLoader');
+    const pscBtnGenRec         = document.getElementById('pscBtnGenRec');
+    const pscGenSpinner        = document.getElementById('pscGenSpinner');
+    const pscGenRecText        = document.getElementById('pscGenRecText');
+    const pscDefCodeSel        = document.getElementById('pscDefCodeSelect');
+    const pscDefAreaInp        = document.getElementById('pscDefAreaInput');
+    const pscDefSummaryInp     = document.getElementById('pscDefSummaryInput');
+    const pscDefTrainingSel    = document.getElementById('pscDefTrainingSelect');
+    const pscDefDescInp        = document.getElementById('pscDefDescInput');
+    const pscDefActionSel      = document.getElementById('pscDefActionCodeSelect');
+    const pscDefActionDescInp  = document.getElementById('pscDefActionDescInput');
+    const pscDefCorrectiveInp  = document.getElementById('pscDefCorrectiveInput');
+    const pscDefSuggestedInp   = document.getElementById('pscDefSuggestedInput');
+    const pscDefRiskInp        = document.getElementById('pscDefRiskInput');
+    const pscDefSolarisCapInp  = document.getElementById('pscDefSolarisCapInput');
+
+    // ---- Expand Modal Elements (matching assets/PSC List/expand.png) ----
+    const pscExpandModal       = document.getElementById('pscExpandModal');
+    const pscExpandModalTitle  = document.getElementById('pscExpandModalTitle');
+    const pscExpandTextarea    = document.getElementById('pscExpandTextarea');
+    const pscExpandCloseBtn    = document.getElementById('pscExpandCloseBtn');
+    let pscCurrentExpandTarget = null;
+
+    const PSC_EXPAND_FIELDS = {
+      'desc':       { title: 'Deficiency Description',              input: () => pscDefDescInp },
+      'corrective': { title: 'Corrective Action',                   input: () => pscDefCorrectiveInp },
+      'suggested':  { title: 'Suggested',                           input: () => pscDefSuggestedInp },
+      'risk':       { title: 'Risk Assessment',                     input: () => pscDefRiskInp },
+      'solarisCap': { title: 'Solaristech Corrective Action Plan',  input: () => pscDefSolarisCapInp }
+    };
+
+    function pscOpenExpandModal(fieldKey) {
+      const conf = PSC_EXPAND_FIELDS[fieldKey];
+      if (!conf) return;
+      pscCurrentExpandTarget = fieldKey;
+      if (pscExpandModalTitle) pscExpandModalTitle.textContent = conf.title;
+      const inp = conf.input();
+      if (pscExpandTextarea) {
+        pscExpandTextarea.value = inp ? inp.value : '';
+      }
+      if (pscExpandModal) pscExpandModal.classList.add('open');
+      setTimeout(() => { pscExpandTextarea?.focus(); }, 60);
+    }
+
+    function pscCloseExpandModal() {
+      if (pscExpandModal) pscExpandModal.classList.remove('open');
+      if (pscCurrentExpandTarget) {
+        const conf = PSC_EXPAND_FIELDS[pscCurrentExpandTarget];
+        const inp = conf?.input();
+        if (inp) inp.focus();
+      }
+      pscCurrentExpandTarget = null;
+    }
+
+    if (pscExpandCloseBtn) pscExpandCloseBtn.addEventListener('click', pscCloseExpandModal);
+    if (pscExpandModal) {
+      pscExpandModal.addEventListener('click', e => {
+        if (e.target === pscExpandModal) pscCloseExpandModal();
+      });
+    }
+
+    // Live two-way synchronization
+    if (pscExpandTextarea) {
+      pscExpandTextarea.addEventListener('input', () => {
+        if (pscCurrentExpandTarget) {
+          const conf = PSC_EXPAND_FIELDS[pscCurrentExpandTarget];
+          const inp = conf?.input();
+          if (inp) {
+            inp.value = pscExpandTextarea.value;
+            updateFieldStates();
+          }
+        }
+      });
+    }
+
+    // Attach click listeners to all expand buttons
+    document.querySelectorAll('#pscDeficiencyModal .btn-field-expand').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const key = btn.dataset.expandField;
+        if (key) pscOpenExpandModal(key);
+      });
+    });
+
+    let pscDefCodeTimer = null;
+
+    // ---- Open / Close Deficiency Modal (matching popup1.png, popup2.png) ----
+    function pscOpenDefModal() {
+      pscResetDefForm();
+      if (pscDeficiencyModal) pscDeficiencyModal.classList.add('open');
+      setTimeout(() => { pscDefCodeSel?.focus(); }, 80);
+    }
+
+    function pscCloseDefModal() {
+      if (pscDefCodeTimer) { clearTimeout(pscDefCodeTimer); pscDefCodeTimer = null; }
+      pscCloseExpandModal();
+      if (pscDeficiencyModal) pscDeficiencyModal.classList.remove('open');
+    }
+
+    if (btnAddPscEl)      btnAddPscEl.addEventListener('click', () => { pscOpenDefModal(); });
+    if (btnAddAnotherDef) btnAddAnotherDef.addEventListener('click', pscOpenDefModal);
+    if (pscModalCloseBtn) pscModalCloseBtn.addEventListener('click', pscCloseDefModal);
+    if (pscDefCancelBtn)  pscDefCancelBtn.addEventListener('click',  pscCloseDefModal);
+    if (pscDeficiencyModal) {
+      pscDeficiencyModal.addEventListener('click', e => {
+        if (e.target === pscDeficiencyModal) pscCloseDefModal();
+      });
+    }
+
+    // ---- Reset Deficiency form ----
+    function pscResetDefForm() {
+      if (pscDefCodeTimer) { clearTimeout(pscDefCodeTimer); pscDefCodeTimer = null; }
+      if (pscCodeLoader) pscCodeLoader.classList.remove('active');
+
+      ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxSuggested', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+        document.getElementById(id)?.classList.remove('field-auto-loading');
+      });
+
+      // Clear all selects
+      if (pscDefCodeSel) pscDefCodeSel.value = '';
+      if (pscDefTrainingSel) {
+        pscDefTrainingSel.value = '';
+        pscDefTrainingSel.disabled = true;
+      }
+      if (pscDefActionSel) pscDefActionSel.value = '';
+
+      // Clear all inputs and textareas
+      if (pscDefAreaInp) {
+        pscDefAreaInp.value = '';
+        pscDefAreaInp.readOnly = true;
+      }
+      if (pscDefSummaryInp)    pscDefSummaryInp.value = '';
+      if (pscDefDescInp)       pscDefDescInp.value = '';
+      if (pscDefActionDescInp) pscDefActionDescInp.value = '';
+      if (pscDefCorrectiveInp) pscDefCorrectiveInp.value = '';
+      if (pscDefSuggestedInp)  pscDefSuggestedInp.value = '';
+      if (pscDefRiskInp)       pscDefRiskInp.value = '';
+      if (pscDefSolarisCapInp) pscDefSolarisCapInp.value = '';
+
+      // Set non-editable styling classes
+      document.getElementById('pscDefBoxArea')?.classList.add('readonly-box');
+      document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
+
+      // Clear error states
+      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode'].forEach(id => {
+        document.getElementById(id)?.classList.remove('error');
+      });
+
+      // Reviewer checkboxes (disabled by design)
+      const chkRisk = document.getElementById('pscChkRisk');
+      if (chkRisk) { chkRisk.checked = true; chkRisk.disabled = true; }
+      const chkCap = document.getElementById('pscChkSolarisCap');
+      if (chkCap) { chkCap.checked = true; chkCap.disabled = true; }
+
+      // Reset Recommendation button
+      if (pscBtnGenRec) pscBtnGenRec.disabled = false;
+      if (pscGenSpinner) pscGenSpinner.style.display = 'none';
+      if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
+
+      // Reset Save button (DISABLED until Action Code selected)
+      if (pscDefSaveBtn) {
+        pscDefSaveBtn.disabled = true;
+        pscDefSaveBtn.setAttribute('aria-disabled', 'true');
+      }
+
+      // Clear custom display inputs and custom dropdown states
+      const pscDefCodeInp = document.getElementById('pscDefCodeInput');
+      const pscDefActionInp = document.getElementById('pscDefActionCodeInput');
+      if (pscDefCodeInp) pscDefCodeInp.value = '';
+      if (pscDefActionInp) pscDefActionInp.value = '';
+      document.querySelectorAll('#pscDeficiencyModal .custom-dropdown-option').forEach(o => o.classList.remove('selected'));
+      document.querySelectorAll('#pscDeficiencyModal .custom-dropdown-panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('#pscDeficiencyModal .custom-select-box').forEach(b => b.classList.remove('is-open'));
+
+      // Re-apply floating label states
+      document.querySelectorAll('#pscDeficiencyModal .mui-field-box').forEach(box => {
+        const inp = box.querySelector('input, select, textarea');
+        if (inp && (!inp.value || inp.value === '')) box.classList.add('empty-unfocused');
+        else box.classList.remove('empty-unfocused');
+      });
+    }
+
+    // ---- Custom Dropdown Initialization Helper ----
+    function initPscCustomDropdown(boxId, displayInputId, selectId, dropdownId) {
+      const box = document.getElementById(boxId);
+      const displayInput = document.getElementById(displayInputId);
+      const select = document.getElementById(selectId);
+      const dropdown = document.getElementById(dropdownId);
+      if (!box || !displayInput || !select || !dropdown) return;
+
+      function openDropdown() {
+        document.querySelectorAll('.custom-dropdown-panel.open').forEach(p => {
+          if (p !== dropdown) {
+            p.classList.remove('open');
+            p.closest('.mui-field-box')?.classList.remove('is-open');
+          }
+        });
+        dropdown.classList.add('open');
+        box.classList.add('is-open');
+        box.classList.remove('empty-unfocused');
+      }
+
+      function closeDropdown() {
+        dropdown.classList.remove('open');
+        box.classList.remove('is-open');
+        if (!displayInput.value || displayInput.value.trim() === '') {
+          box.classList.add('empty-unfocused');
+        }
+      }
+
+      box.addEventListener('click', (e) => {
+        if (e.target.closest('.custom-dropdown-option')) return;
+        if (box.classList.contains('disabled')) return;
+        if (dropdown.classList.contains('open')) {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      });
+
+      dropdown.querySelectorAll('.custom-dropdown-option').forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = opt.getAttribute('data-value') || '';
+          select.value = val;
+          displayInput.value = val;
+          dropdown.querySelectorAll('.custom-dropdown-option').forEach(o => {
+            o.classList.toggle('selected', o.getAttribute('data-value') === val);
+          });
+          closeDropdown();
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          select.dispatchEvent(new Event('input', { bubbles: true }));
+          updateFieldStates();
+        });
+      });
+
+      // Keep display input synced if select value changes programmatically
+      select.addEventListener('change', () => {
+        const val = select.value || '';
+        displayInput.value = val;
+        dropdown.querySelectorAll('.custom-dropdown-option').forEach(o => {
+          o.classList.toggle('selected', o.getAttribute('data-value') === val);
+        });
+        if (val) box.classList.remove('empty-unfocused');
+      });
+    }
+
+    initPscCustomDropdown('pscDefBoxCode', 'pscDefCodeInput', 'pscDefCodeSelect', 'pscDefCodeDropdown');
+    initPscCustomDropdown('pscDefBoxActionCode', 'pscDefActionCodeInput', 'pscDefActionCodeSelect', 'pscDefActionDropdown');
+
+    // Global listener to close custom dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-select-box')) {
+        document.querySelectorAll('.custom-dropdown-panel.open').forEach(panel => {
+          panel.classList.remove('open');
+          const parentBox = panel.closest('.mui-field-box');
+          if (parentBox) {
+            parentBox.classList.remove('is-open');
+            const inp = parentBox.querySelector('input');
+            if (!inp || !inp.value || inp.value.trim() === '') {
+              parentBox.classList.add('empty-unfocused');
+            }
+          }
+        });
+      }
+    });
+
+    // ---- Validate deficiency form → enable Save ----
+    // Save is ENABLED only when Deficiency Code AND Action Code are selected
+    function pscValidateDefForm() {
+      const code   = pscDefCodeSel?.value?.trim();
+      const area   = pscDefAreaInp?.value?.trim();
+      const action = pscDefActionSel?.value?.trim();
+      const isSaveable = !!(code && action && area);
+
+      if (pscDefSaveBtn) {
+        pscDefSaveBtn.disabled = !isSaveable;
+        pscDefSaveBtn.setAttribute('aria-disabled', isSaveable ? 'false' : 'true');
+      }
+    }
+
+    // ---- 1. Deficiency Code Selection & Auto-populate with Light Loading Animation ----
+    if (pscDefCodeSel) {
+      pscDefCodeSel.addEventListener('change', () => {
+        const selectedCode = pscDefCodeSel.value.trim();
+
+        if (pscDefCodeTimer) {
+          clearTimeout(pscDefCodeTimer);
+          pscDefCodeTimer = null;
+        }
+
+        if (!selectedCode) {
+          // Cleared -> reset dependent fields
+          if (pscCodeLoader) pscCodeLoader.classList.remove('active');
+          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc'].forEach(id => {
+            document.getElementById(id)?.classList.remove('field-auto-loading');
+          });
+          if (pscDefAreaInp) pscDefAreaInp.value = '';
+          if (pscDefSummaryInp) pscDefSummaryInp.value = '';
+          if (pscDefTrainingSel) pscDefTrainingSel.value = '';
+          if (pscDefDescInp) pscDefDescInp.value = '';
+          document.getElementById('pscDefBoxCode')?.classList.remove('error');
+          updateFieldStates();
+          pscValidateDefForm();
+          return;
+        }
+
+        // Show light loading animation
+        if (pscCodeLoader) pscCodeLoader.classList.add('active');
+        ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc'].forEach(id => {
+          document.getElementById(id)?.classList.add('field-auto-loading');
+        });
+        document.getElementById('pscDefBoxCode')?.classList.remove('error');
+
+        // Light delay to showcase smooth auto-population
+        pscDefCodeTimer = setTimeout(() => {
+          if (pscCodeLoader) pscCodeLoader.classList.remove('active');
+          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc'].forEach(id => {
+            document.getElementById(id)?.classList.remove('field-auto-loading');
+          });
+
+          const mockData = PSC_DEFICIENCY_CODE_MASTER[selectedCode];
+          if (mockData) {
+            // Deficiency Area -> NOT editable
+            if (pscDefAreaInp) {
+              pscDefAreaInp.value = mockData.area;
+              pscDefAreaInp.readOnly = true;
+            }
+            document.getElementById('pscDefBoxArea')?.classList.add('readonly-box');
+            document.getElementById('pscDefBoxArea')?.classList.remove('error');
+
+            // Summary -> editable
+            if (pscDefSummaryInp) {
+              pscDefSummaryInp.value = mockData.summary;
+              pscDefSummaryInp.readOnly = false;
+            }
+
+            // Training Courses -> NOT editable
+            if (pscDefTrainingSel) {
+              pscDefTrainingSel.value = mockData.training || '-';
+              pscDefTrainingSel.disabled = true;
+            }
+            document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
+
+            // Deficiency Description -> editable
+            if (pscDefDescInp) {
+              pscDefDescInp.value = mockData.description;
+              pscDefDescInp.readOnly = false;
+            }
+          }
+
+          updateFieldStates();
+          pscValidateDefForm();
+        }, 380);
+      });
+    }
+
+    // Clear error on Summary or Description edit
+    if (pscDefSummaryInp) {
+      pscDefSummaryInp.addEventListener('input', () => { updateFieldStates(); });
+    }
+    if (pscDefDescInp) {
+      pscDefDescInp.addEventListener('input', () => { updateFieldStates(); });
+    }
+
+    // ---- 2. Action Code Selection & Auto-populate Description ----
+    if (pscDefActionSel) {
+      pscDefActionSel.addEventListener('change', () => {
+        const selectedAction = pscDefActionSel.value.trim();
+        const desc = selectedAction ? (PSC_ACTION_CODE_MASTER[selectedAction] || '') : '';
+
+        if (pscDefActionDescInp) {
+          pscDefActionDescInp.value = desc;
+        }
+
+        document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
+        updateFieldStates();
+        pscValidateDefForm();
+      });
+    }
+
+    // Eye button -> preview action description toast
+    const pscDefEyeBtn = document.getElementById('pscDefActionEyeBtn');
+    if (pscDefEyeBtn) {
+      pscDefEyeBtn.addEventListener('click', () => {
+        const val = pscDefActionDescInp?.value?.trim();
+        showToast(val ? `Action Code Description: ${val}` : 'Select an Action Code to see its description.');
+      });
+    }
+
+    // ---- 3. Generate Recommendation Button & AI Mock Generation ----
+    if (pscBtnGenRec) {
+      pscBtnGenRec.addEventListener('click', () => {
+        if (pscBtnGenRec.disabled) return;
+
+        // Enter loading state
+        pscBtnGenRec.disabled = true;
+        if (pscGenSpinner) pscGenSpinner.style.display = 'inline-block';
+        if (pscGenRecText) pscGenRecText.textContent = 'Generating Recommendations...';
+
+        ['pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+          document.getElementById(id)?.classList.add('field-auto-loading');
+        });
+
+        setTimeout(() => {
+          // Reset loading state
+          pscBtnGenRec.disabled = false;
+          if (pscGenSpinner) pscGenSpinner.style.display = 'none';
+          if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
+
+          ['pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+            document.getElementById(id)?.classList.remove('field-auto-loading');
+          });
+
+          const currentCode = pscDefCodeSel?.value?.trim();
+          const recData = (currentCode && PSC_RECOMMENDATION_MASTER[currentCode])
+            ? PSC_RECOMMENDATION_MASTER[currentCode]
+            : PSC_RECOMMENDATION_MASTER['default'];
+
+          // Populate only Risk Assessment and Solaristech Corrective Action Plan (Suggested remains blank)
+          if (pscDefRiskInp) {
+            pscDefRiskInp.value = recData.riskAssessment;
+            pscDefRiskInp.readOnly = false;
+          }
+          if (pscDefSolarisCapInp) {
+            pscDefSolarisCapInp.value = recData.solaristechCap;
+            pscDefSolarisCapInp.readOnly = false;
+          }
+
+          updateFieldStates();
+          showToast('AI Recommendations generated successfully.');
+        }, 550);
+      });
+    }
+
+    // Editable events on recommendation fields
+    ['pscDefCorrectiveInput', 'pscDefSuggestedInput', 'pscDefRiskInput', 'pscDefSolarisCapInput'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', updateFieldStates);
+    });
+
+    // ---- 4. Save Deficiency ----
+    if (pscDefSaveBtn) {
+      pscDefSaveBtn.addEventListener('click', () => {
+        const code   = pscDefCodeSel?.value?.trim();
+        const area   = pscDefAreaInp?.value?.trim();
+        const action = pscDefActionSel?.value?.trim();
+
+        let valid = true;
+        if (!code) {
+          document.getElementById('pscDefBoxCode')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxCode')?.classList.remove('error');
+        }
+
+        if (!area) {
+          document.getElementById('pscDefBoxArea')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxArea')?.classList.remove('error');
+        }
+
+        if (!action) {
+          document.getElementById('pscDefBoxActionCode')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
+        }
+
+        if (!valid) {
+          showToast('Please select Deficiency Code and Action Code.');
+          return;
+        }
+
+        const actionDesc = PSC_ACTION_CODE_MASTER[action] || pscDefActionDescInp?.value?.trim() || '';
+
+        const defObj = {
+          code,
+          area,
+          summary:        pscDefSummaryInp?.value?.trim()    || '',
+          training:       pscDefTrainingSel?.value?.trim()  || '',
+          description:    pscDefDescInp?.value?.trim()       || '',
+          actionCode:     action,
+          actionDesc:     actionDesc,
+          corrective:     pscDefCorrectiveInp?.value?.trim() || '',
+          suggested:      pscDefSuggestedInp?.value?.trim()  || '',
+          riskAssessment: pscDefRiskInp?.value?.trim()       || '',
+          solaristechCap: pscDefSolarisCapInp?.value?.trim() || ''
+        };
+
+        pscCurrentDeficiencies.push(defObj);
+        pscRenderCurrentDeficiencies();
+
+        // Create or update the PSC record in the data store
+        pscUpsertRecord();
+
+        pscCloseDefModal();
+        showToast('Deficiency saved successfully.');
+
+        // Reveal deficiencies section on Create page
+        const defSec = document.getElementById('pscDeficienciesSection');
+        if (defSec) defSec.style.display = '';
+      });
+    }
+
+    // ---- Render deficiencies on Create page ----
+    function pscRenderCurrentDeficiencies() {
+      const list = document.getElementById('pscDeficiencyList');
+      if (!list) return;
+      list.innerHTML = '';
+      pscCurrentDeficiencies.forEach((d, i) => {
+        const item = document.createElement('div');
+        item.className = 'psc-deficiency-item';
+        item.innerHTML = `
+          <span class="psc-def-item-num">#${i + 1}</span>
+          <div class="psc-deficiency-item-info">
+            <div class="psc-deficiency-code">${d.code} — ${d.area}</div>
+            ${d.summary ? `<div class="psc-deficiency-area">${d.summary}</div>` : ''}
+            <div class="psc-deficiency-action-code">Action: ${d.actionCode}${d.actionDesc ? ' — ' + d.actionDesc : ''}</div>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    // ---- Upsert PSC record in data store ----
+    function pscUpsertRecord() {
+      const v = pscVesselMaster[pscCurrentVesselKey];
+      if (!v) return;
+
+      const dateVal   = document.getElementById('pscDateInput')?.value   || '20-Aug-2026';
+      const typeVal   = document.getElementById('pscSelectType')?.value  || 'PSC';
+      const subType   = document.getElementById('pscSelectSubType')?.value || 'DEFICIENCY';
+      const country   = document.getElementById('pscSelectCountry')?.value || '';
+      const port      = document.getElementById('pscSelectPort')?.value   || '';
+      const region    = document.getElementById('pscSelectRegion')?.value || '';
+      const recKey    = `${pscCurrentVesselKey}_${dateVal}_${typeVal}`;
+
+      if (pscCurrentRecordId) {
+        // Update existing
+        const rec = pscData.find(p => p.id === pscCurrentRecordId);
+        if (rec) {
+          rec.deficiencies = [...pscCurrentDeficiencies];
+          rec.badgeCount = pscCurrentDeficiencies.length;
+        }
+      } else {
+        // Check for duplicate key
+        const existing = pscData.find(p => p._key === recKey);
+        if (existing) {
+          existing.deficiencies = [...pscCurrentDeficiencies];
+          existing.badgeCount = pscCurrentDeficiencies.length;
+          pscCurrentRecordId = existing.id;
+        } else {
+          const newId = 'psc_' + Date.now();
+          pscCurrentRecordId = newId;
+          pscData.unshift({
+            id: newId, _key: recKey,
+            vessel: v.name, imo: v.imo, company: v.docCompany || 'DENALI',
+            type: typeVal, subType, country, port, date: dateVal, region,
+            status: 'pending',
+            badgeCount: pscCurrentDeficiencies.length,
+            deficiencies: [...pscCurrentDeficiencies]
+          });
+        }
+      }
+      pscRenderTable(pscData);
+    }
+
+    // ---- Escape key handler for modals ----
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if (pscExpandModal && pscExpandModal.classList.contains('open')) {
+          pscCloseExpandModal();
+        } else if (pscDeficiencyModal && pscDeficiencyModal.classList.contains('open')) {
+          pscCloseDefModal();
+        }
+      }
+    });
+
+    // ================= END PSC MODULE =================
+
   </script>
 </body>
 
