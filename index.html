@@ -4929,6 +4929,66 @@
       pointer-events: none;
     }
 
+    /* Training Courses Link Presentation (Matching Reference) */
+    .psc-modal-fields-stack .mui-field-box.psc-training-course-box {
+      cursor: default;
+      position: relative;
+      background-color: #ece5d2;
+      border: 1px solid #beb59c;
+      border-radius: 4px;
+      height: 38px;
+      min-height: 38px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0;
+    }
+    .psc-training-link-display {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      padding-right: 34px;
+      font-size: 12.5px;
+      color: #222222;
+      font-family: inherit;
+      box-sizing: border-box;
+      user-select: text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: default;
+    }
+    .psc-training-link-display a.psc-training-link {
+      color: #0b57d0;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 12.5px;
+      font-family: inherit;
+      line-height: 1.4;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    .psc-training-link-display a.psc-training-link:hover {
+      color: #0842a0;
+      text-decoration: underline;
+    }
+    .psc-modal-fields-stack .mui-field-box.psc-training-course-box .select-arrow {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #555555;
+      pointer-events: none;
+      font-size: 22px;
+    }
+
     /* Textarea Field Boxes inside modal */
     .psc-modal-fields-stack .mui-field-box.is-textarea {
       height: auto;
@@ -5305,6 +5365,24 @@
       padding: 0 18px;
       flex-shrink: 0;
       background-color: #d5a443;
+    }
+    .psc-modal-footer .btn-modal-cancel,
+    .btn-modal-cancel {
+      height: 32px;
+      padding: 0 18px;
+      background-color: transparent;
+      color: #222222;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #222222;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.15s ease, opacity 0.15s ease;
+    }
+    .psc-modal-footer .btn-modal-cancel:hover,
+    .btn-modal-cancel:hover {
+      background-color: rgba(0, 0, 0, 0.08);
     }
     .btn-modal-black {
       height: 32px;
@@ -7409,10 +7487,11 @@
               <textarea id="pscDefSummaryInput" rows="2"></textarea>
             </div>
 
-            <!-- 4. Training Courses (Auto-populated / Non-editable) -->
-            <div class="mui-field-box empty-unfocused disabled" id="pscDefBoxTraining">
-              <label for="pscDefTrainingSelect">Training Courses</label>
-              <select id="pscDefTrainingSelect" disabled>
+            <!-- 4. Training Courses (Auto-populated / Non-editable Link Presentation) -->
+            <div class="mui-field-box empty-unfocused disabled readonly-box psc-training-course-box" id="pscDefBoxTraining">
+              <label for="pscDefTrainingDisplay">Training Courses</label>
+              <div class="psc-training-link-display" id="pscDefTrainingDisplay">-</div>
+              <select id="pscDefTrainingSelect" class="custom-select-hidden-native" disabled tabindex="-1" aria-hidden="true">
                 <option value=""></option>
                 <option value="-">-</option>
                 <option value="Basic Safety Training">Basic Safety Training</option>
@@ -7427,7 +7506,7 @@
               <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
             </div>
 
-            <!-- 5. Deficiency Description (Auto-populated / Editable) -->
+            <!-- 5. Deficiency Description (Generated via AI / Editable) -->
             <div class="mui-field-box empty-unfocused is-textarea has-expand box-desc" id="pscDefBoxDesc">
               <label for="pscDefDescInput">Deficiency Description</label>
               <textarea id="pscDefDescInput" rows="2"></textarea>
@@ -7439,6 +7518,7 @@
                   <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
+              <span class="error-text">Please generate or enter Deficiency Description</span>
             </div>
 
             <!-- 6. Action Code * + Eye icon -->
@@ -7490,7 +7570,7 @@
               <textarea id="pscDefActionDescInput" rows="2" readonly></textarea>
             </div>
 
-            <!-- 8. Corrective Action (Editable) -->
+            <!-- 8. Corrective Action (Manually entered by user) -->
             <div class="mui-field-box empty-unfocused is-textarea has-expand box-corrective" id="pscDefBoxCorrective">
               <label for="pscDefCorrectiveInput">Corrective Action</label>
               <textarea id="pscDefCorrectiveInput" rows="2"></textarea>
@@ -7502,6 +7582,7 @@
                   <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
+              <span class="error-text">Please enter Corrective Action</span>
             </div>
 
             <!-- Generate Recommendation Section (Below Corrective Action) -->
@@ -7558,6 +7639,7 @@
                     <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
+                <span class="error-text">Please generate or enter Risk Assessment</span>
               </div>
 
               <!-- 11. Solaristech Corrective Action Plan (Generated / Editable) -->
@@ -7572,6 +7654,7 @@
                     <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </button>
+                <span class="error-text">Please generate or enter Solaristech Corrective Action Plan</span>
               </div>
             </div>
 
@@ -7581,7 +7664,7 @@
 
       <!-- Sticky Footer matching popup1.png / popup2.png -->
       <div class="psc-modal-footer">
-        <button class="btn-modal-black" id="pscDefCancelBtn" type="button">Cancel</button>
+        <button class="btn-modal-cancel" id="pscDefCancelBtn" type="button">Cancel</button>
         <button class="btn-modal-black" id="pscDefSaveBtn" type="button" disabled aria-disabled="true">Save</button>
       </div>
 
@@ -12721,103 +12804,120 @@
       '01101': {
         area: 'Certificates & Documents',
         summary: 'Cargo Ship Safety Equipment Certificate validation & compliance audit',
-        training: 'Basic Safety Training',
+        training: 'Cargo Ship Safety Equipment Certificate',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01101',
         description: 'The Cargo Ship Safety Equipment Certificate (CSSE) endorsement past annual survey window. Statutory certificates presented during inspection require verification against Flag State register and classification society endorsement records.'
       },
       '01102': {
         area: 'Structure',
         summary: 'Hull plating corrosion and structural integrity check',
         training: 'STCW Refresher',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01102',
         description: 'Localized wastage observed on main deck plating in way of frame 42 exceeding permissible corrosion margin.'
       },
       '01103': {
         area: 'Water/Weathertight Conditions',
         summary: 'Hatch coaming gasket deterioration and weathertight integrity',
         training: 'Basic Safety Training',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01103',
         description: 'Cargo hold No. 2 hatch cover rubber packing found damaged and non-weathertight during ultrasonic sealing test.'
       },
       '01104': {
         area: 'Emergency Systems',
         summary: 'Emergency fire pump quick-start mechanism inspection',
         training: 'Fire Fighting',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01104',
         description: 'Emergency fire pump failed to build required operational discharge pressure within statutory timeframe during unannounced drill.'
       },
       '01105': {
         area: 'Radio Communication',
         summary: 'GMDSS reserve power battery capacity test',
         training: 'GMDSS',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01105',
         description: 'GMDSS radio station emergency battery bank showed low terminal voltage under load condition during power blackout test.'
       },
       '01106': {
         area: 'Cargo Operations',
         summary: 'Cargo securing manual alignment and lashings verification',
         training: 'Tanker Safety',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01106',
         description: 'Cargo securing arrangements on weather deck did not fully conform with approved Cargo Securing Manual (CSM) requirements.'
       },
       '01107': {
         area: 'Fire Safety',
         summary: 'Portable fire extinguisher maintenance and pressure readiness',
         training: 'Fire Fighting',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01107',
         description: 'Portable dry powder fire extinguisher on bridge wing past annual servicing date and pressure gauge in discharge sector.'
       },
       '01108': {
         area: 'Alarms',
         summary: 'Machinery space bilge high-level alarm testing',
         training: 'Basic Safety Training',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01108',
         description: 'Aft engine room bilge well high-level float switch failed to activate audio-visual alarm on main engine control console.'
       },
       '01109': {
         area: 'Working & Living Conditions',
         summary: 'MLC compliance: Galley ventilation and hygiene verification',
         training: 'STCW Refresher',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01109',
         description: 'Galley exhaust extraction hood grease filters saturated, creating a potential fire hazard and inadequate ventilation flow.'
       },
       '01110': {
         area: 'Navigation Safety',
         summary: 'ECDIS electronic navigational charts (ENC) update verification',
         training: 'ECDIS',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01110',
         description: 'Primary ECDIS unit ENC charts for current voyage transit area not updated to the latest active Notice to Mariners edition.'
       },
       '01111': {
         area: 'Life Saving Appliances',
         summary: 'Lifeboat on-load release gear inspection and falls wire check',
         training: 'Basic Safety Training',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01111',
         description: 'Port lifeboat falls wire showed mechanical fatigue and broken strands near lower sheaves exceeding discard criteria.'
       },
       '01112': {
         area: 'ISM',
         summary: 'Safety Management System (SMS) non-conformity tracking',
         training: 'ISM Awareness',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01112',
         description: 'Non-conformities identified during previous internal safety audit remained unclosed past scheduled corrective action target date.'
       },
       '01113': {
         area: 'ISPS',
         summary: 'Ship Security Plan (SSP) access control log check',
         training: 'ISPS Awareness',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01113',
         description: 'Gangway visitor logging procedure not strictly enforced during port stay in accordance with Security Level 1 protocol.'
       },
       '01114': {
         area: 'Propulsion & Machinery',
         summary: 'Auxiliary engine fuel leak alarm and shielding integrity',
         training: 'STCW Refresher',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01114',
         description: 'High-pressure fuel injection pipe protective jacket missing on Auxiliary Engine No. 2 cylinder units.'
       },
       '01115': {
         area: 'Pollution Prevention',
         summary: 'MARPOL Annex I: Oily Water Separator (OWS) 15 ppm alarm check',
         training: 'Basic Safety Training',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01115',
         description: '15 ppm bilge alarm unit 3-way valve response test failed to automatically recirculate effluent to bilge holding tank.'
       },
       '01116': {
         area: 'Manning',
         summary: 'Minimum Safe Manning Document compliance verification',
         training: 'STCW Refresher',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01116',
         description: 'Certified deck officer complement onboard during departure did not fully satisfy Minimum Safe Manning Document requirements.'
       },
       '01117': {
         area: 'Hours of Work & Rest',
         summary: 'STCW / MLC rest hours record compliance check',
         training: 'ISM Awareness',
+        trainingUrl: 'https://academy.swiftaction.ai/courses/01117',
         description: 'Watchkeeping officers rest hours records for preceding 72-hour period revealed non-compliance with statutory minimum rest intervals.'
       }
     };
@@ -12960,6 +13060,10 @@
               document.getElementById('pscDefBoxRisk')?.classList.remove('error');
             } else if (pscCurrentExpandTarget === 'solarisCap') {
               document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
+            } else if (pscCurrentExpandTarget === 'corrective') {
+              document.getElementById('pscDefBoxCorrective')?.classList.remove('error');
+            } else if (pscCurrentExpandTarget === 'desc') {
+              document.getElementById('pscDefBoxDesc')?.classList.remove('error');
             }
             updateFieldStates();
             pscValidateDefForm();
@@ -13002,12 +13106,62 @@
       pscEditingDefIndex = null;
     }
 
-    // Populate modal with existing deficiency data for View More flow
+    // ---- Helper to set Training Course with blue link presentation ----
+    function pscSetTrainingCourse(val, url) {
+      const trainingVal = (val !== null && val !== undefined) ? String(val).trim() : '';
+      if (pscDefTrainingSel) {
+        pscDefTrainingSel.value = (trainingVal && trainingVal !== '') ? trainingVal : '-';
+      }
+      const trainingDisplay = document.getElementById('pscDefTrainingDisplay');
+      const box = document.getElementById('pscDefBoxTraining');
+      if (trainingDisplay) {
+        if (trainingVal && trainingVal !== '' && trainingVal !== '-') {
+          const currentCode = pscDefCodeSel?.value?.trim();
+          const targetUrl = url || (currentCode && PSC_DEFICIENCY_CODE_MASTER[currentCode]?.trainingUrl) || (currentCode ? `https://academy.swiftaction.ai/courses/${currentCode}` : '#');
+          trainingDisplay.innerHTML = `<a href="${targetUrl}" target="_blank" rel="noopener noreferrer" class="psc-training-link" title="${trainingVal}">${trainingVal}</a>`;
+          if (box) {
+            box.classList.remove('empty-unfocused');
+            box.classList.add('readonly-box', 'disabled');
+          }
+        } else if (trainingVal === '-') {
+          trainingDisplay.textContent = '-';
+          if (box) {
+            box.classList.remove('empty-unfocused');
+            box.classList.add('readonly-box', 'disabled');
+          }
+        } else {
+          trainingDisplay.textContent = '-';
+          if (box) {
+            box.classList.add('empty-unfocused');
+            box.classList.add('readonly-box', 'disabled');
+          }
+        }
+      }
+    }
+
+    // Structured Mock AI recommendation service (structured for future API/AI endpoint integration)
+    async function pscFetchAiRecommendations(deficiencyCode) {
+      await new Promise(resolve => setTimeout(resolve, 450));
+
+      const codeData = PSC_DEFICIENCY_CODE_MASTER[deficiencyCode];
+      const recData = (deficiencyCode && PSC_RECOMMENDATION_MASTER[deficiencyCode])
+        ? PSC_RECOMMENDATION_MASTER[deficiencyCode]
+        : PSC_RECOMMENDATION_MASTER['default'];
+
+      return {
+        description: codeData?.description || 'Deficiency identified during Port State Control inspection.',
+        riskAssessment: recData.riskAssessment,
+        solaristechCap: recData.solaristechCap,
+        suggested: recData.suggested || ''
+      };
+    }
+
+    // Populate modal with existing deficiency data for View More / Edit flow
     function pscPopulateDefModal(d) {
       if (pscDefCodeTimer) { clearTimeout(pscDefCodeTimer); pscDefCodeTimer = null; }
       if (pscCodeLoader) pscCodeLoader.classList.remove('active');
 
-      ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxSuggested', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+      ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxCorrective', 'pscDefBoxSuggested', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
         document.getElementById(id)?.classList.remove('field-auto-loading');
       });
 
@@ -13018,6 +13172,7 @@
       document.querySelectorAll('#pscDefCodeDropdown .custom-dropdown-option').forEach(o => {
         o.classList.toggle('selected', o.getAttribute('data-value') === (d.code || ''));
       });
+      document.getElementById('pscDefBoxCode')?.classList.remove('error');
 
       // 2. Deficiency Area (Readonly)
       if (pscDefAreaInp) {
@@ -13027,24 +13182,22 @@
       document.getElementById('pscDefBoxArea')?.classList.add('readonly-box');
       document.getElementById('pscDefBoxArea')?.classList.remove('error');
 
-      // 3. Summary
+      // 3. Summary (Editable)
       if (pscDefSummaryInp) {
         pscDefSummaryInp.value = d.summary || '';
         pscDefSummaryInp.readOnly = false;
       }
 
-      // 4. Training Courses (Disabled)
-      if (pscDefTrainingSel) {
-        pscDefTrainingSel.value = d.training || '-';
-        pscDefTrainingSel.disabled = true;
-      }
-      document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
+      // 4. Training Courses (Readonly / Blue Link)
+      const codeData = d.code ? PSC_DEFICIENCY_CODE_MASTER[d.code] : null;
+      pscSetTrainingCourse(d.training || codeData?.training || '-', d.trainingUrl || codeData?.trainingUrl);
 
-      // 5. Deficiency Description
+      // 5. Deficiency Description (Editable)
       if (pscDefDescInp) {
         pscDefDescInp.value = d.description || '';
         pscDefDescInp.readOnly = false;
       }
+      document.getElementById('pscDefBoxDesc')?.classList.remove('error');
 
       // 6. Action Code
       if (pscDefActionSel) pscDefActionSel.value = d.actionCode || '';
@@ -13055,29 +13208,32 @@
       });
       document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
 
-      // 7. Action Code Desc
+      // 7. Action Code Desc (Readonly)
       if (pscDefActionDescInp) {
         pscDefActionDescInp.value = d.actionDesc || PSC_ACTION_CODE_MASTER[d.actionCode] || '';
       }
 
-      // 8. Corrective Action
+      // 8. Corrective Action (Editable)
       if (pscDefCorrectiveInp) {
         pscDefCorrectiveInp.value = d.corrective || '';
+        pscDefCorrectiveInp.readOnly = false;
       }
+      document.getElementById('pscDefBoxCorrective')?.classList.remove('error');
 
-      // 9. Suggested
+      // 9. Suggested (Editable)
       if (pscDefSuggestedInp) {
         pscDefSuggestedInp.value = d.suggested || '';
+        pscDefSuggestedInp.readOnly = false;
       }
 
-      // 10. Risk Assessment
+      // 10. Risk Assessment (Editable)
       if (pscDefRiskInp) {
         pscDefRiskInp.value = d.riskAssessment || '';
         pscDefRiskInp.readOnly = false;
       }
       document.getElementById('pscDefBoxRisk')?.classList.remove('error');
 
-      // 11. Solaristech CAP
+      // 11. Solaristech CAP (Editable)
       if (pscDefSolarisCapInp) {
         pscDefSolarisCapInp.value = d.solaristechCap || '';
         pscDefSolarisCapInp.readOnly = false;
@@ -13094,6 +13250,11 @@
       if (pscBtnGenRec) pscBtnGenRec.disabled = false;
       if (pscGenSpinner) pscGenSpinner.style.display = 'none';
       if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
+
+      // Set action button label to "Update" for edit flow
+      if (pscDefSaveBtn) {
+        pscDefSaveBtn.textContent = 'Update';
+      }
 
       updateFieldStates();
       pscValidateDefForm();
@@ -13114,16 +13275,13 @@
       if (pscDefCodeTimer) { clearTimeout(pscDefCodeTimer); pscDefCodeTimer = null; }
       if (pscCodeLoader) pscCodeLoader.classList.remove('active');
 
-      ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxSuggested', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+      ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxCorrective', 'pscDefBoxSuggested', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
         document.getElementById(id)?.classList.remove('field-auto-loading');
       });
 
       // Clear all selects
       if (pscDefCodeSel) pscDefCodeSel.value = '';
-      if (pscDefTrainingSel) {
-        pscDefTrainingSel.value = '';
-        pscDefTrainingSel.disabled = true;
-      }
+      pscSetTrainingCourse('');
       if (pscDefActionSel) pscDefActionSel.value = '';
 
       // Clear all inputs and textareas
@@ -13141,10 +13299,10 @@
 
       // Set non-editable styling classes
       document.getElementById('pscDefBoxArea')?.classList.add('readonly-box');
-      document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
+      document.getElementById('pscDefBoxTraining')?.classList.add('disabled', 'readonly-box');
 
       // Clear error states
-      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode', 'pscDefBoxDesc', 'pscDefBoxCorrective', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
         document.getElementById(id)?.classList.remove('error');
       });
 
@@ -13159,8 +13317,9 @@
       if (pscGenSpinner) pscGenSpinner.style.display = 'none';
       if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
 
-      // Reset Save button (DISABLED until required fields filled)
+      // Reset Save button (DISABLED until all required fields are filled & generated)
       if (pscDefSaveBtn) {
+        pscDefSaveBtn.textContent = 'Save';
         pscDefSaveBtn.disabled = true;
         pscDefSaveBtn.setAttribute('aria-disabled', 'true');
       }
@@ -13196,22 +13355,33 @@
     initPscCustomDropdown('pscDefBoxActionCode', 'pscDefActionCodeInput', 'pscDefActionCodeSelect', 'pscDefActionDropdown');
 
     // ---- Validate deficiency form → enable Save ----
-    // Save is ENABLED only when Deficiency Code, Deficiency Area, Action Code, Risk Assessment, and Solaristech Corrective Action Plan are filled
+    // Save is ENABLED only when ALL required data is present:
+    // 1. Deficiency Code selected
+    // 2. Action Code selected
+    // 3. Deficiency Area populated
+    // 4. Deficiency Description generated (and non-empty)
+    // 5. Corrective Action manually entered (and non-empty)
+    // 6. Risk Assessment generated (and non-empty)
+    // 7. Solaristech Corrective Action Plan generated (and non-empty)
     function pscValidateDefForm() {
       const code       = pscDefCodeSel?.value?.trim();
       const area       = pscDefAreaInp?.value?.trim();
       const action     = pscDefActionSel?.value?.trim();
+      const desc       = pscDefDescInp?.value?.trim();
+      const corrective = pscDefCorrectiveInp?.value?.trim();
       const risk       = pscDefRiskInp?.value?.trim();
       const solarisCap = pscDefSolarisCapInp?.value?.trim();
-      const isSaveable = !!(code && action && area && risk && solarisCap);
+
+      const isSaveable = !!(code && action && area && desc && corrective && risk && solarisCap);
 
       if (pscDefSaveBtn) {
         pscDefSaveBtn.disabled = !isSaveable;
         pscDefSaveBtn.setAttribute('aria-disabled', isSaveable ? 'false' : 'true');
       }
+      return isSaveable;
     }
 
-    // ---- 1. Deficiency Code Selection & Auto-populate with Light Loading Animation ----
+    // ---- 1. Deficiency Code Selection & Dependent Field Auto-population ----
     if (pscDefCodeSel) {
       pscDefCodeSel.addEventListener('change', () => {
         const selectedCode = pscDefCodeSel.value.trim();
@@ -13224,22 +13394,38 @@
         if (!selectedCode) {
           // Cleared -> reset dependent fields
           if (pscCodeLoader) pscCodeLoader.classList.remove('active');
-          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc'].forEach(id => {
+          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
           });
           if (pscDefAreaInp) pscDefAreaInp.value = '';
           if (pscDefSummaryInp) pscDefSummaryInp.value = '';
-          if (pscDefTrainingSel) pscDefTrainingSel.value = '';
+          pscSetTrainingCourse('');
           if (pscDefDescInp) pscDefDescInp.value = '';
+          if (pscDefRiskInp) pscDefRiskInp.value = '';
+          if (pscDefSolarisCapInp) pscDefSolarisCapInp.value = '';
+          if (pscDefSuggestedInp) pscDefSuggestedInp.value = '';
           document.getElementById('pscDefBoxCode')?.classList.remove('error');
           updateFieldStates();
           pscValidateDefForm();
           return;
         }
 
-        // Show light loading animation
+        // When Deficiency Code changes/is selected, immediately clear previously generated recommendations!
+        if (pscDefDescInp) pscDefDescInp.value = '';
+        if (pscDefRiskInp) pscDefRiskInp.value = '';
+        if (pscDefSolarisCapInp) pscDefSolarisCapInp.value = '';
+        if (pscDefSuggestedInp) pscDefSuggestedInp.value = '';
+        ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+          document.getElementById(id)?.classList.remove('error');
+        });
+
+        // Re-validate immediately so Save becomes disabled
+        updateFieldStates();
+        pscValidateDefForm();
+
+        // Show light loading animation on auto-populating fields only (Area, Summary, Training)
         if (pscCodeLoader) pscCodeLoader.classList.add('active');
-        ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc'].forEach(id => {
+        ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining'].forEach(id => {
           document.getElementById(id)?.classList.add('field-auto-loading');
         });
         document.getElementById('pscDefBoxCode')?.classList.remove('error');
@@ -13247,13 +13433,13 @@
         // Light delay to showcase smooth auto-population
         pscDefCodeTimer = setTimeout(() => {
           if (pscCodeLoader) pscCodeLoader.classList.remove('active');
-          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc'].forEach(id => {
+          ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
           });
 
           const mockData = PSC_DEFICIENCY_CODE_MASTER[selectedCode];
           if (mockData) {
-            // Deficiency Area -> NOT editable
+            // Deficiency Area -> read-only
             if (pscDefAreaInp) {
               pscDefAreaInp.value = mockData.area;
               pscDefAreaInp.readOnly = true;
@@ -13267,16 +13453,12 @@
               pscDefSummaryInp.readOnly = false;
             }
 
-            // Training Courses -> NOT editable
-            if (pscDefTrainingSel) {
-              pscDefTrainingSel.value = mockData.training || '-';
-              pscDefTrainingSel.disabled = true;
-            }
-            document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
+            // Training Courses -> read-only link presentation
+            pscSetTrainingCourse(mockData.training || '-', mockData.trainingUrl);
 
-            // Deficiency Description -> editable
+            // DO NOT auto-populate Deficiency Description! Must remain empty until Generate Recommendation
             if (pscDefDescInp) {
-              pscDefDescInp.value = mockData.description;
+              pscDefDescInp.value = '';
               pscDefDescInp.readOnly = false;
             }
           }
@@ -13287,14 +13469,6 @@
       });
     }
 
-    // Clear error on Summary or Description edit
-    if (pscDefSummaryInp) {
-      pscDefSummaryInp.addEventListener('input', () => { updateFieldStates(); });
-    }
-    if (pscDefDescInp) {
-      pscDefDescInp.addEventListener('input', () => { updateFieldStates(); });
-    }
-
     // ---- 2. Action Code Selection & Auto-populate Description ----
     if (pscDefActionSel) {
       pscDefActionSel.addEventListener('change', () => {
@@ -13303,6 +13477,7 @@
 
         if (pscDefActionDescInp) {
           pscDefActionDescInp.value = desc;
+          pscDefActionDescInp.readOnly = true;
         }
 
         document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
@@ -13322,58 +13497,89 @@
 
     // ---- 3. Generate Recommendation Button & AI Mock Generation ----
     if (pscBtnGenRec) {
-      pscBtnGenRec.addEventListener('click', () => {
+      pscBtnGenRec.addEventListener('click', async () => {
         if (pscBtnGenRec.disabled) return;
 
-        // Enter loading state
+        const currentCode = pscDefCodeSel?.value?.trim();
+        if (!currentCode) {
+          document.getElementById('pscDefBoxCode')?.classList.add('error');
+          showToast('Please select a Deficiency Code first.');
+          return;
+        }
+
+        // Enter loading state immediately
         pscBtnGenRec.disabled = true;
         if (pscGenSpinner) pscGenSpinner.style.display = 'inline-block';
         if (pscGenRecText) pscGenRecText.textContent = 'Generating Recommendations...';
 
-        ['pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+        ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
           document.getElementById(id)?.classList.add('field-auto-loading');
         });
 
-        setTimeout(() => {
+        try {
+          const aiData = await pscFetchAiRecommendations(currentCode);
+
           // Reset loading state
           pscBtnGenRec.disabled = false;
           if (pscGenSpinner) pscGenSpinner.style.display = 'none';
           if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
 
-          ['pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+          ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
             document.getElementById(id)?.classList.remove('error');
           });
 
-          const currentCode = pscDefCodeSel?.value?.trim();
-          const recData = (currentCode && PSC_RECOMMENDATION_MASTER[currentCode])
-            ? PSC_RECOMMENDATION_MASTER[currentCode]
-            : PSC_RECOMMENDATION_MASTER['default'];
+          // Populate ONLY the 3 target recommendation fields (+ Suggested)
+          // 1. Deficiency Description (remains editable)
+          if (pscDefDescInp) {
+            pscDefDescInp.value = aiData.description;
+            pscDefDescInp.readOnly = false;
+          }
 
-          // Populate Risk Assessment and Solaristech Corrective Action Plan
+          // 2. Risk Assessment (editable)
           if (pscDefRiskInp) {
-            pscDefRiskInp.value = recData.riskAssessment;
+            pscDefRiskInp.value = aiData.riskAssessment;
             pscDefRiskInp.readOnly = false;
           }
+
+          // 3. Solaristech Corrective Action Plan (editable)
           if (pscDefSolarisCapInp) {
-            pscDefSolarisCapInp.value = recData.solaristechCap;
+            pscDefSolarisCapInp.value = aiData.solaristechCap;
             pscDefSolarisCapInp.readOnly = false;
           }
+
+          // Suggested (editable)
+          if (pscDefSuggestedInp) {
+            pscDefSuggestedInp.value = aiData.suggested;
+            pscDefSuggestedInp.readOnly = false;
+          }
+
+          // Note: Corrective Action, Summary, Deficiency Area, Training Courses, Action Code, Action Code Desc are NOT touched!
 
           updateFieldStates();
           pscValidateDefForm();
           showToast('AI Recommendations generated successfully.');
-        }, 550);
+        } catch (err) {
+          pscBtnGenRec.disabled = false;
+          if (pscGenSpinner) pscGenSpinner.style.display = 'none';
+          if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
+          ['pscDefBoxDesc', 'pscDefBoxRisk', 'pscDefBoxSolarisCap', 'pscDefBoxSuggested'].forEach(id => {
+            document.getElementById(id)?.classList.remove('field-auto-loading');
+          });
+          showToast('Failed to generate recommendations. Please try again.');
+        }
       });
     }
 
-    // Editable events on deficiency fields
+    // Editable events on deficiency fields to reactively validate form
     ['pscDefCorrectiveInput', 'pscDefSuggestedInput', 'pscDefRiskInput', 'pscDefSolarisCapInput', 'pscDefSummaryInput', 'pscDefDescInput'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('input', () => {
           if (id === 'pscDefRiskInput') document.getElementById('pscDefBoxRisk')?.classList.remove('error');
           if (id === 'pscDefSolarisCapInput') document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
+          if (id === 'pscDefCorrectiveInput') document.getElementById('pscDefBoxCorrective')?.classList.remove('error');
+          if (id === 'pscDefDescInput') document.getElementById('pscDefBoxDesc')?.classList.remove('error');
           updateFieldStates();
           pscValidateDefForm();
         });
@@ -13386,6 +13592,8 @@
         const code       = pscDefCodeSel?.value?.trim();
         const area       = pscDefAreaInp?.value?.trim();
         const action     = pscDefActionSel?.value?.trim();
+        const desc       = pscDefDescInp?.value?.trim();
+        const corrective = pscDefCorrectiveInp?.value?.trim();
         const risk       = pscDefRiskInp?.value?.trim();
         const solarisCap = pscDefSolarisCapInp?.value?.trim();
 
@@ -13411,6 +13619,20 @@
           document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
         }
 
+        if (!desc) {
+          document.getElementById('pscDefBoxDesc')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxDesc')?.classList.remove('error');
+        }
+
+        if (!corrective) {
+          document.getElementById('pscDefBoxCorrective')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxCorrective')?.classList.remove('error');
+        }
+
         if (!risk) {
           document.getElementById('pscDefBoxRisk')?.classList.add('error');
           valid = false;
@@ -13426,7 +13648,7 @@
         }
 
         if (!valid) {
-          showToast('Please select Deficiency Code, Action Code, and fill Risk Assessment & Solaristech Corrective Action Plan.');
+          showToast('Please select Deficiency Code, Action Code, generate recommendations, and enter Corrective Action.');
           return;
         }
 
@@ -13437,10 +13659,10 @@
           area,
           summary:        pscDefSummaryInp?.value?.trim()    || '',
           training:       pscDefTrainingSel?.value?.trim()  || '',
-          description:    pscDefDescInp?.value?.trim()       || '',
+          description:    desc,
           actionCode:     action,
           actionDesc:     actionDesc,
-          corrective:     pscDefCorrectiveInp?.value?.trim() || '',
+          corrective:     corrective,
           suggested:      pscDefSuggestedInp?.value?.trim()  || '',
           riskAssessment: risk,
           solaristechCap: solarisCap
@@ -13457,7 +13679,7 @@
         pscUpsertRecord();
 
         pscCloseDefModal();
-        showToast('Deficiency saved successfully.');
+        showToast(pscEditingDefIndex !== null ? 'Deficiency updated successfully.' : 'Deficiency saved successfully.');
 
         // Reveal deficiencies section on Create page
         const defSec = document.getElementById('pscDeficienciesSection');
