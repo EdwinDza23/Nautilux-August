@@ -4449,7 +4449,7 @@
       margin-bottom: 12px;
     }
     .psc-deficiencies-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       color: #111111;
       letter-spacing: 0.2px;
@@ -4476,48 +4476,88 @@
     .btn-add-deficiency .material-symbols-outlined {
       font-size: 16px;
     }
-    .psc-deficiency-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+
+    /* Deficiencies 6-Column Data Table — matching reference image exactly */
+    .psc-deficiencies-table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #b8a070;
+      border-radius: 2px;
+      background-color: #fdfaf2;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(30, 36, 45, 0.22) transparent;
     }
-    .psc-deficiency-item {
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid var(--border-canvas);
-      border-radius: 6px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
+    .psc-deficiencies-table-container::-webkit-scrollbar {
+      height: 6px;
     }
-    .psc-deficiency-item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      flex: 1;
-      min-width: 0;
+    .psc-deficiencies-table-container::-webkit-scrollbar-track {
+      background: transparent;
     }
-    .psc-deficiency-code {
-      font-size: 12.5px;
-      font-weight: 700;
-      color: var(--text-dark);
+    .psc-deficiencies-table-container::-webkit-scrollbar-thumb {
+      background-color: rgba(30, 36, 45, 0.22);
+      border-radius: 9999px;
     }
-    .psc-deficiency-area {
-      font-size: 11.5px;
-      color: var(--text-muted);
+
+    table.psc-deficiencies-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: center;
     }
-    .psc-deficiency-action-code {
-      font-size: 11px;
-      color: var(--gold-text);
+
+    table.psc-deficiencies-table thead th {
+      background-color: #c9a84c;
+      color: #1a1a1a;
       font-weight: 600;
-      margin-top: 2px;
+      font-size: 12px;
+      letter-spacing: 0.1px;
+      padding: 8px 10px;
+      border: 1px solid #b8933a;
+      white-space: nowrap;
+      text-align: center;
     }
-    .psc-def-item-num {
+
+    table.psc-deficiencies-table tbody td {
+      padding: 7px 10px;
+      border: 1px solid #d4c89a;
+      color: #222222;
+      font-size: 12px;
+      vertical-align: middle;
+      white-space: nowrap;
+      background-color: #fdfaf2;
+      text-align: center;
+    }
+
+    table.psc-deficiencies-table tbody td.col-corrective {
+      white-space: normal;
+      max-width: 280px;
+      word-break: break-word;
+      line-height: 1.35;
+      text-align: center;
+    }
+
+    table.psc-deficiencies-table tbody tr:hover td {
+      background-color: #f8f3e4;
+    }
+
+    .btn-view-more {
+      background: transparent;
+      border: 1px solid #c9a84c;
+      color: #9a7a2a;
       font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      flex-shrink: 0;
-      padding-top: 2px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 2px 8px;
+      font-family: inherit;
+      border-radius: 3px;
+      transition: background 0.15s ease, color 0.15s ease;
+      display: inline-block;
+      line-height: 1.5;
+    }
+    .btn-view-more:hover {
+      background-color: #c9a84c;
+      color: #1a1a1a;
     }
 
     /* Table styles matching psc list.png */
@@ -6537,7 +6577,31 @@
               <span class="material-symbols-outlined">add</span>Add Deficiency
             </button>
           </div>
-          <div class="psc-deficiency-list" id="pscDeficiencyList"></div>
+          <div class="psc-deficiencies-table-container">
+            <table class="psc-deficiencies-table" role="grid" aria-label="Deficiencies list">
+              <colgroup>
+                <col style="width: 8%;">
+                <col style="width: 18%;">
+                <col style="width: 15%;">
+                <col>
+                <col style="width: 13%;">
+                <col style="width: 18%;">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="col-slno" scope="col">SLNO</th>
+                  <th class="col-def-code" scope="col">Deficiency Code</th>
+                  <th class="col-action-code" scope="col">Action Code</th>
+                  <th class="col-corrective" scope="col">Corrective Action</th>
+                  <th class="col-action" scope="col">Action</th>
+                  <th class="col-status" scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="pscDeficienciesTableBody">
+                <!-- Rows injected dynamically by JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Date picker popover (positioned via JS) -->
@@ -12468,11 +12532,11 @@
         btnAddPsc.setAttribute('aria-disabled', 'true');
       }
 
-      // Hide deficiencies section & clear list
+      // Hide deficiencies section & clear table
       const defSec = document.getElementById('pscDeficienciesSection');
       if (defSec) defSec.style.display = 'none';
-      const defList = document.getElementById('pscDeficiencyList');
-      if (defList) defList.innerHTML = '';
+      const defTbody = document.getElementById('pscDeficienciesTableBody');
+      if (defTbody) defTbody.innerHTML = '';
 
       // Close datepicker if open
       const dpPop = document.getElementById('pscDatePickerPopover');
@@ -12915,10 +12979,18 @@
     });
 
     let pscDefCodeTimer = null;
+    let pscEditingDefIndex = null;
 
     // ---- Open / Close Deficiency Modal (matching popup1.png, popup2.png) ----
-    function pscOpenDefModal() {
-      pscResetDefForm();
+    function pscOpenDefModal(defIndex = null) {
+      if (defIndex !== null && typeof defIndex === 'number' && pscCurrentDeficiencies[defIndex]) {
+        pscEditingDefIndex = defIndex;
+        const d = pscCurrentDeficiencies[defIndex];
+        pscPopulateDefModal(d);
+      } else {
+        pscEditingDefIndex = null;
+        pscResetDefForm();
+      }
       if (pscDeficiencyModal) pscDeficiencyModal.classList.add('open');
       setTimeout(() => { pscDefCodeSel?.focus(); }, 80);
     }
@@ -12927,10 +12999,108 @@
       if (pscDefCodeTimer) { clearTimeout(pscDefCodeTimer); pscDefCodeTimer = null; }
       pscCloseExpandModal();
       if (pscDeficiencyModal) pscDeficiencyModal.classList.remove('open');
+      pscEditingDefIndex = null;
     }
 
-    if (btnAddPscEl)      btnAddPscEl.addEventListener('click', () => { pscOpenDefModal(); });
-    if (btnAddAnotherDef) btnAddAnotherDef.addEventListener('click', pscOpenDefModal);
+    // Populate modal with existing deficiency data for View More flow
+    function pscPopulateDefModal(d) {
+      if (pscDefCodeTimer) { clearTimeout(pscDefCodeTimer); pscDefCodeTimer = null; }
+      if (pscCodeLoader) pscCodeLoader.classList.remove('active');
+
+      ['pscDefBoxArea', 'pscDefBoxSummary', 'pscDefBoxTraining', 'pscDefBoxDesc', 'pscDefBoxSuggested', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
+        document.getElementById(id)?.classList.remove('field-auto-loading');
+      });
+
+      // 1. Deficiency Code
+      if (pscDefCodeSel) pscDefCodeSel.value = d.code || '';
+      const pscDefCodeInp = document.getElementById('pscDefCodeInput');
+      if (pscDefCodeInp) pscDefCodeInp.value = d.code || '';
+      document.querySelectorAll('#pscDefCodeDropdown .custom-dropdown-option').forEach(o => {
+        o.classList.toggle('selected', o.getAttribute('data-value') === (d.code || ''));
+      });
+
+      // 2. Deficiency Area (Readonly)
+      if (pscDefAreaInp) {
+        pscDefAreaInp.value = d.area || '';
+        pscDefAreaInp.readOnly = true;
+      }
+      document.getElementById('pscDefBoxArea')?.classList.add('readonly-box');
+      document.getElementById('pscDefBoxArea')?.classList.remove('error');
+
+      // 3. Summary
+      if (pscDefSummaryInp) {
+        pscDefSummaryInp.value = d.summary || '';
+        pscDefSummaryInp.readOnly = false;
+      }
+
+      // 4. Training Courses (Disabled)
+      if (pscDefTrainingSel) {
+        pscDefTrainingSel.value = d.training || '-';
+        pscDefTrainingSel.disabled = true;
+      }
+      document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
+
+      // 5. Deficiency Description
+      if (pscDefDescInp) {
+        pscDefDescInp.value = d.description || '';
+        pscDefDescInp.readOnly = false;
+      }
+
+      // 6. Action Code
+      if (pscDefActionSel) pscDefActionSel.value = d.actionCode || '';
+      const pscDefActionInp = document.getElementById('pscDefActionCodeInput');
+      if (pscDefActionInp) pscDefActionInp.value = d.actionCode || '';
+      document.querySelectorAll('#pscDefActionDropdown .custom-dropdown-option').forEach(o => {
+        o.classList.toggle('selected', o.getAttribute('data-value') === (d.actionCode || ''));
+      });
+      document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
+
+      // 7. Action Code Desc
+      if (pscDefActionDescInp) {
+        pscDefActionDescInp.value = d.actionDesc || PSC_ACTION_CODE_MASTER[d.actionCode] || '';
+      }
+
+      // 8. Corrective Action
+      if (pscDefCorrectiveInp) {
+        pscDefCorrectiveInp.value = d.corrective || '';
+      }
+
+      // 9. Suggested
+      if (pscDefSuggestedInp) {
+        pscDefSuggestedInp.value = d.suggested || '';
+      }
+
+      // 10. Risk Assessment
+      if (pscDefRiskInp) {
+        pscDefRiskInp.value = d.riskAssessment || '';
+        pscDefRiskInp.readOnly = false;
+      }
+      document.getElementById('pscDefBoxRisk')?.classList.remove('error');
+
+      // 11. Solaristech CAP
+      if (pscDefSolarisCapInp) {
+        pscDefSolarisCapInp.value = d.solaristechCap || '';
+        pscDefSolarisCapInp.readOnly = false;
+      }
+      document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
+
+      // Reviewer checkboxes
+      const chkRisk = document.getElementById('pscChkRisk');
+      if (chkRisk) { chkRisk.checked = true; chkRisk.disabled = true; }
+      const chkCap = document.getElementById('pscChkSolarisCap');
+      if (chkCap) { chkCap.checked = true; chkCap.disabled = true; }
+
+      // Reset Recommendation button
+      if (pscBtnGenRec) pscBtnGenRec.disabled = false;
+      if (pscGenSpinner) pscGenSpinner.style.display = 'none';
+      if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
+
+      updateFieldStates();
+      pscValidateDefForm();
+    }
+
+    if (btnAddPscEl)      btnAddPscEl.addEventListener('click', () => { pscEditingDefIndex = null; pscOpenDefModal(); });
+    if (btnAddAnotherDef) btnAddAnotherDef.addEventListener('click', () => { pscEditingDefIndex = null; pscOpenDefModal(); });
     if (pscModalCloseBtn) pscModalCloseBtn.addEventListener('click', pscCloseDefModal);
     if (pscDefCancelBtn)  pscDefCancelBtn.addEventListener('click',  pscCloseDefModal);
     if (pscDeficiencyModal) {
@@ -13276,7 +13446,11 @@
           solaristechCap: solarisCap
         };
 
-        pscCurrentDeficiencies.push(defObj);
+        if (pscEditingDefIndex !== null && pscEditingDefIndex >= 0 && pscEditingDefIndex < pscCurrentDeficiencies.length) {
+          pscCurrentDeficiencies[pscEditingDefIndex] = defObj;
+        } else {
+          pscCurrentDeficiencies.push(defObj);
+        }
         pscRenderCurrentDeficiencies();
 
         // Create or update the PSC record in the data store
@@ -13291,23 +13465,38 @@
       });
     }
 
-    // ---- Render deficiencies on Create page ----
+    // ---- Render deficiencies table on Create page ----
     function pscRenderCurrentDeficiencies() {
-      const list = document.getElementById('pscDeficiencyList');
-      if (!list) return;
-      list.innerHTML = '';
+      const tbody = document.getElementById('pscDeficienciesTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
       pscCurrentDeficiencies.forEach((d, i) => {
-        const item = document.createElement('div');
-        item.className = 'psc-deficiency-item';
-        item.innerHTML = `
-          <span class="psc-def-item-num">#${i + 1}</span>
-          <div class="psc-deficiency-item-info">
-            <div class="psc-deficiency-code">${d.code} — ${d.area}</div>
-            ${d.summary ? `<div class="psc-deficiency-area">${d.summary}</div>` : ''}
-            <div class="psc-deficiency-action-code">Action: ${d.actionCode}${d.actionDesc ? ' — ' + d.actionDesc : ''}</div>
-          </div>
+        const tr = document.createElement('tr');
+        const correctiveVal = (d.corrective && d.corrective.trim() !== '') ? d.corrective.trim() : '-';
+        tr.innerHTML = `
+          <td class="col-slno">${i + 1}</td>
+          <td class="col-def-code">${d.code}</td>
+          <td class="col-action-code">${d.actionCode || '-'}</td>
+          <td class="col-corrective">${correctiveVal}</td>
+          <td class="col-action">
+            <button type="button" class="btn-view-more" data-index="${i}" aria-label="View more details for deficiency ${d.code}">View More</button>
+          </td>
+          <td class="col-status">
+            <span class="psc-status-pill completed">COMPLETED</span>
+          </td>
         `;
-        list.appendChild(item);
+        tbody.appendChild(tr);
+      });
+
+      // Wire View More buttons to open the existing modal populated with row data
+      tbody.querySelectorAll('.btn-view-more').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const idx = parseInt(btn.dataset.index, 10);
+          if (!isNaN(idx) && pscCurrentDeficiencies[idx]) {
+            pscOpenDefModal(idx);
+          }
+        });
       });
     }
 
