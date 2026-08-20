@@ -4957,11 +4957,14 @@
     }
 
     /* Custom Dropdown System for Modal and Forms matching screenshots */
-    .mui-field-box.custom-select-box {
+    /* Custom Dropdown System for Modal, Forms, and Toolbars across the entire application */
+    .mui-field-box.custom-select-box,
+    .company-select-box.custom-select-box {
       cursor: pointer;
       position: relative;
     }
-    .mui-field-box.custom-select-box input.custom-select-display-input {
+    .mui-field-box.custom-select-box input.custom-select-display-input,
+    .company-select-box.custom-select-box input.custom-select-display-input {
       cursor: pointer;
       user-select: none;
       width: 100%;
@@ -4976,16 +4979,28 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+      box-sizing: border-box;
+    }
+    .mui-field-box.custom-select-box.disabled,
+    .company-select-box.custom-select-box.disabled {
+      cursor: default;
+      pointer-events: none;
+    }
+    .mui-field-box.custom-select-box.disabled input.custom-select-display-input,
+    .company-select-box.custom-select-box.disabled input.custom-select-display-input {
+      cursor: default;
+      color: #555555;
     }
     .custom-select-hidden-native {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-      width: 0;
-      height: 0;
-      margin: 0;
-      padding: 0;
-      border: none;
+      position: absolute !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      overflow: hidden !important;
     }
     .custom-dropdown-panel {
       position: absolute;
@@ -5002,6 +5017,13 @@
       display: none;
       scrollbar-width: thin;
       scrollbar-color: rgba(30, 36, 45, 0.35) transparent;
+    }
+    .inner-form-box .custom-dropdown-panel,
+    .inner-fuel-form-box .custom-dropdown-panel,
+    .vh-inner-form-box .custom-dropdown-panel,
+    .cf-inner-box .custom-dropdown-panel {
+      background-color: #fbf8f0;
+      border-color: #d4cba7;
     }
     .custom-dropdown-panel.open {
       display: block;
@@ -5036,11 +5058,14 @@
       background-color: #ded5bc;
       font-weight: 500;
     }
-    .mui-field-box.custom-select-box.is-open {
+    .mui-field-box.custom-select-box.is-open,
+    .company-select-box.custom-select-box.is-open {
       border: 1.5px solid #1a1a1a;
       z-index: 1200;
     }
-    .mui-field-box.custom-select-box.is-open .select-arrow {
+    .mui-field-box.custom-select-box.is-open .select-arrow,
+    .company-select-box.custom-select-box.is-open .select-arrow,
+    .company-select-box.custom-select-box.is-open .material-symbols-outlined {
       transform: translateY(-50%) rotate(180deg);
     }
 
@@ -6374,29 +6399,34 @@
         <div class="psc-grid-4col">
 
           <!-- Row 1, Col 1: TYPE * -->
-          <div class="mui-field-box empty-unfocused" id="pscBoxType">
-            <label for="pscSelectType">TYPE <span class="req-star">*</span></label>
-            <select id="pscSelectType" aria-required="true">
+          <div class="mui-field-box empty-unfocused custom-select-box" id="pscBoxType">
+            <label for="pscInputTypeSelect">TYPE <span class="req-star">*</span></label>
+            <input type="text" class="custom-select-display-input" id="pscInputTypeSelect" readonly placeholder="" autocomplete="off" aria-label="Type" aria-haspopup="listbox">
+            <select id="pscSelectType" class="custom-select-hidden-native" aria-required="true" tabindex="-1">
               <option value=""></option>
               <option value="PSC">PSC</option>
-              <option value="SIRE">SIRE</option>
-              <option value="Flag State">Flag State</option>
-              <option value="Class">Class</option>
             </select>
             <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <div class="custom-dropdown-panel" id="pscTypeDropdown" role="listbox" aria-label="Type Options">
+              <div class="custom-dropdown-option" role="option" data-value="PSC">PSC</div>
+            </div>
             <span class="error-text">Please select Type</span>
           </div>
 
           <!-- Row 1, Col 2: SUB TYPE * -->
-          <div class="mui-field-box empty-unfocused" id="pscBoxSubType">
-            <label for="pscSelectSubType">SUB TYPE <span class="req-star">*</span></label>
-            <select id="pscSelectSubType" aria-required="true">
+          <div class="mui-field-box empty-unfocused custom-select-box" id="pscBoxSubType">
+            <label for="pscInputSubTypeSelect">SUB TYPE <span class="req-star">*</span></label>
+            <input type="text" class="custom-select-display-input" id="pscInputSubTypeSelect" readonly placeholder="" autocomplete="off" aria-label="Sub Type" aria-haspopup="listbox">
+            <select id="pscSelectSubType" class="custom-select-hidden-native" aria-required="true" tabindex="-1">
               <option value=""></option>
               <option value="POST DETENTION">POST DETENTION</option>
               <option value="DEFICIENCY">DEFICIENCY</option>
-              <option value="OBSERVATION">OBSERVATION</option>
             </select>
             <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+            <div class="custom-dropdown-panel" id="pscSubTypeDropdown" role="listbox" aria-label="Sub Type Options">
+              <div class="custom-dropdown-option" role="option" data-value="POST DETENTION">POST DETENTION</div>
+              <div class="custom-dropdown-option" role="option" data-value="DEFICIENCY">DEFICIENCY</div>
+            </div>
             <span class="error-text">Please select Sub Type</span>
           </div>
 
@@ -7695,7 +7725,7 @@
         const input = box.querySelector('input, select, textarea');
         if (!input) return;
 
-        const isFocused = document.activeElement === input;
+        const isFocused = document.activeElement === input || box.classList.contains('is-open');
         let hasVal = false;
         if (input.tagName === 'SELECT') {
           const selectedOpt = input.selectedIndex >= 0 ? input.options[input.selectedIndex] : null;
@@ -7706,6 +7736,11 @@
           hasVal = input.value && input.value.trim() !== '';
         }
 
+        const dispInput = box.querySelector('input.custom-select-display-input');
+        if (dispInput && dispInput.value && dispInput.value.trim() !== '') {
+          hasVal = true;
+        }
+
         if (!isFocused && !hasVal) {
           box.classList.add('empty-unfocused');
         } else {
@@ -7714,11 +7749,199 @@
       });
     }
 
+    // ================= UNIVERSAL NAUTILUX DROPDOWN SYSTEM =================
+    function initUniversalNautiluxDropdowns() {
+      const selects = document.querySelectorAll('.mui-field-box select, .company-select-box select, select.nautilux-select');
+      selects.forEach(select => {
+        setupNautiluxDropdown(select);
+      });
+    }
+
+    function setupNautiluxDropdown(select) {
+      if (!select || select.dataset.nautiluxEnhanced === 'true') return;
+
+      const parentBox = select.closest('.mui-field-box') || select.closest('.company-select-box') || select.parentElement;
+      if (!parentBox) return;
+
+      select.dataset.nautiluxEnhanced = 'true';
+      parentBox.classList.add('custom-select-box');
+      select.classList.add('custom-select-hidden-native');
+
+      // Display input
+      let displayInput = parentBox.querySelector('input.custom-select-display-input');
+      if (!displayInput) {
+        displayInput = document.createElement('input');
+        displayInput.type = 'text';
+        displayInput.className = 'custom-select-display-input';
+        displayInput.readOnly = true;
+        displayInput.placeholder = '';
+        displayInput.autocomplete = 'off';
+        displayInput.setAttribute('aria-haspopup', 'listbox');
+        if (select.id) displayInput.id = select.id + '_display';
+        if (select.getAttribute('aria-label')) displayInput.setAttribute('aria-label', select.getAttribute('aria-label'));
+
+        select.insertAdjacentElement('afterend', displayInput);
+      }
+
+      // Arrow icon
+      let arrow = parentBox.querySelector('.select-arrow, .material-symbols-outlined');
+      if (!arrow) {
+        arrow = document.createElement('span');
+        arrow.className = 'material-symbols-outlined select-arrow';
+        arrow.textContent = 'arrow_drop_down';
+        arrow.setAttribute('aria-hidden', 'true');
+        parentBox.appendChild(arrow);
+      } else if (!arrow.classList.contains('select-arrow') && arrow.textContent.trim() === 'arrow_drop_down') {
+        arrow.classList.add('select-arrow');
+      }
+
+      // Panel
+      let panel = parentBox.querySelector('.custom-dropdown-panel');
+      if (!panel) {
+        panel = document.createElement('div');
+        panel.className = 'custom-dropdown-panel';
+        panel.setAttribute('role', 'listbox');
+        if (select.id) panel.id = select.id + '_panel';
+        parentBox.appendChild(panel);
+      }
+
+      if (select.disabled || parentBox.classList.contains('disabled')) {
+        parentBox.classList.add('disabled');
+        displayInput.disabled = true;
+      }
+
+      function renderOptions() {
+        panel.innerHTML = '';
+        const currentVal = select.value || '';
+        let matchedText = '';
+
+        Array.from(select.options).forEach(opt => {
+          const val = opt.value;
+          const text = opt.text || val;
+          if (val === '' && text === '') return;
+
+          const optDiv = document.createElement('div');
+          optDiv.className = 'custom-dropdown-option' + (val === currentVal ? ' selected' : '');
+          optDiv.setAttribute('role', 'option');
+          optDiv.setAttribute('data-value', val);
+          optDiv.textContent = text;
+
+          optDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (select.disabled || parentBox.classList.contains('disabled')) return;
+            select.value = val;
+            displayInput.value = text;
+            panel.querySelectorAll('.custom-dropdown-option').forEach(o => {
+              o.classList.toggle('selected', o.getAttribute('data-value') === val);
+            });
+            closeDropdown();
+            if (val) {
+              parentBox.classList.remove('empty-unfocused');
+              parentBox.classList.remove('error');
+            } else {
+              parentBox.classList.add('empty-unfocused');
+            }
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+            select.dispatchEvent(new Event('input', { bubbles: true }));
+            if (typeof updateFieldStates === 'function') updateFieldStates();
+          });
+
+          if (val === currentVal) {
+            matchedText = text;
+          }
+
+          panel.appendChild(optDiv);
+        });
+
+        const selOpt = select.selectedIndex >= 0 ? select.options[select.selectedIndex] : null;
+        displayInput.value = selOpt && selOpt.value ? (selOpt.text || selOpt.value) : (matchedText || '');
+        if (displayInput.value) {
+          parentBox.classList.remove('empty-unfocused');
+        } else {
+          parentBox.classList.add('empty-unfocused');
+        }
+      }
+
+      renderOptions();
+
+      function openDropdown() {
+        if (select.disabled || parentBox.classList.contains('disabled')) return;
+        document.querySelectorAll('.custom-dropdown-panel.open').forEach(p => {
+          if (p !== panel) {
+            p.classList.remove('open');
+            p.closest('.mui-field-box, .company-select-box')?.classList.remove('is-open');
+          }
+        });
+        panel.classList.add('open');
+        parentBox.classList.add('is-open');
+        parentBox.classList.remove('empty-unfocused');
+      }
+
+      function closeDropdown() {
+        panel.classList.remove('open');
+        parentBox.classList.remove('is-open');
+        if (!displayInput.value || displayInput.value.trim() === '') {
+          parentBox.classList.add('empty-unfocused');
+        }
+      }
+
+      parentBox.addEventListener('click', (e) => {
+        if (e.target.closest('.custom-dropdown-option')) return;
+        if (select.disabled || parentBox.classList.contains('disabled')) return;
+        if (panel.classList.contains('open')) {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      });
+
+      select.addEventListener('change', () => {
+        const selOpt = select.selectedIndex >= 0 ? select.options[select.selectedIndex] : null;
+        const val = select.value || '';
+        const text = selOpt && selOpt.value !== '' ? (selOpt.text || selOpt.value) : '';
+        displayInput.value = text;
+        panel.querySelectorAll('.custom-dropdown-option').forEach(o => {
+          o.classList.toggle('selected', o.getAttribute('data-value') === val);
+        });
+        if (val && text) {
+          parentBox.classList.remove('empty-unfocused');
+          parentBox.classList.remove('error');
+        } else {
+          parentBox.classList.add('empty-unfocused');
+        }
+      });
+
+      select._refreshNautiluxDropdown = renderOptions;
+    }
+
+    // Global listener to close custom dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-select-box')) {
+        document.querySelectorAll('.custom-dropdown-panel.open').forEach(panel => {
+          panel.classList.remove('open');
+          const parentBox = panel.closest('.mui-field-box, .company-select-box');
+          if (parentBox) {
+            parentBox.classList.remove('is-open');
+            const inp = parentBox.querySelector('input');
+            const sel = parentBox.querySelector('select');
+            const hasVal = (inp && inp.value && inp.value.trim() !== '') || (sel && sel.value && sel.value.trim() !== '');
+            if (!hasVal) {
+              parentBox.classList.add('empty-unfocused');
+            }
+          }
+        });
+      }
+    });
+
     document.addEventListener('focusin', updateFieldStates);
     document.addEventListener('focusout', updateFieldStates);
     document.addEventListener('input', updateFieldStates);
     document.addEventListener('change', updateFieldStates);
     window.updateFieldStates = updateFieldStates;
+    window.initUniversalNautiluxDropdowns = initUniversalNautiluxDropdowns;
+
+    // Initialize all dropdowns across application
+    initUniversalNautiluxDropdowns();
     updateFieldStates();
 
     // ---------- Create Modal Open / Close ----------
@@ -12222,6 +12445,13 @@
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
+      const pscInpType = document.getElementById('pscInputTypeSelect');
+      const pscInpSubType = document.getElementById('pscInputSubTypeSelect');
+      if (pscInpType) pscInpType.value = '';
+      if (pscInpSubType) pscInpSubType.value = '';
+      document.querySelectorAll('#pscBoxType .custom-dropdown-option, #pscBoxSubType .custom-dropdown-option').forEach(o => o.classList.remove('selected'));
+      document.querySelectorAll('#pscBoxType .custom-dropdown-panel, #pscBoxSubType .custom-dropdown-panel').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('#pscBoxType, #pscBoxSubType').forEach(b => b.classList.remove('is-open'));
       const dateInput = document.getElementById('pscDateInput');
       if (dateInput) dateInput.value = '';
 
@@ -12662,7 +12892,13 @@
           const inp = conf?.input();
           if (inp) {
             inp.value = pscExpandTextarea.value;
+            if (pscCurrentExpandTarget === 'risk') {
+              document.getElementById('pscDefBoxRisk')?.classList.remove('error');
+            } else if (pscCurrentExpandTarget === 'solarisCap') {
+              document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
+            }
             updateFieldStates();
+            pscValidateDefForm();
           }
         }
       });
@@ -12738,7 +12974,7 @@
       document.getElementById('pscDefBoxTraining')?.classList.add('disabled');
 
       // Clear error states
-      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode'].forEach(id => {
+      ['pscDefBoxCode', 'pscDefBoxArea', 'pscDefBoxActionCode', 'pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
         document.getElementById(id)?.classList.remove('error');
       });
 
@@ -12753,7 +12989,7 @@
       if (pscGenSpinner) pscGenSpinner.style.display = 'none';
       if (pscGenRecText) pscGenRecText.textContent = 'Generate Recommendation';
 
-      // Reset Save button (DISABLED until Action Code selected)
+      // Reset Save button (DISABLED until required fields filled)
       if (pscDefSaveBtn) {
         pscDefSaveBtn.disabled = true;
         pscDefSaveBtn.setAttribute('aria-disabled', 'true');
@@ -12778,96 +13014,26 @@
 
     // ---- Custom Dropdown Initialization Helper ----
     function initPscCustomDropdown(boxId, displayInputId, selectId, dropdownId) {
-      const box = document.getElementById(boxId);
-      const displayInput = document.getElementById(displayInputId);
       const select = document.getElementById(selectId);
-      const dropdown = document.getElementById(dropdownId);
-      if (!box || !displayInput || !select || !dropdown) return;
-
-      function openDropdown() {
-        document.querySelectorAll('.custom-dropdown-panel.open').forEach(p => {
-          if (p !== dropdown) {
-            p.classList.remove('open');
-            p.closest('.mui-field-box')?.classList.remove('is-open');
-          }
-        });
-        dropdown.classList.add('open');
-        box.classList.add('is-open');
-        box.classList.remove('empty-unfocused');
+      if (select) {
+        setupNautiluxDropdown(select);
       }
-
-      function closeDropdown() {
-        dropdown.classList.remove('open');
-        box.classList.remove('is-open');
-        if (!displayInput.value || displayInput.value.trim() === '') {
-          box.classList.add('empty-unfocused');
-        }
-      }
-
-      box.addEventListener('click', (e) => {
-        if (e.target.closest('.custom-dropdown-option')) return;
-        if (box.classList.contains('disabled')) return;
-        if (dropdown.classList.contains('open')) {
-          closeDropdown();
-        } else {
-          openDropdown();
-        }
-      });
-
-      dropdown.querySelectorAll('.custom-dropdown-option').forEach(opt => {
-        opt.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const val = opt.getAttribute('data-value') || '';
-          select.value = val;
-          displayInput.value = val;
-          dropdown.querySelectorAll('.custom-dropdown-option').forEach(o => {
-            o.classList.toggle('selected', o.getAttribute('data-value') === val);
-          });
-          closeDropdown();
-          select.dispatchEvent(new Event('change', { bubbles: true }));
-          select.dispatchEvent(new Event('input', { bubbles: true }));
-          updateFieldStates();
-        });
-      });
-
-      // Keep display input synced if select value changes programmatically
-      select.addEventListener('change', () => {
-        const val = select.value || '';
-        displayInput.value = val;
-        dropdown.querySelectorAll('.custom-dropdown-option').forEach(o => {
-          o.classList.toggle('selected', o.getAttribute('data-value') === val);
-        });
-        if (val) box.classList.remove('empty-unfocused');
-      });
     }
 
+    initPscCustomDropdown('pscBoxType', 'pscInputTypeSelect', 'pscSelectType', 'pscTypeDropdown');
+    initPscCustomDropdown('pscBoxSubType', 'pscInputSubTypeSelect', 'pscSelectSubType', 'pscSubTypeDropdown');
     initPscCustomDropdown('pscDefBoxCode', 'pscDefCodeInput', 'pscDefCodeSelect', 'pscDefCodeDropdown');
     initPscCustomDropdown('pscDefBoxActionCode', 'pscDefActionCodeInput', 'pscDefActionCodeSelect', 'pscDefActionDropdown');
 
-    // Global listener to close custom dropdowns on outside click
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('.custom-select-box')) {
-        document.querySelectorAll('.custom-dropdown-panel.open').forEach(panel => {
-          panel.classList.remove('open');
-          const parentBox = panel.closest('.mui-field-box');
-          if (parentBox) {
-            parentBox.classList.remove('is-open');
-            const inp = parentBox.querySelector('input');
-            if (!inp || !inp.value || inp.value.trim() === '') {
-              parentBox.classList.add('empty-unfocused');
-            }
-          }
-        });
-      }
-    });
-
     // ---- Validate deficiency form → enable Save ----
-    // Save is ENABLED only when Deficiency Code AND Action Code are selected
+    // Save is ENABLED only when Deficiency Code, Deficiency Area, Action Code, Risk Assessment, and Solaristech Corrective Action Plan are filled
     function pscValidateDefForm() {
-      const code   = pscDefCodeSel?.value?.trim();
-      const area   = pscDefAreaInp?.value?.trim();
-      const action = pscDefActionSel?.value?.trim();
-      const isSaveable = !!(code && action && area);
+      const code       = pscDefCodeSel?.value?.trim();
+      const area       = pscDefAreaInp?.value?.trim();
+      const action     = pscDefActionSel?.value?.trim();
+      const risk       = pscDefRiskInp?.value?.trim();
+      const solarisCap = pscDefSolarisCapInp?.value?.trim();
+      const isSaveable = !!(code && action && area && risk && solarisCap);
 
       if (pscDefSaveBtn) {
         pscDefSaveBtn.disabled = !isSaveable;
@@ -13006,6 +13172,7 @@
 
           ['pscDefBoxRisk', 'pscDefBoxSolarisCap'].forEach(id => {
             document.getElementById(id)?.classList.remove('field-auto-loading');
+            document.getElementById(id)?.classList.remove('error');
           });
 
           const currentCode = pscDefCodeSel?.value?.trim();
@@ -13013,7 +13180,7 @@
             ? PSC_RECOMMENDATION_MASTER[currentCode]
             : PSC_RECOMMENDATION_MASTER['default'];
 
-          // Populate only Risk Assessment and Solaristech Corrective Action Plan (Suggested remains blank)
+          // Populate Risk Assessment and Solaristech Corrective Action Plan
           if (pscDefRiskInp) {
             pscDefRiskInp.value = recData.riskAssessment;
             pscDefRiskInp.readOnly = false;
@@ -13024,23 +13191,33 @@
           }
 
           updateFieldStates();
+          pscValidateDefForm();
           showToast('AI Recommendations generated successfully.');
         }, 550);
       });
     }
 
-    // Editable events on recommendation fields
-    ['pscDefCorrectiveInput', 'pscDefSuggestedInput', 'pscDefRiskInput', 'pscDefSolarisCapInput'].forEach(id => {
+    // Editable events on deficiency fields
+    ['pscDefCorrectiveInput', 'pscDefSuggestedInput', 'pscDefRiskInput', 'pscDefSolarisCapInput', 'pscDefSummaryInput', 'pscDefDescInput'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.addEventListener('input', updateFieldStates);
+      if (el) {
+        el.addEventListener('input', () => {
+          if (id === 'pscDefRiskInput') document.getElementById('pscDefBoxRisk')?.classList.remove('error');
+          if (id === 'pscDefSolarisCapInput') document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
+          updateFieldStates();
+          pscValidateDefForm();
+        });
+      }
     });
 
     // ---- 4. Save Deficiency ----
     if (pscDefSaveBtn) {
       pscDefSaveBtn.addEventListener('click', () => {
-        const code   = pscDefCodeSel?.value?.trim();
-        const area   = pscDefAreaInp?.value?.trim();
-        const action = pscDefActionSel?.value?.trim();
+        const code       = pscDefCodeSel?.value?.trim();
+        const area       = pscDefAreaInp?.value?.trim();
+        const action     = pscDefActionSel?.value?.trim();
+        const risk       = pscDefRiskInp?.value?.trim();
+        const solarisCap = pscDefSolarisCapInp?.value?.trim();
 
         let valid = true;
         if (!code) {
@@ -13064,8 +13241,22 @@
           document.getElementById('pscDefBoxActionCode')?.classList.remove('error');
         }
 
+        if (!risk) {
+          document.getElementById('pscDefBoxRisk')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxRisk')?.classList.remove('error');
+        }
+
+        if (!solarisCap) {
+          document.getElementById('pscDefBoxSolarisCap')?.classList.add('error');
+          valid = false;
+        } else {
+          document.getElementById('pscDefBoxSolarisCap')?.classList.remove('error');
+        }
+
         if (!valid) {
-          showToast('Please select Deficiency Code and Action Code.');
+          showToast('Please select Deficiency Code, Action Code, and fill Risk Assessment & Solaristech Corrective Action Plan.');
           return;
         }
 
@@ -13081,8 +13272,8 @@
           actionDesc:     actionDesc,
           corrective:     pscDefCorrectiveInp?.value?.trim() || '',
           suggested:      pscDefSuggestedInp?.value?.trim()  || '',
-          riskAssessment: pscDefRiskInp?.value?.trim()       || '',
-          solaristechCap: pscDefSolarisCapInp?.value?.trim() || ''
+          riskAssessment: risk,
+          solaristechCap: solarisCap
         };
 
         pscCurrentDeficiencies.push(defObj);
