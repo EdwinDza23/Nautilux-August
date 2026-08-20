@@ -7396,18 +7396,6 @@
               <textarea id="pscDefActionDescInput" rows="2" readonly></textarea>
             </div>
 
-            <!-- Generate Recommendation Section -->
-            <div class="psc-gen-rec-container">
-              <div class="psc-gen-rec-banner">
-                <button type="button" class="btn-generate-rec" id="pscBtnGenRec" aria-label="Generate Recommendation">
-                  <span class="material-symbols-outlined btn-gen-icon">auto_awesome</span>
-                  <span class="btn-gen-text" id="pscGenRecText">Generate Recommendation</span>
-                  <span class="btn-gen-spinner" id="pscGenSpinner" style="display:none;"></span>
-                </button>
-                <span class="psc-gen-rec-hint">AI-driven actionable insights &amp; risk evaluation</span>
-              </div>
-            </div>
-
             <!-- 8. Corrective Action (Editable) -->
             <div class="mui-field-box empty-unfocused is-textarea has-expand box-corrective" id="pscDefBoxCorrective">
               <label for="pscDefCorrectiveInput">Corrective Action</label>
@@ -7420,6 +7408,18 @@
                   <path d="M10.5 14H14V10.5M14 14L10 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
+            </div>
+
+            <!-- Generate Recommendation Section (Below Corrective Action) -->
+            <div class="psc-gen-rec-container">
+              <div class="psc-gen-rec-banner">
+                <button type="button" class="btn-generate-rec" id="pscBtnGenRec" aria-label="Generate Recommendation">
+                  <span class="material-symbols-outlined btn-gen-icon">auto_awesome</span>
+                  <span class="btn-gen-text" id="pscGenRecText">Generate Recommendation</span>
+                  <span class="btn-gen-spinner" id="pscGenSpinner" style="display:none;"></span>
+                </button>
+                <span class="psc-gen-rec-hint">AI-driven actionable insights &amp; risk evaluation</span>
+              </div>
             </div>
 
             <!-- Reviewer Comments & Generated Recommendations matching popup2.png -->
